@@ -1,6 +1,8 @@
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
 A tutorial showing how to train, convert, and run TensorFlow Lite object detection models on Android devices, the Raspberry Pi, and more!
 
+<Fancy GIF or image showing an example of TF Lite object detector in action - to be inserted here later!>
+
 
 ## Currently Under Construction
 
@@ -24,3 +26,16 @@ The guide is broken into three major portions. Each portion will have its own de
 3. How to Run TensorFlow Lite Object Detection Models on Android Devices
 
 This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, or webcam feeds.
+
+## Part 1 - How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models
+Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows PC*. There are three primary steps to this process:
+1. Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite
+2. Build TensorFlow from source on your PC
+3. Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model
+
+This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in my previous guide, including:
+* Setting up an Anaconda virtual environment for training
+* Gathering and labeling training images
+* Preparing training data (generating TFRecords and label map)
+
+ This tutorial uses the same Anaconda virtual environment, files, and directory structure that was set up in the previous one. 
