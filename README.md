@@ -191,5 +191,42 @@ Install Microsoft Build Tools 2015 and Microsoft Visual C++ 2015 Redistributable
 
 Restart your PC after installation has finished.
 
+#### Step 2c. Update Anaconda and create tensorflow-build environment
+Now that the Visual Studio tools are installed and your PC is freshly restarted, open a new Anaconda Prompt window. First, update Anaconda to make sure its package list is up to date. In the Anaconda Prompt window, issue these two commands: 
 
+```
+conda update -n base -c defaults conda
+conda update --all
+```
+
+The update process may take up to an hour, depending on how it's been since you installed or updated Anaconda. Next, create a new Anaconda virtual environment called “tensorflow-build”. We’ll work in this environment for the rest of the build process. Create and activate the environment by issuing:
+
+```
+conda create -n tensorflow-build pip python=3.6
+conda activate tensorflow-build
+```
+
+After the environment is activated, you should see (tensorflow-build) before the active path in the command window. 
+
+<Maybe I should add a picture of the Anaconda window here?>
+
+Update pip by issuing:
+
+```
+python -m pip install --upgrade pip
+```
+
+We'll use Anaconda's git package to download the TensorFlow repository, so install git using:
+
+```
+conda install -c anaconda git
+```
+
+Next, add the MSYS2 binaries to this environment's PATH variable by issuing:
+
+```
+set PATH=%PATH%;C:\msys64\usr\bin
+```
+
+(If MSYS2 is installed in a different location than C:\msys64, use that location instead.) You’ll have to re-issue this command if you ever close and re-open the Anaconda Prompt window. 
 
