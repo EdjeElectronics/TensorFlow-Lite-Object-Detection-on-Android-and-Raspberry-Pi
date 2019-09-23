@@ -70,10 +70,11 @@ If you're training your own TensorFlow Lite model, make sure the following items
 * train_labels.csv and test_labels.csv have been generated and are located in the \object_detection\images folder
 * train.record and test.record have been generated and are located in the \object_detection folder
 * labelmap.pbtxt file has been created and is located in the \object_detection\training folder
+* proto files in \object_detection\protos have been generated
 
-If you have any questions about these files or don’t know how to generate them, Steps 3, 4, and 5 of my previous tutorial show how they are all created.
+If you have any questions about these files or don’t know how to generate them, [Steps 2, 3, 4, and 5 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) show how they are all created.
 
-Copy the ssd_mobilenet_v2_quantized_300x300_coco.config file from the \object_detection\samples\configs folder to the \object_detection\training folder. Then, open the file using a text editor.
+Copy the ssd_mobilenet_v2_quantized_300x300_coco.config file from the \object_detection\samples\configs folder to the \object_detection\training folder. Then, open the file using a text editor. *(Actually, I should probably instruct people to get the config file from the Model Zoo download rather than \samples\configs)*
 
 Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config file. Note: The paths must be entered with single forward slashes (NOT backslashes), or TensorFlow will give a file path error when trying to train the model! Also, the paths must be in double quotation marks ( " ), not single quotation marks ( ' ).
 
@@ -92,3 +93,40 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
   * label_map_path: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
   
   Save and exit the training file after the changes have been made.
+  
+  #### Step 1c. Run training in Anaconda virtual environment
+All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder.
+  
+Then, open a new Anaconda Prompt window by searching for “Anaconda Prompt” in the Start menu and clicking on it. Activate the “tensorflow1” virtual environment (which was set up in my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10)) by issuing: 
+
+```
+activate tensorflow1
+```
+
+Then, set the PYTHONPATH environment variable by issuing:
+
+```
+set PYTHONPATH=C:\tensorflow1\models;C:\tensorflow1\models\research;C:\tensorflow1\models\research\slim
+```
+
+Next, change directories to the \object_detection folder:
+
+```
+cd C:\tensorflow1\models\research\object_detection
+```
+
+Finally, train the model by issuing:
+
+```
+python train.py --logtostderr –train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v2_quantized_300x300_coco.config
+```
+
+If everything was set up correctly, the model will begin training after a couple minutes of initialization.
+
+<Picture of training in progress to be added!>
+
+Allow the model to train until the loss consistently drops below XXXXX. For my bird model, this took about XXXX steps, or XX hours of training (depending on how powerful your CPU and GPU are). (Please see [Step 6 my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
+
+Once training is complete (i.e. the loss has consistently dropped below XXXX), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
+
+Note: train.py is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
