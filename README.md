@@ -155,12 +155,41 @@ That’s it! The new inference graph has been trained and exported. This inferen
 ### Step 2. Build TensorFlow From Source
 To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, we have to run it through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
 
-This part of the tutorial breaks down step-by-step how to build TensorFlow from source on your Windows PC. This guide follows the [Build TensorFlow From Source on Windows](https://www.tensorflow.org/install/source_windows) instructions given on the official TensorFlow website. 
+This part of the tutorial breaks down step-by-step how to build TensorFlow from source on your Windows PC. It follows the [Build TensorFlow From Source on Windows](https://www.tensorflow.org/install/source_windows) instructions given on the official TensorFlow website, with some slight modifications. 
 
 This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. **If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version.** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. The guide shows how to build TensorFlow v1.13. If you would like to build a newer or older version, check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions.
 
 If you’d like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
 
 **If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. (Link to be added)**
+
+#### Step 2a. Install MSYS2
+MSYS2 has binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
+
+First, install MSYS2 by following the instructions on the [MSYS2 website](https://www.msys2.org/). Download the msys2-x86_64 executable file and run it. Use the default options for installation. After installing, open MSYS2 and issue:
+
+```
+pacman -Syu
+```
+
+<Picture of MSYS2 shell to be added here>
+
+After it's completed, close the window, re-open it, and then issue the following two commands:
+
+```
+pacman -Su
+pacman -S patch unzip
+```
+
+This updates MSYS2’s package manager and downloads the patch and unzip packages. The official TensorFlow build guide also installs MSYS2’s git package, but I have had encountered errors using MSYS2's version of git. Instead, we’ll use the git package provided by Anaconda. Close the MSYS2 window. We'll add the MSYS2 binary to the PATH environment variable in Step 2c.
+
+#### Step 2b. Install Visual C++ Build Tools 2015
+Install Microsoft Build Tools 2015 and Microsoft Visual C++ 2015 Redistributable by visiting the [Visual Studio older downloads](https://visualstudio.microsoft.com/vs/older-downloads/) page. Click the “Redistributables and Build Tools” dropdown at the bottom of the list.  Download and install the following two packages:
+
+* **Microsoft Build Tools 2015 Update 3** - Use the default installation options in the install wizard. Once you begin installing, it goes through a fairly large download, so it will take a while if you have a slow internet connection. It may give you some warnings saying build tools or redistributables have already been installed. If so, that's fine; just click through them.
+* **Microsoft Visual C++ 2015 Redistributable Update 3** – This may give you an error saying the redistributable has already been installed. If so, that’s fine.
+
+Restart your PC after installation has finished.
+
 
 
