@@ -10,7 +10,7 @@ This guide is currently under construction! Here are expected dates for when maj
 
 | Part | Description | Expected Completion Date |
 |------|-------------|--------------------------|
-|Part 1| How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10|September 22, 2019 |
+|Part 1| How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10|September 23, 2019 |
 |Part 2| How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi with [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/)|September 29, 2019 |
 |Part 3| How to Run TensorFlow Lite Object Detection Models on Android Devices|October 6, 2019 |
 
@@ -94,7 +94,7 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
   
   Save and exit the training file after the changes have been made.
   
-  #### Step 1c. Run training in Anaconda virtual environment
+#### Step 1c. Run training in Anaconda virtual environment
 All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder.
   
 Then, open a new Anaconda Prompt window by searching for “Anaconda Prompt” in the Start menu and clicking on it. Activate the “tensorflow1” virtual environment (which was set up in my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10)) by issuing: 
