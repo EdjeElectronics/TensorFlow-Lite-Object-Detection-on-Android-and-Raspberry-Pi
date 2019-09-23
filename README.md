@@ -53,6 +53,8 @@ First, we’ll use transfer learning to train a “quantized” SSD-MobileNet mo
 
 You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run quite as fast as the quantized model. Also, you will not be able to run it on the Google Coral TPU Accelerator. If you’re using an SSD-MobileNet model that has already been trained, you can skip to Step 1d *(still need to add link)* of this guide.
 
+**If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. (Link to be added)**
+
 #### Step 1a. Download and extract quantized SSD-MobileNet model
 As I mentioned prevoiusly, this guide assumes you have already followed my [previous TensorFlow tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and set up the Anaconda virtual environment and full directory structure needed for using the TensorFlow Object Detection API. If you've done so, you should have a folder at C:\tensorflow1\models\research\object_detection that has everything needed for training. (If you used a different base folder name than "tensorflow1", that's fine - just make sure you continue to use that name throughout this guide.)
 
@@ -130,3 +132,35 @@ Allow the model to train until the loss consistently drops below XXXXX. For my b
 Once training is complete (i.e. the loss has consistently dropped below XXXX), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
 
 Note: train.py is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
+
+#### Step 1d. Export frozen inference graph for TensorFlow Lite
+Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model”. Next, let’s set up some environment variables so the commands are easier to type out. Issue the following commands in Anaconda Prompt. (Note, the XXXX in the second command should be replaced with the highest-numbered model.ckpt file in the \object_detection\training folder.) 
+
+```
+set CONFIG_FILE=C:\\tensorflow1\models\research\object_detection\training\ ssd_mobilenet_v2_quantized_300x300_coco.config
+set CHECKPOINT_PATH= C:\\tensorflow1\models\research\object_detection\training\ model.ckpt-XXXX
+set OUTPUT_DIR=C:\\tensorflow1\models\research\object_detection\TFLite_model
+```
+
+Now that those are set up, issue this command to export the model for TensorFlow Lite:
+
+```
+python export_tflite_ssd_graph.py --pipeline_config_path=%CONFIG_FILE% --trained_checkpoint_prefix=%CHECKPOINT_PATH% --output_directory=%OUTPUT_DIR% --add_postprocessing_op=true
+```
+
+After the command has executed, there should be two new files in the \object_detection\TFLite_model folder: tflite_graph.pb and tflite_graph.pbtxt. 
+
+That’s it! The new inference graph has been trained and exported. This inference graph's architecture and operations are compatible with TensorFlow Lite's framework. However, the graph still needs to be converted to an actual TensorFlow Lite model. We'll do that in Step 2!
+
+### Step 2. Build TensorFlow From Source
+To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, we have to run it through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
+
+This part of the tutorial breaks down step-by-step how to build TensorFlow from source on your Windows PC. This guide follows the [Build TensorFlow From Source on Windows](https://www.tensorflow.org/install/source_windows) instructions given on the official TensorFlow website. 
+
+This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. **If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version.** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. The guide shows how to build TensorFlow v1.13. If you would like to build a newer or older version, check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions.
+
+If you’d like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
+
+**If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. (Link to be added)**
+
+
