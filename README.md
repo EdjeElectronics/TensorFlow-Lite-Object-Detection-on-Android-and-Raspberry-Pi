@@ -21,7 +21,7 @@ I will also be creating a series of YouTube videos that walk through each step o
 TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on Android phones or the Raspberry Pi.
 
 The guide is broken into three major portions. Each portion will have its own dedicated README file in this repository.
-1. How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10
+1. [How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10)
 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)
 3. How to Run TensorFlow Lite Object Detection Models on Android Devices
 
@@ -34,8 +34,8 @@ The TensorFlow team is always hard at work releasing updated versions of TensorF
 
 ## Part 1 - How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10
 Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. There are three primary steps to this process:
-1. Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite
-2. Build TensorFlow from source on your PC
+1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
+2. [Build TensorFlow from source on your PC](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-2-build-tensorflow-from-source)
 3. Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model
 
 This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in my previous guide, including:
@@ -127,9 +127,9 @@ If everything was set up correctly, the model will begin training after a couple
 
 <Picture of training in progress to be added!>
 
-Allow the model to train until the loss consistently drops below XXXXX. For my bird model, this took about XXXX steps, or XX hours of training (depending on how powerful your CPU and GPU are). (Please see [Step 6 my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
+Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
 
-Once training is complete (i.e. the loss has consistently dropped below XXXX), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
+Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
 
 Note: train.py is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
 
@@ -229,4 +229,103 @@ set PATH=%PATH%;C:\msys64\usr\bin
 ```
 
 (If MSYS2 is installed in a different location than C:\msys64, use that location instead.) You’ll have to re-issue this command if you ever close and re-open the Anaconda Prompt window. 
+
+#### Step 2d. Download Bazel and Python package dependencies
+Next, we’ll install Bazel and some other Python packages that are used for building TensorFlow. Install the necessary Python packages by issuing: 
+
+```
+pip install six numpy wheel
+pip install keras_applications==1.0.6 --no-deps
+pip install keras_preprocessing==1.0.5 --no-deps
+```
+
+Then install Bazel v0.21.0 by issuing the following command. (If you are building a version of TensorFlow other than v1.13, you may need to use a different version of Bazel.)
+
+```
+conda install -c conda-forge bazel=0.21.0
+```
+
+#### Step 2d. Download TensorFlow source and configure build
+Time to download TensorFlow’s source code from GitHub! Issue the following commands to create a new folder directly in C:\ called “tensorflow-build” and cd into it:
+
+```
+mkdir C:\tensorflow-build
+cd C:\tensorflow-build
+```
+
+Then, clone the TensorFlow repository and cd into it by issuing: 
+
+```
+git clone https://github.com/tensorflow/tensorflow.git 
+cd tensorflow 
+```
+
+Next, check out the branch for TensorFlow v1.13: 
+
+```
+git checkout r1.13
+```
+
+The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the FAQs section *(link to be added)* for instructions on how to check the TensorFlow version you used for training.
+
+Next, we’ll configure the TensorFlow build using the configure.py script. From the C:\tensorflow-build\tensorflow directory, issue:
+
+```
+python ./configure.py
+```
+
+This will initiate a bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed.
+
+Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question. You can see the configuration session for building the GPU-enabled version in the Appendix *(link to be added!)* of this guide.
+
+```
+You have bazel 0.21.0- (@non-git) installed. 
+
+Please specify the location of python. [Default is C:\ProgramData\Anaconda3\envs\tensorflow-build\python.exe]: 
+  
+Found possible Python library paths: 
+
+  C:\ProgramData\Anaconda3\envs\tensorflow-build\lib\site-packages 
+
+Please input the desired Python library path to use.  Default is [C:\ProgramData\Anaconda3\envs\tensorflow-build\lib\site-packages] 
+
+Do you wish to build TensorFlow with XLA JIT support? [y/N]: N 
+No XLA JIT support will be enabled for TensorFlow. 
+
+Do you wish to build TensorFlow with ROCm support? [y/N]: N 
+No ROCm support will be enabled for TensorFlow. 
+  
+Do you wish to build TensorFlow with CUDA support? [y/N]: N 
+No CUDA support will be enabled for TensorFlow. 
+```
+
+Once the configuration is finished, TensorFlow is ready to be bulit!
+
+#### Step 2e. Build TensorFlow package
+Next, use Bazel to create the package builder for TensorFlow. To create the CPU-only version, issue the following command. The build process took about 70 minutes on my computer. 
+
+```
+bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package 
+```
+
+If you’re building the GPU-enabled version of TensorFlow, issue the following command. 
+
+```
+bazel build --config=opt --config=cuda --define=no_tensorflow_py_deps=true //tensorflow/tools/pip_package:build_pip_package 
+```
+
+Now that the package builder has been created, let’s use it to build the actual TensorFlow wheel file. Issue the following command (it took about 5 minutes to complete on my computer): 
+
+```
+bazel-bin\tensorflow\tools\pip_package\build_pip_package C:/tmp/tensorflow_pkg 
+```
+
+This creates the wheel file and places it in C:\tmp\tensorflow_pkg.
+
+#### Step 2f. Install TensorFlow and test it out!
+TensorFlow is finally ready to be installed! Open File Explorer and browse to the C:\tmp\tensorflow_pkg folder. Copy the full filename of the .whl file, and paste it in the following command:
+
+```
+pip3 install C:/tmp/tensorflow_pkg/<Insert filename here>
+```
 
