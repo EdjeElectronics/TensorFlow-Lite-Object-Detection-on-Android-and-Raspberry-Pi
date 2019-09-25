@@ -150,7 +150,7 @@ python export_tflite_ssd_graph.py --pipeline_config_path=%CONFIG_FILE% --trained
 
 After the command has executed, there should be two new files in the \object_detection\TFLite_model folder: tflite_graph.pb and tflite_graph.pbtxt. 
 
-That’s it! The new inference graph has been trained and exported. This inference graph's architecture and operations are compatible with TensorFlow Lite's framework. However, the graph still needs to be converted to an actual TensorFlow Lite model. We'll do that in Step 2!
+That’s it! The new inference graph has been trained and exported. This inference graph's architecture and operations are compatible with TensorFlow Lite's framework. However, the graph still needs to be converted to an actual TensorFlow Lite model. We'll do that in Step 3. First, we have to build TensorFlow from source. On to Step 2!
 
 ### Step 2. Build TensorFlow From Source
 To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, we have to run it through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
@@ -326,6 +326,30 @@ This creates the wheel file and places it in C:\tmp\tensorflow_pkg.
 TensorFlow is finally ready to be installed! Open File Explorer and browse to the C:\tmp\tensorflow_pkg folder. Copy the full filename of the .whl file, and paste it in the following command:
 
 ```
-pip3 install C:/tmp/tensorflow_pkg/<Insert filename here>
+pip3 install C:/tmp/tensorflow_pkg/<Paste filename here>
 ```
+
+That's it! TensorFlow is installed! Let's make sure it installed okay by opening a Python shell:
+
+```
+python
+```
+
+Once the shell is opened, issue these commands:
+
+```
+>>> import tensorflow as tf
+>>> tf.__version__
+```
+
+If everything was installed properly, it will respond with the installed version of TensorFlow. Note: You may get some deprecation warnings after the "import tensorflow as tf" command. As long as they are warnings and not actual errors, you can ignore them! Exit the shell by issuing:
+
+```
+exit()
+```
+
+With TensorFlow installed, we can finally convert our trained model into a TensorFlow Lite model. On to the last step: Step 3!
+
+### Step 3. Use TOCO to Create Optimzed TensorFlow Lite Model
+Although we've already exported a frozen graph of our detection model for TensorFlow Lite, we still need run it through the TensorFlow Lite Optimizing Converter (TOCO) before it will work with the TensorFlow Lite interpreter. TOCO converts models into an optimized FlatBuffer format that allows them to run efficiently on TensorFlow Lite.
 
