@@ -10,9 +10,9 @@ This guide is currently under construction! Here are expected dates for when maj
 
 | Part | Description | Expected Completion Date |
 |------|-------------|--------------------------|
-|Part 1| How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10|September 23, 2019 |
-|Part 2| How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi with [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/)|September 29, 2019 |
-|Part 3| How to Run TensorFlow Lite Object Detection Models on Android Devices|October 6, 2019 |
+|Part 1| How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10|September 29, 2019 |
+|Part 2| How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi with [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/)|October 6, 2019 |
+|Part 3| How to Run TensorFlow Lite Object Detection Models on Android Devices|October 20, 2019 |
 
 I will also be creating a series of YouTube videos that walk through each step of the guide.
 
