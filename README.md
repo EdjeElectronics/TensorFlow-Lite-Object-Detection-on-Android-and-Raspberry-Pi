@@ -101,7 +101,7 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
 Save and exit the training file after the changes have been made.
   
 #### Step 1c. Run training in Anaconda virtual environment
-All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder.
+All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder. (See the [FAQ](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for why I am using train.py rather than model_main.py for training.)
   
 Then, open a new Anaconda Prompt window by searching for “Anaconda Prompt” in the Start menu and clicking on it. Activate the “tensorflow1” virtual environment (which was set up in my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10)) by issuing: 
 
@@ -131,14 +131,18 @@ If everything was set up correctly, the model will begin training after a couple
 
 <Picture of training in progress to be added!>
 
-Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
+Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
 
 Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
 
-Note: train.py is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
-
 #### Step 1d. Export frozen inference graph for TensorFlow Lite
-Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model”. Next, let’s set up some environment variables so the commands are easier to type out. Issue the following commands in Anaconda Prompt. (Note, the XXXX in the second command should be replaced with the highest-numbered model.ckpt file in the \object_detection\training folder.) 
+Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model”: 
+
+```
+mkdir TFLite_model
+```
+
+Next, let’s set up some environment variables so the commands are easier to type out. Issue the following commands in Anaconda Prompt. (Note, the XXXX in the second command should be replaced with the highest-numbered model.ckpt file in the \object_detection\training folder.) 
 
 ```
 set CONFIG_FILE=C:\\tensorflow1\models\research\object_detection\training\ ssd_mobilenet_v2_quantized_300x300_coco.config
@@ -154,18 +158,18 @@ python export_tflite_ssd_graph.py --pipeline_config_path=%CONFIG_FILE% --trained
 
 After the command has executed, there should be two new files in the \object_detection\TFLite_model folder: tflite_graph.pb and tflite_graph.pbtxt. 
 
-That’s it! The new inference graph has been trained and exported. This inference graph's architecture and operations are compatible with TensorFlow Lite's framework. However, the graph still needs to be converted to an actual TensorFlow Lite model. We'll do that in Step 3. First, we have to build TensorFlow from source. On to Step 2!
+That’s it! The new inference graph has been trained and exported. This inference graph's architecture and network operations are compatible with TensorFlow Lite's framework. However, the graph still needs to be converted to an actual TensorFlow Lite model. We'll do that in Step 3. First, we have to build TensorFlow from source. On to Step 2!
 
 ### Step 2. Build TensorFlow From Source
-To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, we have to run it through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
+To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, it has to be run through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
 
 This part of the tutorial breaks down step-by-step how to build TensorFlow from source on your Windows PC. It follows the [Build TensorFlow From Source on Windows](https://www.tensorflow.org/install/source_windows) instructions given on the official TensorFlow website, with some slight modifications. 
 
-This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. **If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version.** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. The guide shows how to build TensorFlow v1.13. If you would like to build a newer or older version, check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions.
+This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow v1.13. If you would like to build a version other than TF v1.13, you can still use this guide, but check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions. 
 
-If you’d like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
+**If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version.** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. This guide shows how to build TensorFlow v1.13. If you’d like to build the GPU-enabled version anyway, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
 
-**If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. (Link to be added)**
+**If you get any errors during this process, please look at the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
 
 #### Step 2a. Install MSYS2
 MSYS2 has binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
@@ -497,3 +501,6 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 * Part 3. How to Run TensorFlow Lite Object Detection Models on Android Devices 
 
 ## Frequently Asked Questions and Common Errors
+
+#### Why does this guide use train.py rather than model_main.py for training?
+This guide uses "train.py" to run training on the TFLite detection model. The train.py script is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
