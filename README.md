@@ -101,7 +101,7 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
 Save and exit the training file after the changes have been made.
   
 #### Step 1c. Run training in Anaconda virtual environment
-All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder. (See the [FAQ](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for why I am using train.py rather than model_main.py for training.)
+All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder. (See the [FAQ](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for why I am using the legacy train.py script rather than model_main.py for training.)
   
 Then, open a new Anaconda Prompt window by searching for “Anaconda Prompt” in the Start menu and clicking on it. Activate the “tensorflow1” virtual environment (which was set up in my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10)) by issuing: 
 
@@ -136,7 +136,7 @@ Allow the model to train until the loss consistently drops below 2. For my card 
 Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
 
 #### Step 1d. Export frozen inference graph for TensorFlow Lite
-Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model”: 
+Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model” by issuing: 
 
 ```
 mkdir TFLite_model
@@ -167,12 +167,12 @@ This part of the tutorial breaks down step-by-step how to build TensorFlow from 
 
 This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow v1.13. If you would like to build a version other than TF v1.13, you can still use this guide, but check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions. 
 
-**If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version.** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. This guide shows how to build TensorFlow v1.13. If you’d like to build the GPU-enabled version anyway, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
+**If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version!** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. If you’d like to build the GPU-enabled version anyway, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
 
 **If you get any errors during this process, please look at the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
 
 #### Step 2a. Install MSYS2
-MSYS2 has binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
+MSYS2 has some binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
 
 First, install MSYS2 by following the instructions on the [MSYS2 website](https://www.msys2.org/). Download the msys2-x86_64 executable file and run it. Use the default options for installation. After installing, open MSYS2 and issue:
 
@@ -189,7 +189,7 @@ pacman -Su
 pacman -S patch unzip
 ```
 
-This updates MSYS2’s package manager and downloads the patch and unzip packages. The official TensorFlow build guide also installs MSYS2’s git package, but I have had encountered errors using MSYS2's version of git. Instead, we’ll use the git package provided by Anaconda. Close the MSYS2 window. We'll add the MSYS2 binary to the PATH environment variable in Step 2c.
+This updates MSYS2’s package manager and downloads the patch and unzip packages. Now, close the MSYS2 window. We'll add the MSYS2 binary to the PATH environment variable in Step 2c.
 
 #### Step 2b. Install Visual C++ Build Tools 2015
 Install Microsoft Build Tools 2015 and Microsoft Visual C++ 2015 Redistributable by visiting the [Visual Studio older downloads](https://visualstudio.microsoft.com/vs/older-downloads/) page. Click the “Redistributables and Build Tools” dropdown at the bottom of the list.  Download and install the following two packages:
@@ -236,7 +236,7 @@ Next, add the MSYS2 binaries to this environment's PATH variable by issuing:
 set PATH=%PATH%;C:\msys64\usr\bin
 ```
 
-(If MSYS2 is installed in a different location than C:\msys64, use that location instead.) You’ll have to re-issue this command if you ever close and re-open the Anaconda Prompt window. 
+(If MSYS2 is installed in a different location than C:\msys64, use that location instead.) You’ll have to re-issue this PATH command if you ever close and re-open the Anaconda Prompt window. 
 
 #### Step 2d. Download Bazel and Python package dependencies
 Next, we’ll install Bazel and some other Python packages that are used for building TensorFlow. Install the necessary Python packages by issuing: 
@@ -274,7 +274,7 @@ Next, check out the branch for TensorFlow v1.13:
 git checkout r1.13
 ```
 
-The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the FAQs section *(link to be added)* for instructions on how to check the TensorFlow version you used for training.
+The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for instructions on how to check the TensorFlow version you used for training.
 
 Next, we’ll configure the TensorFlow build using the configure.py script. From the C:\tensorflow-build\tensorflow directory, issue:
 
@@ -282,7 +282,7 @@ Next, we’ll configure the TensorFlow build using the configure.py script. From
 python ./configure.py
 ```
 
-This will initiate a bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed.
+This will initiate a Bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed.
 
 Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question. You can see the configuration session for building the GPU-enabled version in the Appendix *(link to be added!)* of this guide.
 
@@ -504,3 +504,13 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 
 #### Why does this guide use train.py rather than model_main.py for training?
 This guide uses "train.py" to run training on the TFLite detection model. The train.py script is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
+
+#### How do I check which TensorFlow version I used to train my detection model?
+Here’s how you can check the version of TensorFlow you used for training.  
+
+1. Open a new Anaconda Prompt window and issue `activate tensorflow1` (or whichever environment name you used)  
+2. Open a python shell by issuing `python`  
+3. Within the Python shell, import TensorFlow by issuing `import tensorflow as tf`  
+4. Check the TensorFlow version by issuing `tf.__version__` . It will respond with the version of TensorFlow. This is the version that you used for training. 
+
+#### Bazel configuration session for building GPU-enabled TensorFlow
