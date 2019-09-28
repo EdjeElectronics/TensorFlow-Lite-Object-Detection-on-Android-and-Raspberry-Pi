@@ -33,10 +33,12 @@ I used TensorFlow v1.13 while creating this guide, because TF v1.13 is a stable 
 The TensorFlow team is always hard at work releasing updated versions of TensorFlow. I recommend picking one version and sticking with it for all your TensorFlow projects. Every part of this guide should work with newer or older versions, but you may need to use different versions of the tools needed to run or build TensorFlow (CUDA, cuDNN, bazel, etc). Google has provided a list of build configurations for [Linux](https://www.tensorflow.org/install/source#linux), [macOS](https://www.tensorflow.org/install/source#macos), and [Windows](https://www.tensorflow.org/install/source_windows#tested_build_configurations) that show which tool versions were used to build and run each version of TensorFlow.
 
 ## Part 1 - How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10
-Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. There are three primary steps to this process:
+Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written for Windows. 
+
+There are three primary steps to training and deploying a TensorFlow Lite model:
 1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
 2. [Build TensorFlow from source on your PC](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-2-build-tensorflow-from-source)
-3. Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model
+3. [Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-3-use-toco-to-create-optimzed-tensorflow-lite-model)
 
 This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in my previous guide, including:
 * Setting up an Anaconda virtual environment for training
@@ -350,6 +352,86 @@ exit()
 
 With TensorFlow installed, we can finally convert our trained model into a TensorFlow Lite model. On to the last step: Step 3!
 
-### Step 3. Use TOCO to Create Optimzed TensorFlow Lite Model
-Although we've already exported a frozen graph of our detection model for TensorFlow Lite, we still need run it through the TensorFlow Lite Optimizing Converter (TOCO) before it will work with the TensorFlow Lite interpreter. TOCO converts models into an optimized FlatBuffer format that allows them to run efficiently on TensorFlow Lite.
+### Step 3. Use TOCO to Create Optimzed TensorFlow Lite Model, Create Label Map, Run Model
+Although we've already exported a frozen graph of our detection model for TensorFlow Lite, we still need run it through the TensorFlow Lite Optimizing Converter (TOCO) before it will work with the TensorFlow Lite interpreter. TOCO converts models into an optimized FlatBuffer format that allows them to run efficiently on TensorFlow Lite. We also need to create a new label map before running the model.
 
+#### Step 3a. Create optimized TensorFlow Lite model
+First, we’ll run the model through TOCO to create an optimzed TensorFLow Lite model. The TOCO tool lives deep in the C:\tensorflow-build directory, and it will be run from the “tensorflow-build” Anaconda virtual environment that we created and used during Step 2. The model we trained in Step 1 lives inside the C:\tensorflow1\models\research\object_detection\TFLite_model directory. We’ll create an environment variable called OUTPUT_DIR that points at the correct model directory to make it easier to enter the TOCO command.
+
+Make sure you are working in the “tensorflow-build” Anaconda environment by verying that (tensorflow-build) appears before the activate path in the command window. Create the OUTPUT_DIR variable by issuing:
+
+```
+set OUTPUT_DIR=C:\\tensorflow1\models\research\object_detection\TFLite_model
+```
+
+Next, use bazel to run the model through the TOCO tool by issuing this command:
+
+```
+bazel run --config=opt tensorflow/lite/toco:toco -- \ 
+--input_file=%OUTPUT_DIR%/tflite_graph.pb \ 
+--output_file=%OUTPUT_DIR%/detect.tflite \ 
+--input_shapes=1,300,300,3 \ 
+--input_arrays=normalized_input_image_tensor \ 
+--output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 \ 
+--inference_type=QUANTIZED_UINT8 \ 
+--mean_values=128 \ 
+--std_values=128 \ 
+--change_concat_input_ranges=false \ 
+--allow_custom_ops 
+```
+
+Note: If you are using a floating, non-quantized SSD model (for example the ssdlite_mobilenet_v2_coco model rather than the ssd_mobilenet_v2_quantized_coco model), the bazel TOCO command must be modified slightly:
+
+```
+bazel run --config=opt tensorflow/lite/toco:toco -- \  
+--input_file=$OUTPUT_DIR/tflite_graph.pb \  
+--output_file=$OUTPUT_DIR/detect.tflite \  
+--input_shapes=1,300,300,3 \  
+--input_arrays=normalized_input_image_tensor \  
+--output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 \ 
+ --inference_type=FLOAT \  
+--allow_custom_ops 
+```
+
+If you are using Linux, make sure to use the commands given in the [official TensorFlow instructions here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md). I removed the ' characters from the command, because for some reason they cause things not to work on Windows!
+
+After the command finishes running, you should see a file called detect.tflite in the \object_detection\TFLite_model directory. This is the model that can be used with TensorFlow Lite!
+
+#### Step 3b. Create new label map
+For some reason, TensorFlow Lite uses a different label map format than classic TensorFlow. The classic TensorFlow label map format looks like this (you can see an example in the \object_detection\data\mscoco_label_map.pbtxt file): 
+
+```
+item { 
+  name: "/m/01g317" 
+  id: 1 
+  display_name: "person" 
+} 
+item { 
+  name: "/m/0199g" 
+  id: 2 
+  display_name: "bicycle" 
+} 
+item { 
+  name: "/m/0k4j" 
+  id: 3 
+  display_name: "car" 
+} 
+item { 
+  name: "/m/04_sv" 
+  id: 4 
+  display_name: "motorcycle" 
+} 
+And so on...
+```
+
+However, the label map provided with the [example TensorFlow Lite object detection model](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) looks like this:
+
+```
+person 
+bicycle 
+car 
+motorcycle 
+And so on...
+```
+ 
+Hmm, maybe we don't have to do this! Will update later.
