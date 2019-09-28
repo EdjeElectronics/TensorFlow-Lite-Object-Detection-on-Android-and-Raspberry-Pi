@@ -434,4 +434,61 @@ motorcycle
 And so on...
 ```
  
-Hmm, maybe we don't have to do this! Will update later.
+Basically, rather than explicitly stating the name and ID number for each class like the classic TensorFlow label map format does, the TensorFlow Lite format just lists each class. I’m going to stick with the TensorFlow Lite label map format for this guide to stay consistent with the example provided by Google.
+
+Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. For example, the label map for my card detector should look like:
+
+```
+nine 
+ten 
+jack 
+queen 
+king 
+ace 
+```
+
+Then, save the file as “labelmap.txt” in the TFLite_model folder. 
+
+<Insert picture here showing what my labelmap.txt file looks like>
+ 
+Now we’re ready to run the model!
+
+#### Step 3c. Run the TensorFlow Lite model!
+I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and TFLite_detection_wecam.py. The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
+
+We’ll download the Python scripts directly from this repository. First, install wget for Anaconda by issuing:
+
+```
+conda install -c menpo wget
+```
+
+Once it's installed, download the scripts by issuing:
+
+```
+wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_image.py --no-check-certificate
+wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_video.py --no-check-certificate
+wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_webcam.py --no-check-certificate
+```
+
+The following instructions show how to run the webcam, video, and image scripts. These instructions assume you have a folder named “TFLite_model” in your \object_detection directory as per the instructions given in this guide. 
+
+If you’d rather use the scripts with the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use “--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29” rather than “--modeldir=TFLite_model” when running the script. 
+
+##### Webcam
+Make sure you have a USB webcam plugged into your computer. If you’re on a laptop with a built-in camera, you don’t need to plug in a USB webcam. 
+
+From the \object_detection directory, issue: 
+
+python TFLite_detection_webcam.py --modeldir=TFLite_model 
+
+After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
+
+##### Video
+<Work in progress!>
+
+##### Image
+<Work in progress!>
+
+<Insert a picture of a labeled image here>
+ 
+If you encounter errors while running these scripts, please check the FAQ section of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
