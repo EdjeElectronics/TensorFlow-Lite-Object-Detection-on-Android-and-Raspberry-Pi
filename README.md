@@ -436,18 +436,7 @@ And so on...
  
 Basically, rather than explicitly stating the name and ID number for each class like the classic TensorFlow label map format does, the TensorFlow Lite format just lists each class. I’m going to stick with the TensorFlow Lite label map format for this guide to stay consistent with the example provided by Google.
 
-Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. For example, the label map for my card detector should look like:
-
-```
-nine 
-ten 
-jack 
-queen 
-king 
-ace 
-```
-
-Then, save the file as “labelmap.txt” in the TFLite_model folder. 
+Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. Then, save the file as “labelmap.txt” in the TFLite_model folder. As an example, here's what the labelmap.txt file for my card detector looks like:
 
 <Insert picture here showing what my labelmap.txt file looks like>
  
@@ -479,7 +468,9 @@ Make sure you have a USB webcam plugged into your computer. If you’re on a lap
 
 From the \object_detection directory, issue: 
 
+```
 python TFLite_detection_webcam.py --modeldir=TFLite_model 
+```
 
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
 
