@@ -1,5 +1,5 @@
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
-A tutorial showing how to train, convert, and run TensorFlow Lite object detection models on Android devices, the Raspberry Pi, and more!
+A guide showing how to train, convert, and run TensorFlow Lite object detection models on Android devices, the Raspberry Pi, and more!
 
 <Fancy GIF or image showing an example of TF Lite object detector in action - to be inserted here later!>
 
@@ -28,7 +28,7 @@ The guide is broken into three major portions. Each portion will have its own de
 This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, or webcam feeds.
 
 ### A Note on Versions
-I used TensorFlow v1.13 while creating this guide, because TF v1.13 is a stable version that has great support from Anaconda. I will also periodically update the guide to make sure it works with newer versions of TensorFlow. 
+I used TensorFlow v1.13 while creating this guide, because TF v1.13 is a stable version that has great support from Anaconda. I will periodically update the guide to make sure it works with newer versions of TensorFlow. 
 
 The TensorFlow team is always hard at work releasing updated versions of TensorFlow. I recommend picking one version and sticking with it for all your TensorFlow projects. Every part of this guide should work with newer or older versions, but you may need to use different versions of the tools needed to run or build TensorFlow (CUDA, cuDNN, bazel, etc). Google has provided a list of build configurations for [Linux](https://www.tensorflow.org/install/source#linux), [macOS](https://www.tensorflow.org/install/source#macos), and [Windows](https://www.tensorflow.org/install/source_windows#tested_build_configurations) that show which tool versions were used to build and run each version of TensorFlow.
 
@@ -483,3 +483,13 @@ After a few moments of initializing, a window will appear showing the webcam fee
 <Insert a picture of a labeled image here>
  
 If you encounter errors while running these scripts, please check the FAQ section of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
+
+### Next Steps
+This concludes Part 1 of my TensorFlow Lite guide! You now have a trained TensorFlow Lite model and the scripts needed to run it on a PC.
+
+But who cares about running it on a PC? The whole reason we’re using TensorFlow Lite is so we can run our models on lightweight devices that are more portable and less power-hungry than a PC!  The next two parts of my guide show how to run this TFLite model on a Raspberry Pi or an Android Device. 
+
+*Links to be added when these are completed!*
+
+* Part 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)
+* Part 3. How to Run TensorFlow Lite Object Detection Models on Android Devices 
