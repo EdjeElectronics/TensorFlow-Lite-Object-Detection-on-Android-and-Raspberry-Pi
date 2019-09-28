@@ -33,7 +33,7 @@ I used TensorFlow v1.13 while creating this guide, because TF v1.13 is a stable 
 The TensorFlow team is always hard at work releasing updated versions of TensorFlow. I recommend picking one version and sticking with it for all your TensorFlow projects. Every part of this guide should work with newer or older versions, but you may need to use different versions of the tools needed to run or build TensorFlow (CUDA, cuDNN, bazel, etc). Google has provided a list of build configurations for [Linux](https://www.tensorflow.org/install/source#linux), [macOS](https://www.tensorflow.org/install/source#macos), and [Windows](https://www.tensorflow.org/install/source_windows#tested_build_configurations) that show which tool versions were used to build and run each version of TensorFlow.
 
 ## Part 1 - How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10
-Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written specifically for Windows. (It will work on Linux too with some minor changes.)
+Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written specifically for Windows. (It will work on Linux too with some minor changes, which I leave as an exercise for the Linux user.)
 
 There are three primary steps to training and deploying a TensorFlow Lite model:
 1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
@@ -495,3 +495,5 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 
 * Part 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)
 * Part 3. How to Run TensorFlow Lite Object Detection Models on Android Devices 
+
+## Frequently Asked Questions and Common Errors
