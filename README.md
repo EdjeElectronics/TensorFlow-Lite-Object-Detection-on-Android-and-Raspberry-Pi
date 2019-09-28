@@ -33,14 +33,14 @@ I used TensorFlow v1.13 while creating this guide, because TF v1.13 is a stable 
 The TensorFlow team is always hard at work releasing updated versions of TensorFlow. I recommend picking one version and sticking with it for all your TensorFlow projects. Every part of this guide should work with newer or older versions, but you may need to use different versions of the tools needed to run or build TensorFlow (CUDA, cuDNN, bazel, etc). Google has provided a list of build configurations for [Linux](https://www.tensorflow.org/install/source#linux), [macOS](https://www.tensorflow.org/install/source#macos), and [Windows](https://www.tensorflow.org/install/source_windows#tested_build_configurations) that show which tool versions were used to build and run each version of TensorFlow.
 
 ## Part 1 - How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10
-Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written for Windows. 
+Part 1 of this guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written specifically for Windows. (It will work on Linux too with some minor changes.)
 
 There are three primary steps to training and deploying a TensorFlow Lite model:
 1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
 2. [Build TensorFlow from source on your PC](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-2-build-tensorflow-from-source)
 3. [Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-3-use-toco-to-create-optimzed-tensorflow-lite-model)
 
-This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in my previous guide, including:
+This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in that guide, including:
 * Setting up an Anaconda virtual environment for training
 * Setting up TensorFlow directory structure
 * Gathering and labeling training images
@@ -53,17 +53,17 @@ Parts 2 and 3 of this guide will go on to show how to deploy this newly trained 
 ### Step 1: Train Quantized SSD-MobileNet Model and Export Frozen TensorFlow Lite Graph
 First, we’ll use transfer learning to train a “quantized” SSD-MobileNet model. Quantized models use 8-bit integer values instead of 32-bit floating values within the neural network, allowing them to run much more efficiently on GPUs or specialized TPUs (TensorFlow Processing Units).
 
-You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run quite as fast as the quantized model. Also, you will not be able to run it on the Google Coral TPU Accelerator. If you’re using an SSD-MobileNet model that has already been trained, you can skip to Step 1d *(still need to add link)* of this guide.
+You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run quite as fast as the quantized model. Also, you will not be able to run it on the Google Coral TPU Accelerator. If you’re using an SSD-MobileNet model that has already been trained, you can skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite) of this guide.
 
-**If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. (Link to be added)**
+**If you get any errors during this process, please look at the FAQ section at the bottom of this guide! It gives solutions to common errors that occur. *(Link to be added)* **
 
-#### Step 1a. Download and extract quantized SSD-MobileNet model
 As I mentioned prevoiusly, this guide assumes you have already followed my [previous TensorFlow tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and set up the Anaconda virtual environment and full directory structure needed for using the TensorFlow Object Detection API. If you've done so, you should have a folder at C:\tensorflow1\models\research\object_detection that has everything needed for training. (If you used a different base folder name than "tensorflow1", that's fine - just make sure you continue to use that name throughout this guide.)
 
 <Add picture of what the \object_detection folder should look like>
 
-If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD (see next paragraph) and then skip to Step 1d *(still need to add a link)*.
+If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD model (see next paragraph) and then skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite).
 
+#### Step 1a. Download and extract quantized SSD-MobileNet model
 Google provides several quantized object detection models in their [detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md). This tutorial will use the SSD-MobileNet-V2-Quantized-COCO model. Download the model [here](http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v2_quantized_300x300_coco_2019_01_03.tar.gz). **Note: TensorFlow Lite does NOT support RCNN models such as Faster-RCNN! It only supports SSD models.** 
 
 Move the downloaded .tar.gz file to the C:\tensorflow1\models\research\object_detection folder. (Henceforth, this folder will be referred to as the “\object_detection” folder.)  Unzip the .tar.gz file using a file archiver like WinZip or 7-Zip. After the file has been fully unzipped, you should have a folder called "ssd_mobilenet_v2_quantized_300x300_coco_2019_01_03" within the \object_detection folder.
@@ -78,25 +78,27 @@ If you're training your own TensorFlow Lite model, make sure the following items
 
 If you have any questions about these files or don’t know how to generate them, [Steps 2, 3, 4, and 5 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) show how they are all created.
 
-Copy the ssd_mobilenet_v2_quantized_300x300_coco.config file from the \object_detection\samples\configs folder to the \object_detection\training folder. Then, open the file using a text editor. *(Actually, I should probably instruct people to get the config file from the Model Zoo download rather than \samples\configs)*
+Copy the ssd_mobilenet_v2_quantized_300x300_coco.config file from the \object_detection\samples\configs folder to the \object_detection\training folder. Then, open the file using a text editor.
 
 Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config file. Note: The paths must be entered with single forward slashes (NOT backslashes), or TensorFlow will give a file path error when trying to train the model! Also, the paths must be in double quotation marks ( " ), not single quotation marks ( ' ).
 
 * Line 9. Change num_classes to the number of different objects you want the classifier to detect. For my card detector example, there are six classes, so I set num_classes: 6
-* Line 141. Change batch_size: 24 to batch_size: 6 . The smaller batch size will prevent OOM (Out of Memory) errors during training. 
-* Line 156. Change fine_tune_checkpoint to:
-  * fine_tune_checkpoint: "C:/tensorflow1/models/research/object_detection/ ssd_mobilenet_v2_quantized_300x300_coco_2019_01_03/model.ckpt"
-* Line 175. Change input_path to:
-  * input_path: "C:/tensorflow1/models/research/object_detection/train.record"
-* Line 177. Change label_map_path to:
-  * label_map_path: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
+
+* Line 141. Change batch_size: 24 to batch_size: 6 . The smaller batch size will prevent OOM (Out of Memory) errors during training.
+
+* Line 156. Change fine_tune_checkpoint to: "C:/tensorflow1/models/research/object_detection/ ssd_mobilenet_v2_quantized_300x300_coco_2019_01_03/model.ckpt"
+
+* Line 175. Change input_path to: "C:/tensorflow1/models/research/object_detection/train.record"
+
+* Line 177. Change label_map_path to: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
+
 * Line 181. Change num_examples to the number of images you have in the \images\test directory. For my card detector example, there are 67 images, so I set num_examples: 67.
-* Line 189. Change input_path to:
-  * input_path: "C:/tensorflow1/models/research/object_detection/test.record"
-* Line 191. Change label_map_path to:
-  * label_map_path: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
+
+* Line 189. Change input_path to: "C:/tensorflow1/models/research/object_detection/test.record"
+
+* Line 191. Change label_map_path to: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
   
-  Save and exit the training file after the changes have been made.
+Save and exit the training file after the changes have been made.
   
 #### Step 1c. Run training in Anaconda virtual environment
 All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder.
