@@ -11,7 +11,7 @@ This guide is currently under construction! Here are expected dates for when maj
 | Part | Description | Expected Completion Date |
 |------|-------------|--------------------------|
 |Part 1| How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10|September 29, 2019 |
-|Part 2| How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi with [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/)|October 6, 2019 |
+|Part 2| How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi with [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/). In the meantime, [here's a good guide from the TensorFlow team showing how to do it](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi)! |October 6, 2019 |
 |Part 3| How to Run TensorFlow Lite Object Detection Models on Android Devices|October 20, 2019 |
 
 I will also be creating a series of YouTube videos that walk through each step of the guide.
@@ -133,7 +133,7 @@ If everything was set up correctly, the model will begin training after a couple
 
 Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
 
-Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXXX), as it will be used later.
+Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXX), as it will be used later.
 
 #### Step 1d. Export frozen inference graph for TensorFlow Lite
 Now that training has finished, the model can be exported for conversion to TensorFlow Lite using the export_tflite_ssd_graph.py script. First, create a folder in \object_detection called “TFLite_model” by issuing: 
@@ -274,7 +274,7 @@ Next, check out the branch for TensorFlow v1.13:
 git checkout r1.13
 ```
 
-The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for instructions on how to check the TensorFlow version you used for training.
+The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#how-do-i-check-which-tensorflow-version-i-used-to-train-my-detection-model) for instructions on how to check the TensorFlow version you used for training.
 
 Next, we’ll configure the TensorFlow build using the configure.py script. From the C:\tensorflow-build\tensorflow directory, issue:
 
@@ -284,7 +284,7 @@ python ./configure.py
 
 This will initiate a Bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed.
 
-Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question. You can see the configuration session for building the GPU-enabled version in the Appendix *(link to be added!)* of this guide.
+Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question. You can see the configuration session for building the GPU-enabled version in the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#bazel-configuration-session-for-building-gpu-enabled-tensorflow).
 
 ```
 You have bazel 0.21.0- (@non-git) installed. 
@@ -334,10 +334,10 @@ This creates the wheel file and places it in C:\tmp\tensorflow_pkg.
 TensorFlow is finally ready to be installed! Open File Explorer and browse to the C:\tmp\tensorflow_pkg folder. Copy the full filename of the .whl file, and paste it in the following command:
 
 ```
-pip3 install C:/tmp/tensorflow_pkg/<Paste filename here>
+pip3 install C:/tmp/tensorflow_pkg/<Paste full .whl filename here>
 ```
 
-That's it! TensorFlow is installed! Let's make sure it installed okay by opening a Python shell:
+That's it! TensorFlow is installed! Let's make sure it installed correctly by opening a Python shell:
 
 ```
 python
@@ -362,44 +362,27 @@ With TensorFlow installed, we can finally convert our trained model into a Tenso
 Although we've already exported a frozen graph of our detection model for TensorFlow Lite, we still need run it through the TensorFlow Lite Optimizing Converter (TOCO) before it will work with the TensorFlow Lite interpreter. TOCO converts models into an optimized FlatBuffer format that allows them to run efficiently on TensorFlow Lite. We also need to create a new label map before running the model.
 
 #### Step 3a. Create optimized TensorFlow Lite model
-First, we’ll run the model through TOCO to create an optimzed TensorFLow Lite model. The TOCO tool lives deep in the C:\tensorflow-build directory, and it will be run from the “tensorflow-build” Anaconda virtual environment that we created and used during Step 2. The model we trained in Step 1 lives inside the C:\tensorflow1\models\research\object_detection\TFLite_model directory. We’ll create an environment variable called OUTPUT_DIR that points at the correct model directory to make it easier to enter the TOCO command.
+First, we’ll run the model through TOCO to create an optimzed TensorFLow Lite model. The TOCO tool lives deep in the C:\tensorflow-build directory, and it will be run from the “tensorflow-build” Anaconda virtual environment that we created and used during Step 2. Meanwhile, the model we trained in Step 1 lives inside the C:\tensorflow1\models\research\object_detection\TFLite_model directory. We’ll create an environment variable called OUTPUT_DIR that points at the correct model directory to make it easier to enter the TOCO command.
 
-Make sure you are working in the “tensorflow-build” Anaconda environment by verying that (tensorflow-build) appears before the activate path in the command window. Create the OUTPUT_DIR variable by issuing:
+Make sure you are working in the “tensorflow-build” Anaconda environment by verying that (tensorflow-build) appears before the activate path in the command window. Create the OUTPUT_DIR environment variable by issuing:
 
 ```
 set OUTPUT_DIR=C:\\tensorflow1\models\research\object_detection\TFLite_model
 ```
 
-Next, use bazel to run the model through the TOCO tool by issuing this command:
+Next, use Bazel to run the model through the TOCO tool by issuing this command:
 
 ```
-bazel run --config=opt tensorflow/lite/toco:toco -- \ 
---input_file=%OUTPUT_DIR%/tflite_graph.pb \ 
---output_file=%OUTPUT_DIR%/detect.tflite \ 
---input_shapes=1,300,300,3 \ 
---input_arrays=normalized_input_image_tensor \ 
---output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 \ 
---inference_type=QUANTIZED_UINT8 \ 
---mean_values=128 \ 
---std_values=128 \ 
---change_concat_input_ranges=false \ 
---allow_custom_ops 
+bazel run --config=opt tensorflow/lite/toco:toco -- --input_file=%OUTPUT_DIR%/tflite_graph.pb --output_file=%OUTPUT_DIR%/detect.tflite --input_shapes=1,300,300,3 --input_arrays=normalized_input_image_tensor --output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 --inference_type=QUANTIZED_UINT8 --mean_values=128 --std_values=128 --change_concat_input_ranges=false --allow_custom_ops 
 ```
 
-Note: If you are using a floating, non-quantized SSD model (for example the ssdlite_mobilenet_v2_coco model rather than the ssd_mobilenet_v2_quantized_coco model), the bazel TOCO command must be modified slightly:
+Note: If you are using a floating, non-quantized SSD model (e.g. the ssdlite_mobilenet_v2_coco model rather than the ssd_mobilenet_v2_quantized_coco model), the Bazel TOCO command must be modified slightly:
 
 ```
-bazel run --config=opt tensorflow/lite/toco:toco -- \  
---input_file=$OUTPUT_DIR/tflite_graph.pb \  
---output_file=$OUTPUT_DIR/detect.tflite \  
---input_shapes=1,300,300,3 \  
---input_arrays=normalized_input_image_tensor \  
---output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 \ 
- --inference_type=FLOAT \  
---allow_custom_ops 
+bazel run --config=opt tensorflow/lite/toco:toco -- --input_file=$OUTPUT_DIR/tflite_graph.pb --output_file=$OUTPUT_DIR/detect.tflite --input_shapes=1,300,300,3 --input_arrays=normalized_input_image_tensor --output_arrays=TFLite_Detection_PostProcess,TFLite_Detection_PostProcess:1,TFLite_Detection_PostProcess:2,TFLite_Detection_PostProcess:3 --inference_type=FLOAT --allow_custom_ops 
 ```
 
-If you are using Linux, make sure to use the commands given in the [official TensorFlow instructions here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md). I removed the ' characters from the command, because for some reason they cause things not to work on Windows!
+If you are using Linux, make sure to use the commands given in the [official TensorFlow instructions here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md). I removed the ' characters from the command, because for some reason they cause errors on Windows!
 
 After the command finishes running, you should see a file called detect.tflite in the \object_detection\TFLite_model directory. This is the model that can be used with TensorFlow Lite!
 
@@ -440,7 +423,7 @@ motorcycle
 And so on...
 ```
  
-Basically, rather than explicitly stating the name and ID number for each class like the classic TensorFlow label map format does, the TensorFlow Lite format just lists each class. I’m going to stick with the TensorFlow Lite label map format for this guide to stay consistent with the example provided by Google.
+Basically, rather than explicitly stating the name and ID number for each class like the classic TensorFlow label map format does, the TensorFlow Lite format just lists each class. To stay consistent with the example provided by Google, I’m going to stick with the TensorFlow Lite label map format for this guide.
 
 Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. Then, save the file as “labelmap.txt” in the TFLite_model folder. As an example, here's what the labelmap.txt file for my card detector looks like:
 
@@ -449,7 +432,7 @@ Thus, we need to create a new label map that matches the TensorFlow Lite style. 
 Now we’re ready to run the model!
 
 #### Step 3c. Run the TensorFlow Lite model!
-I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and TFLite_detection_wecam.py. The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
+I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and [TFLite_detection_wecam.py](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
 We’ll download the Python scripts directly from this repository. First, install wget for Anaconda by issuing:
 
@@ -465,9 +448,9 @@ wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-De
 wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_webcam.py --no-check-certificate
 ```
 
-The following instructions show how to run the webcam, video, and image scripts. These instructions assume you have a folder named “TFLite_model” in your \object_detection directory as per the instructions given in this guide. 
+The following instructions show how to run the webcam, video, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in this guide. 
 
-If you’d rather use the scripts with the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use “--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29” rather than “--modeldir=TFLite_model” when running the script. 
+If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
 ##### Webcam
 Make sure you have a USB webcam plugged into your computer. If you’re on a laptop with a built-in camera, you don’t need to plug in a USB webcam. 
