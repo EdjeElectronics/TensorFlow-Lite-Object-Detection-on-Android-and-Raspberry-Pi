@@ -46,9 +46,11 @@ This portion is a continuation of my previous guide: [How To Train an Object Det
 * Gathering and labeling training images
 * Preparing training data (generating TFRecords and label map)
 
-This tutorial uses the same Anaconda virtual environment, files, and directory structure that was set up in the previous one. I'll continue to use my playing card detector as an example. I'll show the steps needed to train, convert, and run a quantized TensorFlow Lite version of my playing card detector model. *(I might use a different example if I can think of a better one!)*
+This tutorial uses the same Anaconda virtual environment, files, and directory structure that was set up in the previous one. 
+
+Through the course of the guide, I'll use a bird, squirrel, and raccoon detector model I've been working on as an example. The intent of this detection model is to watch a bird feeder, and record videos of birds while triggering an alarm if a squirrel or raccoon is stealing from it! I'll show the steps needed to train, convert, and run a quantized TensorFlow Lite version of the bird/squirrel/raccoon detector.
  
-Parts 2 and 3 of this guide will go on to show how to deploy this newly trained TensorFlow Lite model on the Raspberry Pi or an Android device. If you're not feeling up to training and converting your own TensorFlow Lite model, you can skip Part 1 and use my custom-trained TFLite bird detection model (link to be added later) or use the [TF Lite starter detection model](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) (taken from https://www.tensorflow.org/lite/models/object_detection/overview) for Part 2 or Part 3.
+Parts 2 and 3 of this guide will go on to show how to deploy this newly trained TensorFlow Lite model on the Raspberry Pi or an Android device. If you're not feeling up to training and converting your own TensorFlow Lite model, you can skip Part 1 and use my custom-trained TFLite BSR detection model (link to be added later) or use the [TF Lite starter detection model](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) (taken from https://www.tensorflow.org/lite/models/object_detection/overview) for Part 2 or Part 3.
  
 ### Step 1: Train Quantized SSD-MobileNet Model and Export Frozen TensorFlow Lite Graph
 First, we’ll use transfer learning to train a “quantized” SSD-MobileNet model. Quantized models use 8-bit integer values instead of 32-bit floating values within the neural network, allowing them to run much more efficiently on GPUs or specialized TPUs (TensorFlow Processing Units).
@@ -85,7 +87,7 @@ Copy the ssd_mobilenet_v2_quantized_300x300_coco.config file from the \object_de
 
 Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config file. Note: The paths must be entered with single forward slashes (NOT backslashes), or TensorFlow will give a file path error when trying to train the model! Also, the paths must be in double quotation marks ( " ), not single quotation marks ( ' ).
 
-* Line 9. Change num_classes to the number of different objects you want the classifier to detect. For my card detector example, there are six classes, so I set num_classes: 6
+* Line 9. Change num_classes to the number of different objects you want the classifier to detect. For my bird/squirrel/raccoon detector example, there are three classes, so I set num_classes: 3
 
 * Line 141. Change batch_size: 24 to batch_size: 6 . The smaller batch size will prevent OOM (Out of Memory) errors during training.
 
@@ -95,7 +97,7 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
 
 * Line 177. Change label_map_path to: "C:/tensorflow1/models/research/object_detection/training/labelmap.pbtxt"
 
-* Line 181. Change num_examples to the number of images you have in the \images\test directory. For my card detector example, there are 67 images, so I set num_examples: 67.
+* Line 181. Change num_examples to the number of images you have in the \images\test directory. For my bird/squirrel/raccoon detector example, there are 582 test images, so I set num_examples: 582.
 
 * Line 189. Change input_path to: "C:/tensorflow1/models/research/object_detection/test.record"
 
@@ -136,7 +138,7 @@ If everything was set up correctly, the model will begin training after a couple
    <img src="doc/training_in_progress.png">
 </p>
 
-Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
+Allow the model to train until the loss consistently drops below 2. For my bird/squirrel/raccoon detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
 
 Once training is complete (i.e. the loss has consistently dropped below 2), press Ctrl+C to stop training. The latest checkpoint will be saved in the \object_detection\training folder, and we will use that checkpoint to export the frozen TensorFlow Lite graph. Take note of the checkpoint number of the model.ckpt file in the training folder (i.e. model.ckpt-XXXX), as it will be used later.
 
@@ -434,7 +436,7 @@ And so on...
  
 Basically, rather than explicitly stating the name and ID number for each class like the classic TensorFlow label map format does, the TensorFlow Lite format just lists each class. To stay consistent with the example provided by Google, I’m going to stick with the TensorFlow Lite label map format for this guide.
 
-Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. Then, save the file as “labelmap.txt” in the TFLite_model folder. As an example, here's what the labelmap.txt file for my card detector looks like:
+Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. Then, save the file as “labelmap.txt” in the TFLite_model folder. As an example, here's what the labelmap.txt file for my bird/squirrel/raccoon detector looks like:
 
 <p align="center">
    <img src="doc/labelmap_example.png">
