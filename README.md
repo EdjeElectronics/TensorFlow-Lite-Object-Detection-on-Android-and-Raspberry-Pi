@@ -63,7 +63,7 @@ As I mentioned prevoiusly, this guide assumes you have already followed my [prev
 
 Here's what your \object_detection folder should look like:
 <p align="center">
-   <img src="doc/object_detection_directory.png">
+   <img src="doc/object_detection_folder.png">
 </p>
 
 If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD model (see next paragraph) and then skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite).
