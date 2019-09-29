@@ -59,7 +59,10 @@ You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run 
 
 As I mentioned prevoiusly, this guide assumes you have already followed my [previous TensorFlow tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and set up the Anaconda virtual environment and full directory structure needed for using the TensorFlow Object Detection API. If you've done so, you should have a folder at C:\tensorflow1\models\research\object_detection that has everything needed for training. (If you used a different base folder name than "tensorflow1", that's fine - just make sure you continue to use that name throughout this guide.)
 
-<Add picture of what the \object_detection folder should look like>
+Here's what your \object_detection folder should look like:
+<p align="center">
+   <img src="doc/object_detection_directory.png">
+</p>
 
 If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD model (see next paragraph) and then skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite).
 
@@ -129,7 +132,9 @@ python train.py --logtostderr –train_dir=training/ --pipeline_config_path=trai
 
 If everything was set up correctly, the model will begin training after a couple minutes of initialization.
 
-<Picture of training in progress to be added!>
+<p align="center">
+   <img src="doc/training_in_progress.png">
+</p>
 
 Allow the model to train until the loss consistently drops below 2. For my card detector model, this took about 9000 steps, or 8 hours of training. (Time will vary depending on how powerful your CPU and GPU are. Please see [Step 6 of my previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10/blob/master/README.md#6-run-the-training) for more information on training and an explanation of how to view the progress of the training job using TensorBoard.) 
 
@@ -188,6 +193,10 @@ After it's completed, close the window, re-open it, and then issue the following
 pacman -Su
 pacman -S patch unzip
 ```
+
+<p align="center">
+   <img src="doc/MSYS_window.png">
+</p>
 
 This updates MSYS2’s package manager and downloads the patch and unzip packages. Now, close the MSYS2 window. We'll add the MSYS2 binary to the PATH environment variable in Step 2c.
 
@@ -427,7 +436,9 @@ Basically, rather than explicitly stating the name and ID number for each class 
 
 Thus, we need to create a new label map that matches the TensorFlow Lite style. Open a text editor and list each class in order of their class number. Then, save the file as “labelmap.txt” in the TFLite_model folder. As an example, here's what the labelmap.txt file for my card detector looks like:
 
-<Insert picture here showing what my labelmap.txt file looks like>
+<p align="center">
+   <img src="doc/labelmap_example.png">
+</p>
  
 Now we’re ready to run the model!
 
