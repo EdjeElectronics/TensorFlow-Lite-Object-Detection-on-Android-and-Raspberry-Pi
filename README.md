@@ -375,7 +375,14 @@ Although we've already exported a frozen graph of our detection model for Tensor
 #### Step 3a. Create optimized TensorFlow Lite model
 First, we’ll run the model through TOCO to create an optimzed TensorFLow Lite model. The TOCO tool lives deep in the C:\tensorflow-build directory, and it will be run from the “tensorflow-build” Anaconda virtual environment that we created and used during Step 2. Meanwhile, the model we trained in Step 1 lives inside the C:\tensorflow1\models\research\object_detection\TFLite_model directory. We’ll create an environment variable called OUTPUT_DIR that points at the correct model directory to make it easier to enter the TOCO command.
 
-Make sure you are working in the “tensorflow-build” Anaconda environment by verying that (tensorflow-build) appears before the activate path in the command window. Create the OUTPUT_DIR environment variable by issuing:
+If you don't already have an Anaconda Prompt window open with the "tensorflow-build" environment active and working in C:\tensorflow-build, open a new Anaconda Prompt window and issue:
+
+```
+activate tensorflow-build
+cd C:\tensorflow-build
+```
+
+Create the OUTPUT_DIR environment variable by issuing:
 
 ```
 set OUTPUT_DIR=C:\\tensorflow1\models\research\object_detection\TFLite_model
