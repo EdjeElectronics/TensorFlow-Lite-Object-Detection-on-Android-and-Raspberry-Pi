@@ -496,13 +496,13 @@ python TFLite_detection_image.py --modeldir=TFLite_model
 By default, the image detection script will open an image named 'test1.jpg'. To specify a specific image file, use the `--image` option:
 
 ```
-python TFLite_detection_image.py --image=squirrel.jpg
+python TFLite_detection_image.py --modeldir=TFLite_model --image=squirrel.jpg
 ```
 
 It can also open an entire folder full of images and perform detection on each image. There can only be images files in the folder, or errors will occur. To specify which folder has images to perform detection on, use the `--imagedir` option:
 
 ```
-python TFLite_detection_image.py --imagedir=squirrels
+python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels
 ```
 
 Do not use both the --image option and the --imagedir option when running the script, or it will throw an error.
