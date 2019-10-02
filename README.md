@@ -460,6 +460,12 @@ The following instructions show how to run the webcam, video, and image scripts.
 
 If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
+For more information on options that can be used while running the scripts, use the `-h` option when calling the script. For example:
+
+```
+python TFLite_detection_image.py -h
+```
+
 ##### Webcam
 Make sure you have a USB webcam plugged into your computer. If you’re on a laptop with a built-in camera, you don’t need to plug in a USB webcam. 
 
@@ -508,12 +514,6 @@ python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels
 Press any key (other than 'q') to advance to the next image. Do not use both the --image option and the --imagedir option when running the script, or it will throw an error.
 
 <Insert a picture of a labeled image here>
- 
-For more information on options that can be used while running the scripts, use the `-h` option when calling the script. For example:
-
-```
-python TFLite_detection_image.py -h
-```
 
 If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
 
