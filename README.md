@@ -152,8 +152,8 @@ mkdir TFLite_model
 Next, let’s set up some environment variables so the commands are easier to type out. Issue the following commands in Anaconda Prompt. (Note, the XXXX in the second command should be replaced with the highest-numbered model.ckpt file in the \object_detection\training folder.) 
 
 ```
-set CONFIG_FILE=C:\\tensorflow1\models\research\object_detection\training\ ssd_mobilenet_v2_quantized_300x300_coco.config
-set CHECKPOINT_PATH= C:\\tensorflow1\models\research\object_detection\training\ model.ckpt-XXXX
+set CONFIG_FILE=C:\\tensorflow1\models\research\object_detection\training\ssd_mobilenet_v2_quantized_300x300_coco.config
+set CHECKPOINT_PATH=C:\\tensorflow1\models\research\object_detection\training\model.ckpt-XXXX
 set OUTPUT_DIR=C:\\tensorflow1\models\research\object_detection\TFLite_model
 ```
 
@@ -499,7 +499,7 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 ## Frequently Asked Questions and Common Errors
 
 #### Why does this guide use train.py rather than model_main.py for training?
-This guide uses "train.py" to run training on the TFLite detection model. The train.py script is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100), I use train.py for this guide.
+This guide uses "train.py" to run training on the TFLite detection model. The train.py script is deprecated, but the model_main.py script that replaced it doesn't log training progress by default, and it requires pycocotools to be installed. Using model_main.py requires a few extra setup steps, and I want to keep this guide as simple as possible. Since there are no major differences between train.py and model_main.py that will affect training ([see TensorFlow Issue #6100](https://github.com/tensorflow/models/issues/6100)), I use train.py for this guide.
 
 #### How do I check which TensorFlow version I used to train my detection model?
 Here’s how you can check the version of TensorFlow you used for training.  
