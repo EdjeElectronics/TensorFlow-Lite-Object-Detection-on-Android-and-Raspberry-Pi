@@ -3,10 +3,9 @@
 # Author: Evan Juras
 # Date: 9/22/19
 # Description: 
-# This program uses a TensorFlow-trained classifier to perform object detection.
-# It loads the classifier uses it to perform object detection on a webcam feed.
-# It draws boxes and scores around the objects of interest in each frame from
-# the webcam.
+# This program uses a TensorFlow Lite model to perform object detection on a live
+# webcam feed. It draws boxes and scores around the objects of interest in each frame
+# from the webcam.
 #
 # This code is based off the TensorFlow Lite image classification example at:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
