@@ -513,7 +513,9 @@ python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels
 
 Press any key (other than 'q') to advance to the next image. Do not use both the --image option and the --imagedir option when running the script, or it will throw an error.
 
-<Insert a picture of a labeled image here>
+<p align="center">
+   <img src="doc/squirrels!!.png">
+</p>
 
 If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
 
