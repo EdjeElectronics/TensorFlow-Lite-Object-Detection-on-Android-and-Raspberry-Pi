@@ -105,7 +105,7 @@ while(True):
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores)):
-        if scores[i] > min_conf_threshold:
+        if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
             # Get bounding box coordinates and draw box
             ymin = int(boxes[i][0] * imH)
@@ -118,9 +118,10 @@ while(True):
             object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
             label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
-            ymin = max(ymin, labelSize[1]) # Draw label inside detection box if box is too close to top of image
-            cv2.rectangle(frame, (xmin, ymin-labelSize[1]-10), (xmin+labelSize[0], ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
-            cv2.putText(frame, label, (xmin, ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+            label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
+            label_xmin = min(xmin, int(imH) - labelSize[0] - 10) # Make sure not to draw label too close to right of window
+            cv2.rectangle(frame, (label_xmin, label_ymin-labelSize[1]-10), (label_xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
+            cv2.putText(frame, label, (label_xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
 
     # All the results have been drawn on the frame, so it's time to display it.
     cv2.imshow('Object detector', frame)
