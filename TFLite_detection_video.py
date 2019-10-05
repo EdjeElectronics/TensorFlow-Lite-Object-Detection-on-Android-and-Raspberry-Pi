@@ -114,6 +114,8 @@ while(video.isOpened()):
             xmin = int(max(1,(boxes[i][1] * imW)))
             ymax = int(min(imH,(boxes[i][2] * imH)))
             xmax = int(min(imW,(boxes[i][3] * imW)))
+            
+            cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (10, 255, 0), 4)
 
             # Draw label
             object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
