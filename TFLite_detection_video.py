@@ -109,11 +109,11 @@ while(video.isOpened()):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
             # Get bounding box coordinates and draw box
-            ymin = int(boxes[i][0] * imH)
-            xmin = int(boxes[i][1] * imW)
-            ymax = int(boxes[i][2] * imH)
-            xmax = int(boxes[i][3] * imW)
-            cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
+            # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
+            ymin = int(max(1,(boxes[i][0] * imH)))
+            xmin = int(max(1,(boxes[i][1] * imW)))
+            ymax = int(min(imH,(boxes[i][2] * imH)))
+            xmax = int(min(imW,(boxes[i][3] * imW)))
 
             # Draw label
             object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
