@@ -1,7 +1,9 @@
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
 A guide showing how to train TensorFlow Lite object detection models and run them on Android, the Raspberry Pi, and more!
 
-<Fancy GIF or image showing an example of TF Lite object detector in action - to be inserted here later!>
+<p align="center">
+   <img src="doc/BSR_demo.gif">
+</p>
 
 ## Introduction
 TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on Android phones or the Raspberry Pi.
