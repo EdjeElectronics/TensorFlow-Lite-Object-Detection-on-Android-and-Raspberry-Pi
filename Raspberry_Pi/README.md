@@ -18,7 +18,7 @@ This portion of the guide is split in to two parts:
 * [Part 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/tree/master/Raspberry_Pi#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
 * Part 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 
-This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds.
+This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds. I
 
 ## Part 1 - How to Set Up and Run TensorFlow Lite Object Detection Models on the Raspberry Pi
 
@@ -71,10 +71,10 @@ Once you've installed TensorFlow Lite, you can delete the downloaded .whl file.
 ### 4. Set up TensorFlow Lite detection model
 Next, we'll set up the detection model that will be used with TensorFlow Lite. This guide shows how to either download a sample TFLite model provided by Google, and how to use a model that you've trained yourself by following [Part 1 of my TensorFlow Lite tutorial series](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10).
 
-A detection model has two files associated with it: a detect.tflite file (which is the model itself) and a labelmap.txt file (which provides a labelmap for the model). My preferred way to organize the model files is to create a folder (such as "BirdSquirrelRaccoon_TFLite_model") and keep both the detect.tflite and labelmap.txt into that folder. This is also how Google's downloadable sample TFLite model is organized.
+A detection model has two files associated with it: a detect.tflite file (which is the model itself) and a labelmap.txt file (which provides a labelmap for the model). My preferred way to organize the model files is to create a folder (such as "BirdSquirrelRaccoon_TFLite_model") and keep both the detect.tflite and labelmap.txt in that folder. This is also how Google's downloadable sample TFLite model is organized.
 
 #### Option 1. Using Google's sample TFLite model
-Google provides a sample quantized SSDLite-MobileNet-v2 object detection model which is trained off the MSCOCO dataset and converted to run on TensorFlow Lite. It can detect and identify 90 different common objects, such as people, cars, cups, etc.
+Google provides a sample quantized SSDLite-MobileNet-v2 object detection model which is trained off the MSCOCO dataset and converted to run on TensorFlow Lite. It can detect and identify 80 different common objects, such as people, cars, cups, etc.
 
 *(Add picture of download link on Object Detection page?)*
 
@@ -101,4 +101,25 @@ You can simply copy that folder to a USB drive, insert the USB drive in your Ras
 
 Now your custom model is ready to go!
 
-###
+### 5. Run the TensorFlow Lite model!
+It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
+
+Run the real-time webcam detection script by issuing:
+
+```
+python3 TFLite_detection_webcam.py --modeldir=Sample_TFlite_model
+```
+
+If you're using a Picamera rather than a USB webcam, add `--picamera` to the command:
+
+```
+python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model --picamera
+```
+
+(If your model folder has a different name than "Sample_TFLite_model", use that name instead. For example, I would use `--modeldir=BirdSquirrelRaccoon_TFLite_model` to run my custom bird, squirrel, and raccoon detection model.)
+
+After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
+
+*(Add gif of object detector in action here?)*
+
+Part 1 of my TensorFlow Lite guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
