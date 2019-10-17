@@ -24,25 +24,52 @@ This repository also includes scripts for running the TFLite and Edge TPU models
 
 Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular TensorFlow! These are the steps needed to set up TensorFlow Lite:
 
-1. Update the Raspberry Pi
+1. Update the Raspberry Pi and download this repository
 2. Install TensorFlow Lite dependencies and OpenCV
 3. Install TensorFlow Lite runtime
 4. Set up TensorFlow Lite detection model
 5. Run TensorFlow Lite model!
 
-### 1. Update the Raspberry Pi
+### 1. Update the Raspberry Pi and download this repository
 First, the Raspberry Pi needs to be fully updated. Open a terminal and issue:
 ```
 sudo apt-get update
 sudo apt-get dist-upgrade
 ```
-Depending on how long it’s been since you’ve updated your Pi, the upgrade could take anywhere between a minute and an hour.
+Depending on how long it’s been since you’ve updated your Pi, the update could take anywhere between a minute and an hour. 
+
+While we're at it, let's make sure the camera interface is enabled in the Raspberry Pi Configuration menu. Clickk the Pi icon in the top left corner of the screen, select Preferences -> Raspberry Pi Configuration, and go to the Interfaces tab and verify Camera is set to Enabled. If it isn't, enable it now, and reboot the Raspberry Pi.
 
 *(Add picture here!)*
+
+Make a new directory called tflite, cd into it, and download this GitHub repository. This repository contains the scripts we'll use to run the TensorFlow, as well as some shell scripts that will make installing everything easier. Issue:
+
+```
+mkdir tflite
+cd tflite
+git clone THIS REPOSITORY!!!
+```
 
 ### 2. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it.
 
+*Skipping the rest of this step until I get the shell script written*
 
+### 3. Install TensorFlow Lite runtime
+The TensorFlow team provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. Using the reduced TensorFlow Lite runtime results in a smaller download size and less space occupied on the hard drive. Better yet, it doesn't conflict with regular TensorFlow at all: if you've already [installed TensorFlow using my other guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi), you can still install and run the TensorFlow Lite runtime without any problems.
 
+A download link for the latest TensorFlow Lite wheel file is provided on the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python). There are two Pi-compatible versions of the wheel file: a Python 3.5 version and a Python 3.7 version. The Python 3.7 version is compatible with Raspbian Buster (the latest release of Raspberry Pi's OS), while the Python 3.5 version is compatible with Raspbian Stretch. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
 
+If you're on **Raspbian Buster**, download and install the **Python 3.7** wheel file by issuing:
+
+```
+wget https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp37-cp37m-linux_armv7l.whl
+sudo pip3 install tflite_runtime-1.14.0-cp37-cp37m-linux_armv7l.whl
+```
+
+If you're on **Raspbian Stretch** (which doesn't have Python 3.7 installed by default), download and install the **Python 3.5** wheel file by issuing:
+
+```
+wget https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
+sudo pip3 install tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
+```
