@@ -10,7 +10,7 @@ TensorFlow Lite is an optimized framework for deploying lightweight deep learnin
 
 The guide is broken into three major portions. Each portion will have its own dedicated README file in this repository.
 1. How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10  *<--- You are here!*
-2. [How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/tree/master/Raspberry_Pi)
+2. [How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi.md)
 3. How to Run TensorFlow Lite Object Detection Models on Android Devices
   (Expected completion: 11/30/19)
 
