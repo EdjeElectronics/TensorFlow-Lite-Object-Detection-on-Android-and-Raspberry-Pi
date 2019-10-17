@@ -56,20 +56,14 @@ Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. Ope
 *Skipping the rest of this step until I get the shell script written*
 
 ### 3. Install TensorFlow Lite runtime
-The TensorFlow team provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. Using the reduced TensorFlow Lite runtime results in a smaller download size and less space occupied on the hard drive. Better yet, it doesn't conflict with regular TensorFlow at all: if you've already [installed TensorFlow using my other guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi), you can still install and run the TensorFlow Lite runtime without any problems.
+The TensorFlow team provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. The reduced TensorFlow Lite runtime is a smaller download and takes less space on the hard drive. Better yet, it doesn't conflict with regular TensorFlow at all: if you've already [installed TensorFlow using my other guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi), you can still install and run the TensorFlow Lite runtime without any problems.
 
-A download link for the latest TensorFlow Lite wheel file is provided on the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python). There are two Pi-compatible versions of the wheel file: a Python 3.5 version and a Python 3.7 version. The Python 3.7 version is compatible with Raspbian Buster (the latest release of Raspberry Pi's OS), while the Python 3.5 version is compatible with Raspbian Stretch. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
+The [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python) shows how to install the TensorFlow Lite runtime. If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and install the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download and install the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
 
-If you're on **Raspbian Buster**, download and install the **Python 3.7** wheel file by issuing:
+<p align="center">
+  <img src="https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/doc/TFL_download_links.png">
+</p>
 
-```
-wget https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp37-cp37m-linux_armv7l.whl
-sudo pip3 install tflite_runtime-1.14.0-cp37-cp37m-linux_armv7l.whl
-```
+Once you've installed TensorFlow Lite, you can delete the downloaded .whl file.
 
-If you're on **Raspbian Stretch** (which doesn't have Python 3.7 installed by default), download and install the **Python 3.5** wheel file by issuing:
-
-```
-wget https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
-sudo pip3 install tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
-```
+### 4. Set up TensorFlow Lite detection model
