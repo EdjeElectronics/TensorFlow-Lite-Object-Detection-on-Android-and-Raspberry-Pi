@@ -145,7 +145,7 @@ Part 1 of my TensorFlow Lite training guide gives [instructions](https://github.
 The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one here (Amazon Associate link). 
 
 *(Add picture of USB Accelerator and the Edge TPU chip)*
-The USB Accelerator uses the Edge TPU (TensorFlow Processing Unit), which is an ASIC (application-specific integrated circuit) chip specially designed for highly parallelized processing. The extreme paralellization means it can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiplication operations to generate outputs from a single batch of input data. My Master's degree was in ASIC design so the Edge TPU is very cool and interesting to me!
+The USB Accelerator uses the Edge TPU (Tensor Processing Unit), which is an ASIC (application-specific integrated circuit) chip specially designed for highly parallelized processing. The extreme paralellization means it can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiplication operations to generate outputs from a single batch of input data. My Master's degree was in ASIC design so the Edge TPU is very cool and interesting to me!
 
 It makes object detection models run WAY faster, and it's easy to set up. These are the steps we'll go through to set up the Coral USB Accelerator:
 
