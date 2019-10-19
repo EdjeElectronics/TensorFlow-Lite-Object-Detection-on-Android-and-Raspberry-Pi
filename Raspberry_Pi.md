@@ -1,6 +1,6 @@
 # How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
 
-**This guide is still under construction! Expected completion date for Part 1: 10/19/19. Expected Completion date for Part 2: 10/22/19.** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
+**Part 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction! Expected completion date: 10/22/19.** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
 
 *(Insert fancy .gif showing TFLite and EdgeTPU performance here!)*
 
@@ -139,4 +139,14 @@ After a few moments of initializing, a window will appear showing the webcam fee
 
 *(Add gif of object detector in action here?)*
 
-Part 1 of my TensorFlow Lite guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
+Part 1 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
+
+## Part 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one here (Amazon Associate link). 
+
+*(Add picture of USB Accelerator and the Edge TPU chip)*
+The USB Accelerator uses the Edge TPU (TensorFlow Processing Unit), which is an ASIC (application-specific integrated circuit) chip specially designed for highly parallelized processing. The extreme paralellization means it can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiplication operations to generate outputs from a single batch of input data. My Master's degree was in ASIC design so the Edge TPU is very cool and interesting to me!
+
+It makes object detection models run WAY faster, and it's easy to set up. These are the steps we'll go through to set up the Coral USB Accelerator:
+
+Will pick up from here tomorrow!
