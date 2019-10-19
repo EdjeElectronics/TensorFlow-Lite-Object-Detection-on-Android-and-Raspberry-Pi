@@ -42,7 +42,9 @@ Depending on how long it’s been since you’ve updated your Pi, the update cou
 
 While we're at it, let's make sure the camera interface is enabled in the Raspberry Pi Configuration menu. Clickk the Pi icon in the top left corner of the screen, select Preferences -> Raspberry Pi Configuration, and go to the Interfaces tab and verify Camera is set to Enabled. If it isn't, enable it now, and reboot the Raspberry Pi.
 
-*(Add picture here!)*
+<p align="center">
+  <img src="/doc/Pi_Configuration.png">
+</p>
 
 Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
 
@@ -62,8 +64,6 @@ We'll work in this /home/pi/tflite directory for the rest of the guide.
 ### 2. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
-*Skipping the rest of this step until I get the shell script written*
-
 To make things easier, I wrote a shell script that will automatically download and install all the dependencies. Run it by issuing:
 
 ```
@@ -82,7 +82,7 @@ Go to the [Python quickstart page of the official TensorFlow website](https://ww
 If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and install the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download and install the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/doc/TFL_download_links.png">
+  <img src="/doc/TFL_download_links.png">
 </p>
 
 Once you've installed TensorFlow Lite, you can delete the downloaded .whl file.
@@ -94,8 +94,6 @@ A detection model has two files associated with it: a detect.tflite file (which 
 
 #### Option 1. Using Google's sample TFLite model
 Google provides a sample quantized SSDLite-MobileNet-v2 object detection model which is trained off the MSCOCO dataset and converted to run on TensorFlow Lite. It can detect and identify 80 different common objects, such as people, cars, cups, etc.
-
-*(Add picture of download link on Object Detection page?)*
 
 Download the sample model (which can be found on [the Object Detection page of the official TensorFlow website](https://www.tensorflow.org/lite/models/object_detection/overview)) by issuing:
 
