@@ -43,7 +43,7 @@ Depending on how long it’s been since you’ve updated your Pi, the update cou
 While we're at it, let's make sure the camera interface is enabled in the Raspberry Pi Configuration menu. Clickk the Pi icon in the top left corner of the screen, select Preferences -> Raspberry Pi Configuration, and go to the Interfaces tab and verify Camera is set to Enabled. If it isn't, enable it now, and reboot the Raspberry Pi.
 
 <p align="center">
-  <img src="/doc/Pi_Configuration.png">
+  <img src="/doc/camera_enabled.png">
 </p>
 
 Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
