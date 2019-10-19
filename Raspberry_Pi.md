@@ -27,7 +27,7 @@ This repository also includes scripts for running the TFLite and Edge TPU models
 Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular TensorFlow! These are the steps needed to set up TensorFlow Lite:
 
 1. Update the Raspberry Pi and download this repository
-2. Install TensorFlow Lite dependencies and OpenCV
+2. Install OpenCV and TensorFlow Lite dependencies
 3. Install TensorFlow Lite runtime
 4. Set up TensorFlow Lite detection model
 5. Run TensorFlow Lite model!
@@ -53,9 +53,19 @@ git clone THIS REPOSITORY!!!
 ```
 
 ### 2. Install TensorFlow Lite dependencies and OpenCV
-Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it.
+Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
 *Skipping the rest of this step until I get the shell script written*
+
+To make things easier, I wrote a shell script that will automatically download and install all the dependencies. Run it by issuing:
+
+```
+bash get_pi_dependencies.sh
+```
+
+This downloads about 300MB worth of installation files, so it will take a while. Go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_dependencies.sh to view the list of packages.
+
+That was easy! On to the next step.
 
 ### 3. Install TensorFlow Lite runtime
 Google provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. The reduced TensorFlow Lite runtime is a smaller download and takes less space on the hard drive. Better yet, it doesn't conflict with regular TensorFlow at all: if you've already [installed TensorFlow using my other guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi), you can still install and run the TensorFlow Lite runtime without any problems.
