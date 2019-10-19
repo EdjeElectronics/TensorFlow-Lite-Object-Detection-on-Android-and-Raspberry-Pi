@@ -44,13 +44,20 @@ While we're at it, let's make sure the camera interface is enabled in the Raspbe
 
 *(Add picture here!)*
 
-Make a new directory called tflite, cd into it, and download this GitHub repository. This repository contains the scripts we'll use to run the TensorFlow, as well as some shell scripts that will make installing everything easier. Issue:
+Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
 
 ```
-mkdir tflite
-cd tflite
-git clone THIS REPOSITORY!!!
+git clone https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi.git
 ```
+
+This downloads everything into a folder called TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi. That's a little long to work with, so rename the folder to "tflite" and then cd into it:
+
+```
+mv TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi tflite
+cd tflite
+```
+
+We'll work in this /home/pi/tflite directory for the rest of the guide.
 
 ### 2. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
