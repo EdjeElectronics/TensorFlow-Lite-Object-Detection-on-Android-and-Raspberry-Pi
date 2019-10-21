@@ -21,27 +21,21 @@ import numpy as np
 import sys
 import time
 from threading import Thread
-from tensorflow.lite.python.interpreter import Interpreter
+from tflite_runtime.interpreter import Interpreter
 
 # Define PicameraStream class to handle streaming of video from Picamera in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
-class PicameraStream:
+class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
     def __init__(self,resolution=(640,480),framerate=30):
-
-        # Import packages from picamera library
-        from picamera.array import PiRGBArray
-        from picamera import PiCamera
-
         # Initialize the PiCamera and the camera image stream
-        self.camera = PiCamera()
-        self.camera.resolution = resolution
-        self.camera.framerate = framerate
-        self.rawCapture = PiRGBArray(self.camera,size=resolution)
-        self.stream = self.camera.capture_continuous(self.rawCapture,format="bgr",use_video_port=True)
-
-        # Initialize variable to store the camera frame
-        self.frame = []
+        self.stream = cv2.VideoCapture(0)
+        ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        ret = self.stream.set(3,resolution[0])
+        ret = self.stream.set(4,resolution[1])
+            
+        # Read first frame from the stream
+        (self.grabbed, self.frame) = self.stream.read()
 
 	# Variable to control when the camera is stopped
         self.stopped = False
@@ -52,18 +46,16 @@ class PicameraStream:
         return self
 
     def update(self):
-            
         # Keep looping indefinitely until the thread is stopped
-        for f in self.stream:
-            # Grab the frame from the stream and clear the stream in preparation for the next frame
-            self.frame = f.array
-            self.rawCapture.truncate(0)
-
+        while True:
+            # If the camera is stopped, stop the thread
             if self.stopped:
                 # Close camera resources
-                self.stream.close()
-                self.rawCapture.close()
-                self.camera.close()
+                self.stream.release()
+                return
+
+            # Otherwise, grab the next frame from the stream
+            (self.grabbed, self.frame) = self.stream.read()
 
     def read(self):
 	# Return the most recent frame
@@ -135,7 +127,7 @@ frame_rate_calc = 1
 freq = cv2.getTickFrequency()
 
 # Initialize video stream
-videostream = PicameraStream(resolution=(imW,imH),framerate=10).start()
+videostream = VideoStream(resolution=(imW,imH),framerate=30).start()
 time.sleep(1)
 
 #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
