@@ -124,14 +124,10 @@ It's time to see the TFLite object detection model in action! First, free up mem
 Run the real-time webcam detection script by issuing:
 
 ```
-python3 TFLite_detection_webcam.py --modeldir=Sample_TFlite_model
+python3 TFLite_detection_picamera.py --modeldir=Sample_TFLite_model
 ```
 
-If you're using a Picamera rather than a USB webcam, add `--picamera` to the command:
-
-```
-python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model --picamera
-```
+Note: The TFLite_detection_picamera.py will work with either a Picamera or a USB webcam. It is actually going to be removed from this repository, and I will instruct people to use TFLite_detection_webcam.py instead. However, I need to add instructions to my main guide telling people to download and install the TFLite runtime first. This will all be cleared up by the end of the day!!
 
 (If your model folder has a different name than "Sample_TFLite_model", use that name instead. For example, I would use `--modeldir=BirdSquirrelRaccoon_TFLite_model` to run my custom bird, squirrel, and raccoon detection model.)
 
