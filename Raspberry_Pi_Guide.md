@@ -1,6 +1,6 @@
-# How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
+# Part 2 - How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
 
-**Part 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction! Expected completion date: 10/22/19.** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
+**Section 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction! Expected completion date: 10/22/19.** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
 
 *(Insert fancy .gif showing TFLite and EdgeTPU performance here!)*
 
