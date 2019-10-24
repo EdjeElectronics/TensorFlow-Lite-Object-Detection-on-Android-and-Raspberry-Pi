@@ -10,5 +10,6 @@ sudo apt-get -y install qt4-dev-tools libatlas-base-dev
 sudo pip3 install opencv-python
 
 # Get packages required for TensorFlow (Only using TensorFlow Lite interpreter so extra packages aren't needed.)
+
 sudo pip3 install tensorflow
 
