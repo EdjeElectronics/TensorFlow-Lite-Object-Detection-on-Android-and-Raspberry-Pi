@@ -15,24 +15,23 @@ This guide is the second part of my larger TensorFlow Lite tutorial series:
 
 TensorFlow Lite (TFLite) models run much faster than regular TensorFlow models on the Raspberry Pi. You can see a comparison of framerates obtained using regular TensorFlow, TensorFlow Lite, and Coral USB Accelerator models in my TensorFlow Lite Performance Comparison YouTube video. *(link to be added later)*
 
-This portion of the guide is split in to two parts:
+This portion of the guide is split in to two sections:
 
-* [Part 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
-* Part 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+* [Section 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
+* Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 
 This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds. I
 
-## Part 1 - How to Set Up and Run TensorFlow Lite Object Detection Models on the Raspberry Pi
+## Section 1 - How to Set Up and Run TensorFlow Lite Object Detection Models on the Raspberry Pi
 
 Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular TensorFlow! These are the steps needed to set up TensorFlow Lite:
 
-1. Update the Raspberry Pi and download this repository
-2. Install OpenCV and TensorFlow Lite dependencies
-3. Install TensorFlow Lite runtime
-4. Set up TensorFlow Lite detection model
-5. Run TensorFlow Lite model!
+1a. Update the Raspberry Pi and download this repository
+1b. Install TensorFlow and OpenCV
+1c. Set up TensorFlow Lite detection model
+1d. Run TensorFlow Lite model!
 
-### 1. Update the Raspberry Pi and download this repository
+### Step 1a. Update the Raspberry Pi and download this repository
 First, the Raspberry Pi needs to be fully updated. Open a terminal and issue:
 ```
 sudo apt-get update
@@ -61,34 +60,23 @@ cd tflite
 
 We'll work in this /home/pi/tflite directory for the rest of the guide.
 
-### 2. Install TensorFlow Lite dependencies and OpenCV
-Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
+### Step 1b. Install TensorFlow and OpenCV
+Next, we'll install TensorFlow (which includes the TensorFlow Lite interpreter), OpenCV, and the package dependencies needed for both of them. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
-To make things easier, I wrote a shell script that will automatically download and install all the dependencies. Run it by issuing:
+To make things easier, I wrote a shell script that will automatically download and install all the packages and dependencies. Run it by issuing:
 
 ```
-bash get_pi_dependencies.sh
+bash get_pi_requirements.sh
 ```
 
-This downloads about 300MB worth of installation files, so it will take a while. Go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_dependencies.sh to view the list of packages.
+Between OpenCV and TensorFlow, this downloads about 400MB worth of installation files. It will take a while, so go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_requirements.sh to view the list of packages. 
+
+Note: If you already had TensorFlow or OpenCV installed on your Pi, they will be updated to their latest versions after running this script. If you'd like to stick to a specific version of TensorFlow so it matches the version you trained your TFLite detection model with, you can use `pip3 install tensorflow==1.X.X`.
 
 That was easy! On to the next step.
 
-### 3. Install TensorFlow Lite runtime
-Google provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. The reduced TensorFlow Lite runtime is a smaller download and takes less space on the hard drive. Better yet, it doesn't conflict with regular TensorFlow at all: if you've already [installed TensorFlow using my other guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi), you can still install and run the TensorFlow Lite runtime without any problems.
-
-Go to the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python) and follow the instructions to install the TensorFlow Lite runtime.
-
-If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and install the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download and install the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
-
-<p align="center">
-  <img src="/doc/TFL_download_links.png">
-</p>
-
-Once you've installed TensorFlow Lite, you can delete the downloaded .whl file.
-
-### 4. Set up TensorFlow Lite detection model
-Next, we'll set up the detection model that will be used with TensorFlow Lite. This guide shows how to either download a sample TFLite model provided by Google, and how to use a model that you've trained yourself by following [Part 1 of my TensorFlow Lite tutorial series](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10).
+### Step 1c. Set up TensorFlow Lite detection model
+Next, we'll set up the detection model that will be used with TensorFlow Lite. This guide shows how to either download a sample TFLite model provided by Google, or how to use a model that you've trained yourself by following [Part 1 of my TensorFlow Lite tutorial series](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10).
 
 A detection model has two files associated with it: a detect.tflite file (which is the model itself) and a labelmap.txt file (which provides a labelmap for the model). My preferred way to organize the model files is to create a folder (such as "BirdSquirrelRaccoon_TFLite_model") and keep both the detect.tflite and labelmap.txt in that folder. This is also how Google's downloadable sample TFLite model is organized.
 
@@ -118,7 +106,7 @@ You can simply copy that folder to a USB drive, insert the USB drive in your Ras
 
 Now your custom model is ready to go!
 
-### 5. Run the TensorFlow Lite model!
+### Step 1d. Run the TensorFlow Lite model!
 It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
 
 Run the real-time webcam detection script by issuing:
@@ -137,12 +125,14 @@ After a few moments of initializing, a window will appear showing the webcam fee
 
 Part 1 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
 
-## Part 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
-The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one here (Amazon Associate link). 
+## Section 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one [here (Amazon Associate link)](https://amzn.to/2BuG1Tv). 
 
 *(Add picture of USB Accelerator and the Edge TPU chip)*
-The USB Accelerator uses the Edge TPU (Tensor Processing Unit), which is an ASIC (application-specific integrated circuit) chip specially designed for highly parallelized processing. The extreme paralellization means it can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiplication operations to generate outputs from a single batch of input data. My Master's degree was in ASIC design so the Edge TPU is very cool and interesting to me!
+
+The USB Accelerator uses the Edge TPU (Tensor Processing Unit), which is an ASIC (application-specific integrated circuit) chip specially designed with highly parallelized ALUs (arithmetic logic units). The TPU is different from a GPU in that the ALUs are directly connected to eachother. The output of one ALU can be directly passed to the input of the next ALU without having to be stored and retrieved from a memory buffer. The extreme paralellization and removal of the memory bottleneck means it can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiply-accumulate operations to generate outputs from a single batch of input data. 
+
+My Master's degree was in ASIC design so the Edge TPU is very interesting to me! If you're a computer architecture nerd like me and want to learn more about the Edge TPU, [here is a great article that explains how it works](https://cloud.google.com/blog/products/ai-machine-learning/what-makes-tpus-fine-tuned-for-deep-learning).
 
 It makes object detection models run WAY faster, and it's easy to set up. These are the steps we'll go through to set up the Coral USB Accelerator:
 
-Will pick up from here tomorrow!
