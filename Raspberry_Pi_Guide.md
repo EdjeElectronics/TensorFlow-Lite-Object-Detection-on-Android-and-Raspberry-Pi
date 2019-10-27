@@ -63,6 +63,8 @@ We'll work in this /home/pi/tflite directory for the rest of the guide.
 ### Step 1b. Install TensorFlow and OpenCV
 Next, we'll install TensorFlow (which includes the TensorFlow Lite interpreter), OpenCV, and the package dependencies needed for both of them. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
+IMPORTANT NOTE AS OF 10/26/19: The TensorFlow Lite runtime does NOT work with object detection models IF you also have regular TensorFlow installed. **If you already have regular TensorFlow installed, uninstall it now by using `pip3 uninstall tensorflow`.** Don't worry, it's easy to re-install using `pip3 install tensorflow` if you need it at a later date. I submitted [an issue](https://github.com/tensorflow/tensorflow/issues/33671) in the official TensorFlow repository, and hopefully it will get resolved soon. Once it's fixed, I'll remove this note.
+
 To make things easier, I wrote a shell script that will automatically download and install all the packages and dependencies. Run it by issuing:
 
 ```
@@ -123,7 +125,7 @@ After a few moments of initializing, a window will appear showing the webcam fee
 
 *(Add gif of object detector in action here?)*
 
-Part 1 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
+Part 3 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
 
 ## Section 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one [here (Amazon Associate link)](https://amzn.to/2BuG1Tv). 
@@ -135,4 +137,31 @@ The USB Accelerator uses the Edge TPU (tensor processing unit), which is an ASIC
 My Master's degree was in ASIC design, so the Edge TPU is very interesting to me! If you're a computer architecture nerd like me and want to learn more about the Edge TPU, [here is a great article that explains how it works](https://cloud.google.com/blog/products/ai-machine-learning/what-makes-tpus-fine-tuned-for-deep-learning).
 
 It makes object detection models run WAY faster, and it's easy to set up. These are the steps we'll go through to set up the Coral USB Accelerator:
+
+2a. Install libedgetpu library
+2b. Set up Edge TPU detection model
+2c. Run super-speed detection!
+
+### Step 2a. Install libedgetpu library
+First, we'll download and install the Edge TPU runtime, which is the library needed to interface with the USB Acccelerator. These instructions follow the [USB Accelerator setup guide](https://coral.withgoogle.com/docs/accelerator/get-started/) from official Coral website.
+
+Add the Coral package repository to your apt-get distribution list by issuing the following commands:
+
+```
+echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update
+```
+
+Install the libedgetpu library by issuing:
+
+```
+sudo apt-get install libedgetpu1-std
+```
+
+Note: You can also install the libedgetpu1-max library, which runs the USB Accelerator at an overclocked frequency, allowing it to achieve even faster framerates. However, it also causes the USB Accelerator to get very hot. I haven't tried this option yet, but once I do, I will add some information here saying how much higher the framerate is and how hot the Accelerator gets. If you want to use the libedgetpu-max library, install it by using `sudo apt-get install libedgetpu1-max`. (You can't have both the -std and the -max libraries installed. If you install the -max library, the -std library will automatically be uninstalled.)
+
+Alright! Now that the libedgetpu runtime is installed, it's time to set up an Edge TPU detection model to use it with.
+
+### Step 2b. Set up Edge TPU detection model
 
