@@ -20,7 +20,7 @@ This portion of the guide is split in to two sections:
 * [Section 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
 * Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 
-This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds. I
+This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds.
 
 ## Section 1 - How to Set Up and Run TensorFlow Lite Object Detection Models on the Raspberry Pi
 
@@ -160,15 +160,13 @@ Now your custom model is ready to go!
 ### Step 1f. Run the TensorFlow Lite model!
 It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
 
-Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.)
+Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) **The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam. **
 
 ```
-python3 TFLite_detection_picamera.py --modeldir=Sample_TFLite_model
+python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
 ```
 
-Note: The TFLite_detection_picamera.py will work with either a Picamera or a USB webcam. It is actually going to be removed from this repository, and I will instruct people to use TFLite_detection_webcam.py instead.
-
-(If your model folder has a different name than "Sample_TFLite_model", use that name instead. For example, I would use `--modeldir=BirdSquirrelRaccoon_TFLite_model` to run my custom bird, squirrel, and raccoon detection model.)
+If your model folder has a different name than "Sample_TFLite_model", use that name instead. For example, I would use `--modeldir=BirdSquirrelRaccoon_TFLite_model` to run my custom bird, squirrel, and raccoon detection model.
 
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
 
