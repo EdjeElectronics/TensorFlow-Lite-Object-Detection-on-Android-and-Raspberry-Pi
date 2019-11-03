@@ -19,6 +19,7 @@ import argparse
 import cv2
 import numpy as np
 import sys
+from threading import Thread
 import importlib.util
 
 # If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
