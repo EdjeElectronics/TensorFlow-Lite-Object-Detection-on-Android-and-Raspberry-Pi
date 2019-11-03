@@ -64,7 +64,7 @@ cd tflite1
 
 We'll work in this /home/pi/tflite1 directory for the rest of the guide. Next up is to create a virtual environment called "tflite1-env".
 
-I'm using a virtual environment for this guide because it prevents any issues related to package library version dependencies or conflicts between packages that may already be installed on your Pi. As of now (11/3/19), the tflite_runtime library does NOT work if it's installed on the same system as the regular TensorFlow library. Keeping it installed in its own environment allows us to avoid this conflict. If you've already installed TensorFlow on the Pi using my [other guide](https://www.youtube.com/watch?v=npZ-8Nj1YwY), you don't have to worry about any conflicts when following this guide.
+I'm using a virtual environment for this guide because it prevents any conflicts between versions of package libraries that may already be installed on your Pi. As of now (11/3/19), the tflite_runtime library does NOT work if it's installed on the same system as the regular TensorFlow library. Keeping it installed in its own environment allows us to avoid this problem. If you've already installed TensorFlow on the Pi using my [other guide](https://www.youtube.com/watch?v=npZ-8Nj1YwY), you don't have to worry about any conflicts when following this guide.
 
 Install virtualenv by issuing:
 
@@ -84,14 +84,13 @@ This will create a folder called tflite1-env inside the tflite1 directory. The t
 source tflite1-env/bin/activate
 ```
 
-**You'll need to issue the `source tflite-env/bin/activate` command every time you close and re-open the terminal window to reactivate the environment. You can tell when the environment is active by checking if (tflite1-env) appears before the path in your command prompt, as shown in the screenshot below.**
+**You'll need to issue the `source tflite1-env/bin/activate` command from inside the /home/pi/tflite1 directory to reactivate the environment every time you open a new terminal window. You can tell when the environment is active by checking if (tflite1-env) appears before the path in your command prompt, as shown in the screenshot below.**
 
 At this point, here's what your tflite1 directory should look like if you issue `ls`.
 
 *(Picture to be added)*
 
 If your directory looks good, it's time to move on to Step 1c!
-
 
 ### Step 1c. Install TensorFlow Lite dependencies and OpenCV
 Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
