@@ -3,12 +3,11 @@
 # Author: Evan Juras
 # Date: 10/5/19
 # Description: 
-# This program uses a TensorFlow Lite model to perform object detection on a live
-# Picamera feed on the Raspberry Pi. It draws boxes and scores around the objects
-# of interest in each frame from the Picamera. To improve FPS, the Picamera object
-# runs in a separate thread from the main program.
+# This program uses a TensorFlow Lite model to perform object detection on a live webcam
+# feed. It draws boxes and scores around the objects of interest in each frame from the
+# webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
 #
-# This code is based off the TensorFlow Lite image classification example at:
+# The detection code is based off the TensorFlow Lite image classification example at:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
 #
 # I added my own method of drawing boxes and labels using OpenCV.
@@ -21,9 +20,16 @@ import numpy as np
 import sys
 import time
 from threading import Thread
-from tflite_runtime.interpreter import Interpreter
+import importlib.util
 
-# Define PicameraStream class to handle streaming of video from Picamera in separate processing thread
+# If tflite_runtime is installed, import from tflite_runtime, else import from regular tensorflow
+pkg = importlib.util.find_spec('tflite_runtime')
+if pkg is None:
+    from tensorflow.lite.python.interpreter import Interpreter
+else:
+    from tflite_runtime.interpreter import Interpreter
+
+# Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
 class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
