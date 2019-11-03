@@ -21,12 +21,12 @@ import sys
 import glob
 import importlib.util
 
-# If tflite_runtime is installed, import from tflite_runtime, else import from regular tensorflow
-pkg = importlib.util.find_spec('tflite_runtime')
+# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
+pkg = importlib.util.find_spec('tensorflow')
 if pkg is None:
-    from tensorflow.lite.python.interpreter import Interpreter
-else:
     from tflite_runtime.interpreter import Interpreter
+else:
+    from tensorflow.lite.python.interpreter import Interpreter
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
