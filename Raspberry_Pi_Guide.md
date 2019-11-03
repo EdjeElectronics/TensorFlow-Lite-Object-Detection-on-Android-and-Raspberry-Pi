@@ -69,7 +69,7 @@ I'm using a virtual environment for this guide because it prevents any conflicts
 Install virtualenv by issuing:
 
 ```
-pip3 install virtualenv
+sudo pip3 install virtualenv
 ```
 
 Then, create the "tflite1-env" virtual environment by issuing:
@@ -103,20 +103,28 @@ bash get_pi_requirements.sh
 
 This downloads about 300MB worth of installation files, so it will take a while. Go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_dependencies.sh to view the list of packages.
 
+**NOTE: If you get an error while running the `bash get_pi_requirements.sh` command, it's likely because your internet connection timed out, or because the downloaded package data was corrupted. If you get an error, try re-running the command a few more times.**
+
 That was easy! On to the next step.
 
 ### Step 1d. Install TensorFlow Lite runtime
 Google provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. The reduced TensorFlow Lite runtime is a smaller download and takes less space on the hard drive.
 
-Go to the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python) and follow the instructions to install the TensorFlow Lite runtime.
+Go to the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python) and scroll to the table with download links for the tflite_runtime wheel files.
 
-If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and install the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download and install the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
+If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
 
 <p align="center">
   <img src="/doc/TFL_download_links.png">
 </p>
 
-Once you've installed TensorFlow Lite, you can delete the downloaded .whl file.
+The file should download to /home/pi/Downloads. Install it using the `pip3 install` command, and use "Tab" to complete the path to the wheel file (so you don't have to type the whole filename in manually).
+
+```
+pip3 install /home/pi/Downloads/tflite_runtime (Press "Tab" to complete path to .whl file)
+```
+
+The TensorFlow Lite runtime is now installed in our tflite1-env virtual environment!
 
 ### Step 1e. Set up TensorFlow Lite detection model
 Next, we'll set up the detection model that will be used with TensorFlow Lite. This guide shows how to either download a sample TFLite model provided by Google, or how to use a model that you've trained yourself by following [Part 1 of my TensorFlow Lite tutorial series](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10).
