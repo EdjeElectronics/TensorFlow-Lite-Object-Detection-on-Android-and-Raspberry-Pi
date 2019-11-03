@@ -18,7 +18,14 @@ import argparse
 import cv2
 import numpy as np
 import sys
-from tensorflow.lite.python.interpreter import Interpreter
+import importlib.util
+
+# If tflite_runtime is installed, import from tflite_runtime, else import from regular tensorflow
+pkg = importlib.util.find_spec('tflite_runtime')
+if pkg is None:
+    from tensorflow.lite.python.interpreter import Interpreter
+else:
+    from tflite_runtime.interpreter import Interpreter
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
