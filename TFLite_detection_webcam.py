@@ -21,12 +21,12 @@ import numpy as np
 import sys
 import importlib.util
 
-# If tflite_runtime is installed, import from tflite_runtime, else import from regular tensorflow
-pkg = importlib.util.find_spec('tflite_runtime')
+# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
+pkg = importlib.util.find_spec('tensorflow')
 if pkg is None:
-    from tensorflow.lite.python.interpreter import Interpreter
-else:
     from tflite_runtime.interpreter import Interpreter
+else:
+    from tensorflow.lite.python.interpreter import Interpreter
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
