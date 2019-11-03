@@ -1,6 +1,6 @@
 # Part 2 - How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
 
-**Section 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction! Expected completion date: 10/22/19.** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
+**Section 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction!** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
 
 *(Insert fancy .gif showing TFLite and EdgeTPU performance here!)*
 
@@ -15,10 +15,11 @@ This guide is the second part of my larger TensorFlow Lite tutorial series:
 
 TensorFlow Lite (TFLite) models run much faster than regular TensorFlow models on the Raspberry Pi. You can see a comparison of framerates obtained using regular TensorFlow, TensorFlow Lite, and Coral USB Accelerator models in my [TensorFlow Lite Performance Comparison YouTube video](https://www.youtube.com/watch?v=TiOKvOrYNII).
 
-This portion of the guide is split in to two sections:
+This portion of the guide is split in to three sections:
 
 * [Section 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
 * Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+* Section 3. Compile Custom Edge TPU Object Detection Models
 
 This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds.
 
