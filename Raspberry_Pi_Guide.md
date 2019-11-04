@@ -219,7 +219,7 @@ sudo apt-get install libedgetpu1-std
 You can also install the libedgetpu1-max library, which runs the USB Accelerator at an overclocked frequency, allowing it to achieve even faster framerates. However, it also causes the USB Accelerator to get hotter. Here are the framerates I get when running TFLite_detection_webcam.py with 1280x720 resolution for each option:
 
 * libedgetpu1-std: 22.6 FPS
-* libedgetpu1-max: 27.8 FPS
+* libedgetpu1-max: 26.1 FPS
 
 I didn't measure the temperature of the USB Accelerator, but it does get a little hotter to the touch with the libedgetpu1-max version. However, it didn't seem hot enough to be unsafe or harmful to the electronics.
 
@@ -237,6 +237,7 @@ Google provides a sample Edge TPU model that is compiled from the quantized SSDL
 
 ```
 wget https://dl.google.com/coral/canned_models/mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite
+
 mv mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite Sample_TFLite_model/detect_edgetpu.tflite
 ```
 
