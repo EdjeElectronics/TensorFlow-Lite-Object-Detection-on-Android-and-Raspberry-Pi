@@ -190,8 +190,17 @@ It makes object detection models run WAY faster, and it's easy to set up. These 
 2b. Set up Edge TPU detection model
 2c. Run super-speed detection!
 
+This section of the guide assumes you have already completed [Section 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi) for setting up TFLite object detection on the Pi. If you haven't done that portion, scroll back up and work through it first.
+
 ### Step 2a. Install libedgetpu library
 First, we'll download and install the Edge TPU runtime, which is the library needed to interface with the USB Acccelerator. These instructions follow the [USB Accelerator setup guide](https://coral.withgoogle.com/docs/accelerator/get-started/) from official Coral website.
+
+Open a command terminal and move into the /home/pi/tflite1 directory and activate the tflite1-env virtual environment by issuing:
+
+```
+cd /home/pi/tflite1
+source tflite1-env/bin/activate
+```
 
 Add the Coral package repository to your apt-get distribution list by issuing the following commands:
 
@@ -207,9 +216,37 @@ Install the libedgetpu library by issuing:
 sudo apt-get install libedgetpu1-std
 ```
 
-Note: You can also install the libedgetpu1-max library, which runs the USB Accelerator at an overclocked frequency, allowing it to achieve even faster framerates. However, it also causes the USB Accelerator to get very hot. I haven't tried this option yet, but once I do, I will add some information here saying how much higher the framerate is and how hot the Accelerator gets. If you want to use the libedgetpu-max library, install it by using `sudo apt-get install libedgetpu1-max`. (You can't have both the -std and the -max libraries installed. If you install the -max library, the -std library will automatically be uninstalled.)
+You can also install the libedgetpu1-max library, which runs the USB Accelerator at an overclocked frequency, allowing it to achieve even faster framerates. However, it also causes the USB Accelerator to get hotter. Here are the framerates I get when running TFLite_detection_webcam.py with 1280x720 resolution for each option:
+
+* libedgetpu1-std: 22.6 FPS
+* libedgetpu1-max: 27.8 FPS
+
+I didn't measure the temperature of the USB Accelerator, but it does get a little hotter to the touch with the libedgetpu1-max version. However, it didn't seem hot enough to be unsafe or harmful to the electronics.
+
+If you want to use the libedgetpu-max library, install it by using `sudo apt-get install libedgetpu1-max`. (You can't have both the -std and the -max libraries installed. If you install the -max library, the -std library will automatically be uninstalled.)
 
 Alright! Now that the libedgetpu runtime is installed, it's time to set up an Edge TPU detection model to use it with.
 
 ### Step 2b. Set up Edge TPU detection model
+Edge TPU models are TensorFlow Lite models that have been compiled specifically to run on Edge TPU devices like the Coral USB Accelerator. They reside in a .tflite file and are used the same way as a regular TF Lite model. My preferred method is to keep the Edge TPU file in the same model folder as the TFLite model it was compiled from, and name it as "detect_edgetpu.tflite".
 
+I'll show two options for setting up an Edge TPU model: using the sample model from Google, or using a custom model you compiled yourself.
+
+#### Option 1. Using Google's sample EdgeTPU model
+Google provides a sample Edge TPU model that is compiled from the quantized SSDLite-MobileNet-v2 we used in [Step 1e](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#step-1e-set-up-tensorflow-lite-detection-model). Download it and move it into the Sample_TFLite_model folder (while simultaneously renaming it to "detect_edgetpu.tflite") by issuing these commands:
+
+```
+wget https://dl.google.com/coral/canned_models/mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite
+mv mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite Sample_TFLite_model/detect_edgetpu.tflite
+```
+
+Now the sample Edge TPU model is all ready to go. It will use the same labelmap.txt file as the TFLite model, which should already be located in the Sample_TFLite_model folder.
+
+#### Option 2. Using your own custom EdgeTPU model
+If you trained a custom TFLite detection model, you can compile it for use with the Edge TPU. Unfortunately, the edgetpu-compiler package doesn't work on the Raspberry Pi: you need a Linux PC to use it on. Section 3 of this guide will give a couple options for compiling your own model if you don't have a Linux box. While I'm working on writing it, [here are the official instructions that show how to compile an Edge TPU model from a TFLite model](https://coral.withgoogle.com/docs/edgetpu/compiler/).
+
+Assuming you've been able to compile your TFLite model into an EdgeTPU model, you can simply copy the .tflite file onto a USB and transfer it to the model folder on your Raspberry Pi. For my "BirdSquirrelRaccoon_TFLite_model" example from [Step 1e](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#step-1e-set-up-tensorflow-lite-detection-model), I can compile my "BirdSquirrelRaccoon_TFLite_model" on a Linux PC, put the resulting detect_edgetpu.tflite file on a USB, transfer the USB to my Pi, and move the detect_edgetpu.tflite file into the /home/pi/tflite1/BirdSquirrelRaccoon_TFLite_model folder. It will use the same labelmap.txt file that already exists in the folder to get its labels.
+
+Once the detect_edgetpu.tflite file has been moved into the model folder, it's ready to go!
+
+### Step 2c. Run detection with Edge TPU!
