@@ -29,10 +29,9 @@ Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular Tenso
 
 - 1a. Update the Raspberry Pi
 - 1b. Download this repository and create virtual environment
-- 1c. Install TensorFlow Lite dependencies and OpenCV
-- 1d. Install TensorFlow Lite runtime
-- 1e Set up TensorFlow Lite detection model
-- 1f. Run TensorFlow Lite model!
+- 1c. Install TensorFlow and OpenCV
+- 1d. Set up TensorFlow Lite detection model
+- 1e. Run TensorFlow Lite model!
 
 ### Step 1a. Update the Raspberry Pi
 First, the Raspberry Pi needs to be fully updated. Open a terminal and issue:
@@ -65,7 +64,7 @@ cd tflite1
 
 We'll work in this /home/pi/tflite1 directory for the rest of the guide. Next up is to create a virtual environment called "tflite1-env".
 
-I'm using a virtual environment for this guide because it prevents any conflicts between versions of package libraries that may already be installed on your Pi. As of now (11/3/19), the tflite_runtime library does NOT work if it's installed on the same system as the regular TensorFlow library. Keeping it installed in its own environment allows us to avoid this problem. If you've already installed TensorFlow on the Pi using my [other guide](https://www.youtube.com/watch?v=npZ-8Nj1YwY), you don't have to worry about any conflicts when following this guide.
+I'm using a virtual environment for this guide because it prevents any conflicts between versions of package libraries that may already be installed on your Pi. Keeping it installed in its own environment allows us to avoid this problem. For example, if you've already installed TensorFlow v1.8 on the Pi using my [other guide](https://www.youtube.com/watch?v=npZ-8Nj1YwY), you can leave that installation as-is without having to worry about overriding it.
 
 Install virtualenv by issuing:
 
@@ -94,7 +93,7 @@ At this point, here's what your tflite1 directory should look like if you issue 
 If your directory looks good, it's time to move on to Step 1c!
 
 ### Step 1c. Install TensorFlow Lite dependencies and OpenCV
-Next, we'll install OpenCV and the package dependencies for TensorFlow Lite. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
+Next, we'll install TensorFlow, OpenCV, and all the dependencies needed for both packages. OpenCV is not needed to run TensorFlow Lite, but the object detection scripts in this repository use it to grab images and draw detection results on them.
 
 To make things easier, I wrote a shell script that will automatically download and install all the packages and dependencies. Run it by issuing:
 
@@ -102,32 +101,15 @@ To make things easier, I wrote a shell script that will automatically download a
 bash get_pi_requirements.sh
 ```
 
-This downloads about 300MB worth of installation files, so it will take a while. Go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_dependencies.sh to view the list of packages.
+This downloads about 400MB worth of installation files, so it will take a while. Go grab a cup of coffee while it's working! If you'd like to see everything that gets installed, simply open get_pi_dependencies.sh to view the list of packages.
 
 **NOTE: If you get an error while running the `bash get_pi_requirements.sh` command, it's likely because your internet connection timed out, or because the downloaded package data was corrupted. If you get an error, try re-running the command a few more times.**
 
+**ANOTHER NOTE: The shell script automatically installs the latest version of TensorFlow. If you'd like to install a specific version, issue `pip3 install tensorflow==X.XX` (where X.XX is replaced with the version you want to install) after running the script. This will override the existing installation with the specified version.**
+
 That was easy! On to the next step.
 
-### Step 1d. Install TensorFlow Lite runtime
-Google provides an interpreter-only package for TensorFlow Lite that is drastically smaller than the full TensorFlow package. The reduced TensorFlow Lite runtime is a smaller download and takes less space on the hard drive.
-
-Go to the [Python quickstart page of the official TensorFlow website](https://www.tensorflow.org/lite/guide/python) and scroll to the table with download links for the tflite_runtime wheel files.
-
-If you are running Raspbian Buster (the latest release of Raspberry Pi's OS), download and the Python 3.7 wheel file. If you are running Raspbian Stretch (the older release, which doesn't have Python 3.7 installed by default), download the Python 3.5 wheel file. You can see which OS you have by issuing `lsb_release -a` and checking if the Codename says "stretch" or "buster".
-
-<p align="center">
-  <img src="/doc/TFL_download_links.png">
-</p>
-
-The file should download to /home/pi/Downloads. Install it using the `pip3 install` command, and use "Tab" to complete the path to the wheel file (so you don't have to type the whole filename in manually).
-
-```
-pip3 install /home/pi/Downloads/tflite_runtime (Press "Tab" to complete path to .whl file)
-```
-
-The TensorFlow Lite runtime is now installed in our tflite1-env virtual environment!
-
-### Step 1e. Set up TensorFlow Lite detection model
+### Step 1d. Set up TensorFlow Lite detection model
 Next, we'll set up the detection model that will be used with TensorFlow Lite. This guide shows how to either download a sample TFLite model provided by Google, or how to use a model that you've trained yourself by following [Part 1 of my TensorFlow Lite tutorial series](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10).
 
 A detection model has two files associated with it: a detect.tflite file (which is the model itself) and a labelmap.txt file (which provides a labelmap for the model). My preferred way to organize the model files is to create a folder (such as "BirdSquirrelRaccoon_TFLite_model") and keep both the detect.tflite and labelmap.txt in that folder. This is also how Google's downloadable sample TFLite model is organized.
@@ -158,7 +140,7 @@ You can simply copy that folder to a USB drive, insert the USB drive in your Ras
 
 Now your custom model is ready to go!
 
-### Step 1f. Run the TensorFlow Lite model!
+### Step 1e. Run the TensorFlow Lite model!
 It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
 
 Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) **The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam. **
@@ -170,8 +152,6 @@ python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
 If your model folder has a different name than "Sample_TFLite_model", use that name instead. For example, I would use `--modeldir=BirdSquirrelRaccoon_TFLite_model` to run my custom bird, squirrel, and raccoon detection model.
 
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
-
-*(Add gif of object detector in action here?)*
 
 Part 3 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
 
