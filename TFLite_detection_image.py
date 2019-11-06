@@ -111,8 +111,9 @@ for image_path in images:
 
     # Load image and resize to expected shape [1xHxWx3]
     image = cv2.imread(image_path)
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     imH, imW, _ = image.shape 
-    image_resized = cv2.resize(image, (width, height))
+    image_resized = cv2.resize(image_rgb, (width, height))
     input_data = np.expand_dims(image_resized, axis=0)
 
     # Normalize pixel values if using a floating model (i.e. if model is non-quantized)
