@@ -2,7 +2,9 @@
 
 **Part 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction!** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
 
-*(Insert fancy .gif showing TFLite and EdgeTPU performance here!)*
+<p align="center">
+   <img src="doc/TFLite-vs-EdgeTPU.gif">
+</p>
 
 ## Introduction
 This guide provides step-by-step instructions for how to set up TensorFlow Lite on the Raspberry Pi and use it to run object detection models. It also shows how to set up the Coral USB Accelerator on the Pi and run Edge TPU detection models. It works for the Raspberry Pi 3 and Raspberry Pi 4 running either Rasbpian Buster or Rasbpian Stretch.
