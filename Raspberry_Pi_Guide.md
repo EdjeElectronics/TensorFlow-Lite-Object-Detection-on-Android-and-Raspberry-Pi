@@ -145,7 +145,7 @@ Now your custom model is ready to go!
 ### Step 1e. Run the TensorFlow Lite model!
 It's time to see the TFLite object detection model in action! First, free up memory and processing power by closing any applications you aren't using. Also, make sure you have your webcam or Picamera plugged in.
 
-Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) **The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam. **
+Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) **The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam.**
 
 ```
 python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
@@ -233,3 +233,15 @@ Assuming you've been able to compile your TFLite model into an EdgeTPU model, yo
 Once the detect_edgetpu.tflite file has been moved into the model folder, it's ready to go!
 
 ### Step 2c. Run detection with Edge TPU!
+
+
+## Section 3 - Compile Custom Edge TPU Object Detection Models
+
+
+## Appendix: Common Errors
+This appendix lists common errors that have been encountered by users following this guide, and solutions showing how to resolve them.
+
+**Feel free to create Pull Requests to add your own errors and resolutions! I'd appreciate any help.**
+
+### 1. TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+The 'NoneType' error means that the program received an empty array from the webcam, which typically means something is wrong with the webcam or the interface to the webcam. Try plugging and re-plugging the webcam in a few times, and/or power cycling the Raspberry Pi, and see if that works. If not, you may need to try using a new webcam.
