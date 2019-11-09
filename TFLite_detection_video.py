@@ -38,7 +38,7 @@ parser.add_argument('--labels', help='Name of the labelmap file, if different th
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                     default=0.5)
 parser.add_argument('--video', help='Name of the video file',
-                    default='test.mov')
+                    default='test.mp4')
 
 args = parser.parse_args()
 
