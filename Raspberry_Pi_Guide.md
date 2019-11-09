@@ -234,12 +234,6 @@ Assuming you've been able to compile your TFLite model into an EdgeTPU model, yo
 
 Once the detect_edgetpu.tflite file has been moved into the model folder, it's ready to go!
 
-### Step 2c. Run detection with Edge TPU!
-
-
-## Section 3 - Compile Custom Edge TPU Object Detection Models
-
-
 ## Appendix: Common Errors
 This appendix lists common errors that have been encountered by users following this guide, and solutions showing how to resolve them.
 
