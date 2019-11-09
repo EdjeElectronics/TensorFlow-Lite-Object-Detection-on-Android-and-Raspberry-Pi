@@ -485,7 +485,7 @@ To run the video detection script, issue:
 python TFLite_detection_image.py --modeldir=TFLite_model
 ```
 
-A window will appear showing consecutive frames from the video, with each object in the frame labeled. Press 'q' to close the window and end the script. By default, the video detection script will open a video named 'test.mov'. To open a specific video file, use the `--video` option:
+A window will appear showing consecutive frames from the video, with each object in the frame labeled. Press 'q' to close the window and end the script. By default, the video detection script will open a video named 'test.mp4'. To open a specific video file, use the `--video` option:
 
 ```
 python TFLite_detection_image.py --modeldir=TFLite_model --video='birdy.mp4'
