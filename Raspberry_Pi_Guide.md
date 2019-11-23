@@ -234,6 +234,16 @@ Assuming you've been able to compile your TFLite model into an EdgeTPU model, yo
 
 Once the detect_edgetpu.tflite file has been moved into the model folder, it's ready to go!
 
+### Step 2c. Run detection with Edge TPU!
+
+**This guide is still under construction! It should be done in a couple weeks. For now, you can see full instructions on using the USB Accelerator [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).**
+
+**The code in this repository currently DOES NOT WORK with USB Coral Accelerator. But it will once I get time to finish it!**
+
+
+## Section 3 - Compile Custom Edge TPU Object Detection Models
+
+
 ## Appendix: Common Errors
 This appendix lists common errors that have been encountered by users following this guide, and solutions showing how to resolve them.
 
