@@ -26,8 +26,8 @@ rm tensorflow-2.0.0-cp37-none-linux_armv7l.whl
 fi
 
 if [ $version == "3.5" ]; then
-wget https://github.com/lhelontra/tensorflow-on-arm/releases/download/v1.14.0/tensorflow-1.14.0-cp35-none-linux_armv7l.whl
-pip3 install tensorflow-1.14.0-cp35-none-linux_armv7l.whl
-rm tensorflow-1.14.0-cp35-none-linux_armv7l.whl
+wget https://dl.google.com/coral/python/tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
+pip3 install tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
+rm tflite_runtime-1.14.0-cp35-cp35m-linux_armv7l.whl
 fi
 
