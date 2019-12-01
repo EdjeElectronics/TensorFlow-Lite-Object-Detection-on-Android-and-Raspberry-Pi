@@ -1,7 +1,5 @@
 # Part 2 - How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
 
-**Part 2 of this guide, which shows how to use the Coral USB Accelerator, is still under construction!** In the meantime, you can use the guide [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).
-
 <p align="center">
    <img src="doc/TFLite-vs-EdgeTPU.gif">
 </p>
@@ -236,10 +234,30 @@ Once the detect_edgetpu.tflite file has been moved into the model folder, it's r
 
 ### Step 2c. Run detection with Edge TPU!
 
-**This guide is still under construction! It should be done in a couple weeks. For now, you can see full instructions on using the USB Accelerator [here](https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/raspberry_pi).**
+Now that everything is set up, it's time to test out the Coral's ultra-fast detection speed! Make sure to free up memory and processing power by closing any programs you aren't using. Make sure you have a webcam plugged in.
 
-**The code in this repository currently DOES NOT WORK with USB Coral Accelerator. But it will once I get time to finish it!**
+Plug in your Coral USB Accelerator into one of the USB ports on the Raspberry Pi. If you're using a Pi 4, make sure to plug it in to one of the blue USB 3.0 ports.
 
+*Insert picture of Coral USB Accelerator plugged into Raspberry Pi here!*
+
+Make sure the tflite1-env environment is activate by checking that (tflite1-env) appears in front of the command prompt in your terminal. Then, run the real-time webcam detection script with the --edgetpu argument:
+
+```
+python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model --edgetpu
+```
+
+The `--edgetpu` argument tells the script to use the Coral USB Accelerator and the EdgeTPU-compiled .tflite file. If your model folder has a different name than "Sample_TFLite_model", use that name instead.
+
+After a brief initialization period, a window will appear showing the webcam feed with detections drawn on each from. The detection will run SIGNIFICANTLY faster with the Coral USB Accelerator.
+
+If you'd like to run the video or image detection scripts with the Accelerator, use these commands:
+
+```
+python3 TFLite_detection_video.py --modeldir=Sample_TFLite_model --edgetpu
+python3 TFLite_detection_image.py --modeldir=Sample_TFLite_model --edgetpu
+```
+
+Have fun with the blazing detection speeds of the Coral USB Accelerator!
 
 ## Section 3 - Compile Custom Edge TPU Object Detection Models
 
