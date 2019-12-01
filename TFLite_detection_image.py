@@ -21,13 +21,6 @@ import sys
 import glob
 import importlib.util
 
-# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
-pkg = importlib.util.find_spec('tensorflow')
-if pkg is None:
-    from tflite_runtime.interpreter import Interpreter
-else:
-    from tensorflow.lite.python.interpreter import Interpreter
-
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('--modeldir', help='Folder the .tflite file is located in',
@@ -42,14 +35,16 @@ parser.add_argument('--image', help='Name of the single image to perform detecti
                     default=None)
 parser.add_argument('--imagedir', help='Name of the folder containing images to perform detection on. Folder must contain only images.',
                     default=None)
+parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
+                    action='store_true')
 
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
-
-min_conf_threshold = args.threshold
+min_conf_threshold = float(args.threshold)
+use_TPU = args.edgetpu
 
 # Parse input image name and directory. 
 IM_NAME = args.image
@@ -63,6 +58,26 @@ if (IM_NAME and IM_DIR):
 # If neither an image or a folder are specified, default to using 'test1.jpg' for image name
 if (not IM_NAME and not IM_DIR):
     IM_NAME = 'test1.jpg'
+
+# Import TensorFlow libraries
+# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
+# If using Coral Edge TPU, import the load_delegate library
+pkg = importlib.util.find_spec('tensorflow')
+if pkg is None:
+    from tflite_runtime.interpreter import Interpreter
+    if use_TPU:
+        from tflite_runtime.interpreter import load_delegate
+else:
+    from tensorflow.lite.python.interpreter import Interpreter
+    if use_TPU:
+        from tensorflow.lite.python.interpreter import load_delegate
+
+# If using Edge TPU, assign filename for Edge TPU model
+if use_TPU:
+    # If user has specified the name of the .tflite file, use that name, otherwise use default 'edgetpu.tflite'
+    if (GRAPH_NAME == 'detect.tflite'):
+        GRAPH_NAME = 'edgetpu.tflite'
+
 
 # Get path to current working directory
 CWD_PATH = os.getcwd()
@@ -92,10 +107,18 @@ with open(PATH_TO_LABELS, 'r') as f:
 if labels[0] == '???':
     del(labels[0])
 
-# Load the Tensorflow Lite model and get details
-interpreter = Interpreter(model_path=PATH_TO_CKPT)
+# Load the Tensorflow Lite model.
+# If using Edge TPU, use special load_delegate argument
+if use_TPU:
+    interpreter = Interpreter(model_path=PATH_TO_CKPT,
+                              experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
+    print(PATH_TO_CKPT)
+else:
+    interpreter = Interpreter(model_path=PATH_TO_CKPT)
+
 interpreter.allocate_tensors()
 
+# Get model details
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 height = input_details[0]['shape'][1]
