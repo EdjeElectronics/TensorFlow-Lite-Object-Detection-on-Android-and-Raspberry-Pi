@@ -6,7 +6,7 @@
 # This program uses a TensorFlow Lite model to perform object detection on a live webcam
 # feed. It draws boxes and scores around the objects of interest in each frame from the
 # webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
-# This script will also work with a Picamera on the Raspberry Pi.
+# This script will work with either a Picamera or regular USB webcam.
 #
 # This code is based off the TensorFlow Lite image classification example at:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
@@ -22,13 +22,6 @@ import sys
 import time
 from threading import Thread
 import importlib.util
-
-# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
-pkg = importlib.util.find_spec('tensorflow')
-if pkg is None:
-    from tflite_runtime.interpreter import Interpreter
-else:
-    from tensorflow.lite.python.interpreter import Interpreter
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -84,17 +77,37 @@ parser.add_argument('--threshold', help='Minimum confidence threshold for displa
                     default=0.5)
 parser.add_argument('--resolution', help='Desired webcam resolution in WxH. If the webcam does not support the resolution entered, errors may occur.',
                     default='1280x720')
+parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
+                    action='store_true')
 
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
-
-min_conf_threshold = args.threshold
-
+min_conf_threshold = float(args.threshold)
 resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
+use_TPU = args.edgetpu
+
+# Import TensorFlow libraries
+# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
+# If using Coral Edge TPU, import the load_delegate library
+pkg = importlib.util.find_spec('tensorflow')
+if pkg is None:
+    from tflite_runtime.interpreter import Interpreter
+    if use_TPU:
+        from tflite_runtime.interpreter import load_delegate
+else:
+    from tensorflow.lite.python.interpreter import Interpreter
+    if use_TPU:
+        from tensorflow.lite.python.interpreter import load_delegate
+
+# If using Edge TPU, assign filename for Edge TPU model
+if use_TPU:
+    # If user has specified the name of the .tflite file, use that name, otherwise use default 'edgetpu.tflite'
+    if (GRAPH_NAME == 'detect.tflite'):
+        GRAPH_NAME = 'edgetpu.tflite'       
 
 # Get path to current working directory
 CWD_PATH = os.getcwd()
@@ -115,10 +128,18 @@ with open(PATH_TO_LABELS, 'r') as f:
 if labels[0] == '???':
     del(labels[0])
 
-# Load the Tensorflow Lite model and get details
-interpreter = Interpreter(model_path=PATH_TO_CKPT)
+# Load the Tensorflow Lite model.
+# If using Edge TPU, use special load_delegate argument
+if use_TPU:
+    interpreter = Interpreter(model_path=PATH_TO_CKPT,
+                              experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
+    print(PATH_TO_CKPT)
+else:
+    interpreter = Interpreter(model_path=PATH_TO_CKPT)
+
 interpreter.allocate_tensors()
 
+# Get model details
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 height = input_details[0]['shape'][1]
