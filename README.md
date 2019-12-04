@@ -476,7 +476,22 @@ From the \object_detection directory, issue:
 python TFLite_detection_webcam.py --modeldir=TFLite_model 
 ```
 
-After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
+##### Video stream
+To run the script to detect images in a video stream (e.g. a remote security camera), issue: 
+
+```
+python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" 
+```
+
+After a few moments of initializing, a window will appear showing the video stream. Detected objects will have bounding boxes and labels displayed on them in real time.
+
+Make sure to update the URL parameter to the one that's being used by your security camera. It has to include authentication information in case the stream is secured.
+
+If the bounding boxes are not matching the detected objects, probably the stream resolution wasn't detected. In this case you can set it explicitly by using the `--resolution` parameter:
+
+```
+python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" --resolution=1920x1080
+```
 
 ##### Video
 To run the video detection script, issue:
