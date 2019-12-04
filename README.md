@@ -476,6 +476,8 @@ From the \object_detection directory, issue:
 python TFLite_detection_webcam.py --modeldir=TFLite_model 
 ```
 
+After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
+
 ##### Video stream
 To run the script to detect images in a video stream (e.g. a remote security camera), issue: 
 
