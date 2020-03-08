@@ -47,10 +47,10 @@ min_conf_threshold = float(args.threshold)
 use_TPU = args.edgetpu
 
 # Import TensorFlow libraries
-# If tensorflow is not installed, import interpreter from tflite_runtime, else import from regular tensorflow
+# If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
 # If using Coral Edge TPU, import the load_delegate library
-pkg = importlib.util.find_spec('tensorflow')
-if pkg is None:
+pkg = importlib.util.find_spec('tflite_runtime')
+if pkg:
     from tflite_runtime.interpreter import Interpreter
     if use_TPU:
         from tflite_runtime.interpreter import load_delegate
