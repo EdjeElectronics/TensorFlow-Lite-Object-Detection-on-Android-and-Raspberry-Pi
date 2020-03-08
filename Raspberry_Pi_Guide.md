@@ -33,6 +33,10 @@ Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular Tenso
 - 1d. Set up TensorFlow Lite detection model
 - 1e. Run TensorFlow Lite model!
 
+I also made a YouTube video that walks through this guide:
+
+[![Link to my YouTube video!](https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/doc/YouTube_video1.JPG)](https://www.youtube.com/watch?v=aimSGOAUI8Y)
+
 ### Step 1a. Update the Raspberry Pi
 First, the Raspberry Pi needs to be fully updated. Open a terminal and issue:
 ```
@@ -138,7 +142,9 @@ You can also use a custom object detection model by moving the model folder into
 
 You can simply copy that folder to a USB drive, insert the USB drive in your Raspberry Pi, and move the folder into the /home/pi/tflite1 directory. (Or you can email it to yourself, or put it on Google Drive, or do whatever your preferred method of file transfer is.) Here's an example of what my "BirdSquirrelRaccoon_TFLite_model" folder looks like in my /home/pi/tflite1 directory: 
 
-*(Add picture of BirdSquirrelRaccoon_TFLite_model in my /home/pi/tflite1 directory)*
+<p align="center">
+  <img src="/doc/BSR_directory1.png">
+</p>
 
 Now your custom model is ready to go!
 
@@ -159,8 +165,6 @@ Part 3 of my TensorFlow Lite training guide gives [instructions](https://github.
 
 ## Section 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one [here (Amazon Associate link)](https://amzn.to/2BuG1Tv). 
-
-*(Add picture of USB Accelerator and the Edge TPU chip)*
 
 The USB Accelerator uses the Edge TPU (tensor processing unit), which is an ASIC (application-specific integrated circuit) chip specially designed with highly parallelized ALUs (arithmetic logic units). While GPUs (graphics processing units) also have many parallelized ALUs, the TPU has one key difference: the ALUs are directly connected to eachother. The output of one ALU can be directly passed to the input of the next ALU without having to be stored and retrieved from a memory buffer. The extreme paralellization and removal of the memory bottleneck means the TPU can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiply-accumulate operations to generate outputs from a single batch of input data. 
 
