@@ -153,6 +153,9 @@ It's time to see the TFLite object detection model in action! First, free up mem
 
 Run the real-time webcam detection script by issuing the following command from inside the /home/pi/tflite1 directory. (Before running the command, make sure the tflite1-env environment is active by checking that (tflite1-env) appears in front of the command prompt.) **The TFLite_detection_webcam.py script will work with either a Picamera or a USB webcam.**
 
+*Note: You may get a `cannot connect to X server` error if you try to execute below step using SSH. If you are working with pi in headless mode, you may use VNC to view the remote desktop.\
+Once logged in, use the terminal to execute below script*
+
 ```
 python3 TFLite_detection_webcam.py --modeldir=Sample_TFLite_model
 ```
