@@ -6,6 +6,12 @@
 - TESTED & CONFIRMED connect from LOCAL repo /tflite01 back up to CLOUD (github.com) repo /markvogt/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi.git ==> WORKING :-) 
 - SFSG!
 
+TODOs: 
+
+- CONVERT ENTIRE PROJECT TO WORK IN A VIRTUAL (NOT system) PYTHON ENVIRONMENT !!! 
+
+
+
 
 
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
