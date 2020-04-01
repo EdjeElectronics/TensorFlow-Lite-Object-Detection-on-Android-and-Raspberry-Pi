@@ -4,6 +4,7 @@
 - CLONED this repo down to thing2
 - RENAMED project folder to /tflite01  (original name TOO LONG to be USEABLE)
 - TESTED & CONFIRMED connect from LOCAL repo /tflite01 back up to CLOUD (github.com) repo /markvogt/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi.git ==> WORKING :-) 
+- RENAMED project folder to /TFLite01
 - SFSG!
 
 TODOs: 
