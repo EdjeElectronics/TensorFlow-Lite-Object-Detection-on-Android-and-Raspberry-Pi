@@ -1,10 +1,12 @@
 2020 04 01 MV:
 
-FORKED this repo
-CLONED this repo down to thing2
-RENAMED project folder to /tflite01  (original name TOO LONG to be USEABLE)
-TESTED & CONFIRMED connect from LOCAL repo /tflite01 back up to CLOUD (github.com) repo /markvogt/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi.git ==> WORKING :-) 
-SFSG!
+- FORKED this repo
+- CLONED this repo down to thing2
+- RENAMED project folder to /tflite01  (original name TOO LONG to be USEABLE)
+- TESTED & CONFIRMED connect from LOCAL repo /tflite01 back up to CLOUD (github.com) repo /markvogt/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi.git ==> WORKING :-) 
+- SFSG!
+
+
 
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
 A guide showing how to train TensorFlow Lite object detection models and run them on Android, the Raspberry Pi, and more!
