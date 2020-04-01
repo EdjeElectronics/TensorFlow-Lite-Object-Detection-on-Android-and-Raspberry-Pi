@@ -1,6 +1,8 @@
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
 A guide showing how to train TensorFlow Lite object detection models and run them on Android, the Raspberry Pi, and more!
 
+### 2020 04 01 MV: ADDED this line from VSC running on thing2 in renamed folder /tflite01 !...
+
 <p align="center">
    <img src="doc/BSR_demo.gif">
 </p>
