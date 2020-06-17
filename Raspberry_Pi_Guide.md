@@ -306,3 +306,11 @@ pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-
 Then, re-run the TFLite detection script. It should work now!
 
 *Note: the URLs provided in these commands may change as newer versions of tflite_runtime are released. Check the [TFLite Python Quickstart page](https://www.tensorflow.org/lite/guide/python) for download URLs to the latest version of tflite_runtime.*
+
+### 5. IndexError: list index out of range
+This error usually occurs when you try using an "image classification" model rather than an "object detection" model. Image classification models apply a single label to an image, while object detection models locate and label multiple objects in an image. The code in this repository is written for object detection models.
+
+Many people run in to this error when using models from Teachable Machine. This is because Teachable Machine creates image classification models rather than object detection models. To create an object detection model for TensorFow Lite, you'll have to follow the guide in this repository.
+
+If you'd like to see how to use an image classification model on the Raspberry Pi, please see this example:
+https://github.com/tensorflow/examples/tree/master/lite/examples/image_classification/raspberry_pi
