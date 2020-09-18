@@ -544,7 +544,7 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 
 *Links to be added when these are completed!*
 
-* Part 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)
+* [Part 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md)
 * Part 3. How to Run TensorFlow Lite Object Detection Models on Android Devices 
 
 ## Frequently Asked Questions and Common Errors
