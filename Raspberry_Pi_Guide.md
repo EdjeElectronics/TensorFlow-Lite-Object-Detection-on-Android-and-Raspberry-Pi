@@ -18,8 +18,8 @@ TensorFlow Lite (TFLite) models run much faster than regular TensorFlow models o
 This portion of the guide is split in to three sections:
 
 * [Section 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
-* Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
-* Section 3. Compile Custom Edge TPU Object Detection Models
+* [Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-2---run-edge-tpu-object-detection-models-on-the-raspberry-pi-using-the-coral-usb-accelerator)
+* [Section 3. Compile Custom Edge TPU Object Detection Models](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-2---run-edge-tpu-object-detection-models-on-the-raspberry-pi-using-the-coral-usb-accelerator)
 
 This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds.
 
@@ -164,6 +164,9 @@ After a few moments of initializing, a window will appear showing the webcam fee
 Part 3 of my TensorFlow Lite training guide gives [instructions](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#video) for using the TFLite_detection_image.py and TFLite_detection_video.py scripts. Make sure to use `python3` rather than `python` when running the scripts.
 
 ## Section 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+
+[![Link to Section 2 YouTube video!](https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/doc/YouTube_video2.png)](https://www.youtube.com/watch?v=qJMwNHQNOVU)
+
 The [Coral USB Accelerator](https://coral.withgoogle.com/products/accelerator/) is a USB hardware accessory for speeding up TensorFlow models. You can buy one [here (Amazon Associate link)](https://amzn.to/2BuG1Tv). 
 
 The USB Accelerator uses the Edge TPU (tensor processing unit), which is an ASIC (application-specific integrated circuit) chip specially designed with highly parallelized ALUs (arithmetic logic units). While GPUs (graphics processing units) also have many parallelized ALUs, the TPU has one key difference: the ALUs are directly connected to eachother. The output of one ALU can be directly passed to the input of the next ALU without having to be stored and retrieved from a memory buffer. The extreme paralellization and removal of the memory bottleneck means the TPU can perform up to 4 trillion arithmetic operations per second! This is perfect for running deep neural networks, which require millions of multiply-accumulate operations to generate outputs from a single batch of input data. 
@@ -269,6 +272,11 @@ Have fun with the blazing detection speeds of the Coral USB Accelerator!
 
 ## Section 3 - Compile Custom Edge TPU Object Detection Models
 
+To use a custom model on the Coral USB Accelerator, you have to run it through Coral's [Edge TPU Compiler](https://coral.ai/docs/edgetpu/compiler/) tool. Unfortunately, the compiler only works on Linux operating systems, and only on certain CPU architectures. It doesn't support the Raspberry Pi's ARMv8 architecture, so you can't run it on the Pi. 
+
+The easiest way to compile the Edge TPU model is to use a Google Colab session. I created a Colab page specifically for compiling Edge TPU models. Please click the link below and follow the instructions in the Colab notebook.
+
+https://colab.research.google.com/drive/1o6cNNNgGhoT7_DR4jhpMKpq3mZZ6Of4N?usp=sharing
 
 ## Appendix: Common Errors
 This appendix lists common errors that have been encountered by users following this guide, and solutions showing how to resolve them.
