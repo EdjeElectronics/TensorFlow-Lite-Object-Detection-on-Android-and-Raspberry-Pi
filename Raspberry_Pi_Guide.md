@@ -272,7 +272,7 @@ Have fun with the blazing detection speeds of the Coral USB Accelerator!
 
 ## Section 3 - Compile Custom Edge TPU Object Detection Models
 
-To use a custom model on the Coral USB Accelerator, you have to run it through Coral's [Edge TPU Compiler](https://coral.ai/docs/edgetpu/compiler/) tool. Unfortunately, the compiler only works on Linux operating systems, and only on certain CPU architectures. It doesn't support the Raspberry Pi's ARMv8 architecture, so you can't run it on the Pi. 
+To use a custom model on the Coral USB Accelerator, you have to run it through Coral's [Edge TPU Compiler](https://coral.ai/docs/edgetpu/compiler/) tool. Unfortunately, the compiler only works on Linux operating systems, and only on certain CPU architectures. 
 
 The easiest way to compile the Edge TPU model is to use a Google Colab session. I created a Colab page specifically for compiling Edge TPU models. Please click the link below and follow the instructions in the Colab notebook.
 
