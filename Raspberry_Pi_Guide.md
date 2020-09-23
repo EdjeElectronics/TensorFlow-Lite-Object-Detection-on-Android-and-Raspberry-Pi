@@ -179,9 +179,9 @@ My Master's degree was in ASIC design, so the Edge TPU is very interesting to me
 
 It makes object detection models run WAY faster, and it's easy to set up. These are the steps we'll go through to set up the Coral USB Accelerator:
 
-2a. Install libedgetpu library
-2b. Set up Edge TPU detection model
-2c. Run super-speed detection!
+- 2a. Install libedgetpu library
+- 2b. Set up Edge TPU detection model
+- 2c. Run super-speed detection!
 
 This section of the guide assumes you have already completed [Section 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi) for setting up TFLite object detection on the Pi. If you haven't done that portion, scroll back up and work through it first.
 
