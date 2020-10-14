@@ -216,8 +216,6 @@ conda activate tensorflow-build
 
 After the environment is activated, you should see (tensorflow-build) before the active path in the command window. 
 
-<Maybe I should add a picture of the Anaconda window here?>
-
 Update pip by issuing:
 
 ```
