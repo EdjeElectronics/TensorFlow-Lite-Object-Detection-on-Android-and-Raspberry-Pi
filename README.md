@@ -280,9 +280,9 @@ Next, we’ll configure the TensorFlow build using the configure.py script. From
 python ./configure.py
 ```
 
-This will initiate a Bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed.
+This will initiate a Bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed. This guide doesn't cover building the GPU-enabled version of TensorFlow, but you can try following the official build instructions on the [TensorFlow website](https://www.tensorflow.org/install/source_windows).
 
-Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question. You can see the configuration session for building the GPU-enabled version in the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#bazel-configuration-session-for-building-gpu-enabled-tensorflow).
+Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question.
 
 ```
 You have bazel 0.21.0- (@non-git) installed. 
@@ -557,8 +557,6 @@ Here’s how you can check the version of TensorFlow you used for training.
 2. Open a python shell by issuing `python`  
 3. Within the Python shell, import TensorFlow by issuing `import tensorflow as tf`  
 4. Check the TensorFlow version by issuing `tf.__version__` . It will respond with the version of TensorFlow. This is the version that you used for training. 
-
-#### Bazel configuration session for building GPU-enabled TensorFlow
 
 #### Building TensorFlow from source
 In case you run into error `error C2100: illegal indirection` during TensorFlow compilation, simply edit the file `tensorflow-build\tensorflow\tensorflow\core\framework\op_kernel.h`, go to line 405, and change `reference operator*() { return (*list_)[i_]; }` to `reference operator*() const { return (*list_)[i_]; }`. Credits go to: https://github.com/tensorflow/tensorflow/issues/15925#issuecomment-499569928
