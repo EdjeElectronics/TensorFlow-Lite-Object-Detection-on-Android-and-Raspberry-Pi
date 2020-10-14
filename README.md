@@ -314,12 +314,6 @@ Next, use Bazel to create the package builder for TensorFlow. To create the CPU-
 bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package 
 ```
 
-If you’re building the GPU-enabled version of TensorFlow, issue the following command. 
-
-```
-bazel build --config=opt --config=cuda --define=no_tensorflow_py_deps=true //tensorflow/tools/pip_package:build_pip_package 
-```
-
 Now that the package builder has been created, let’s use it to build the actual TensorFlow wheel file. Issue the following command (it took about 5 minutes to complete on my computer): 
 
 ```
