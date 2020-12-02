@@ -215,7 +215,7 @@ while True:
             xmax = int(min(imW, (boxes[i][3] * imW)))
 
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
-            cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)))
+            cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)), (10, 255, 0))
 
             # Draw label
             object_name = current_tracking  # Look up object name from "labels" array using class index
@@ -225,11 +225,11 @@ while True:
             cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10),
                           (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255),
                           cv2.FILLED)  # Draw white box to put label text in
-            cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_PLAIN, 0.7, (0, 0, 0),
+            cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
                         2)  # Draw label text
 
     # Draw framerate in corner of frame
-    cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 0), 2,
+    cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
                 cv2.LINE_AA)
 
     # All the results have been drawn on the frame, so it's time to display it.
