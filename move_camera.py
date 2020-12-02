@@ -1,2 +1,2 @@
-import detect, movement
+import movement
 
