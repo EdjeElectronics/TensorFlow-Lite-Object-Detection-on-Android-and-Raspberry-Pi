@@ -172,6 +172,8 @@ def center_coord(xmin, xmax):
     return int(round((xmin+xmax)/2))
 
 
+current_tracking = 'person'
+
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 while True:
 
@@ -204,7 +206,7 @@ while True:
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores)):
-        if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0):
+        if (scores[i] > min_conf_threshold) and (scores[i] <= 1.0) and labels[int(classes[i])] == current_tracking:
             # Get bounding box coordinates and draw box Interpreter can return coordinates that are outside of image
             # dimensions, need to force them to be within image using max() and min()
             ymin = int(max(1, (boxes[i][0] * imH)))
@@ -216,7 +218,7 @@ while True:
             cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)))
 
             # Draw label
-            object_name = labels[int(classes[i])]  # Look up object name from "labels" array using class index
+            object_name = current_tracking  # Look up object name from "labels" array using class index
             label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
             label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
