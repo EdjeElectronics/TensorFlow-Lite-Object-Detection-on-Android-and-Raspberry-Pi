@@ -12,7 +12,7 @@ The guide is broken into three major portions. Each portion will have its own de
 1. How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10  *<--- You are here!*
 2. [How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md)
 3. How to Run TensorFlow Lite Object Detection Models on Android Devices
-  (Expected completion: 11/30/19)
+  (Still not complete)
 
 This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, or webcam feeds.
 
