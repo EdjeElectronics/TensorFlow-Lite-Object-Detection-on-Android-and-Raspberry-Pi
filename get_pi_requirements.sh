@@ -19,10 +19,10 @@ pip3 install opencv-python==3.4.6.27
 version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
 if [ $version == "3.7" ]; then
-pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_armv7l.whl
+pip3 install https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp37-cp37m-linux_armv7l.whl
 fi
 
 if [ $version == "3.5" ]; then
-pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp35-cp35m-linux_armv7l.whl
+pip3 install https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp35-cp35m-linux_armv7l.whl
 fi
 
