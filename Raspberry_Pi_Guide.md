@@ -70,12 +70,6 @@ We'll work in this /home/pi/tflite1 directory for the rest of the guide. Next up
 
 I'm using a virtual environment for this guide because it prevents any conflicts between versions of package libraries that may already be installed on your Pi. Keeping TensorFlow installed in its own environment allows us to avoid version conflicts. For example, if you've already installed TensorFlow v1.8 on the Pi using my [other guide](https://www.youtube.com/watch?v=npZ-8Nj1YwY), you can leave that installation as-is without having to worry about overriding it.
 
-Install virtualenv by issuing:
-
-```
-sudo pip3 install virtualenv
-```
-
 Then, create the "tflite1-env" virtual environment by issuing:
 
 ```
