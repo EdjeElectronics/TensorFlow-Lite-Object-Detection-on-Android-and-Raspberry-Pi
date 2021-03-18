@@ -31,9 +31,11 @@ parser.add_argument('--labels', help='Name of the labelmap file, if different th
                     default='labelmap.txt')
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
                     default=0.5)
-parser.add_argument('--image', help='Name of the single image to perform detection on. To run detection on multiple images, use --imagedir',
+parser.add_argument('--image',
+                    help='Name of the single image to perform detection on. To run detection on multiple images, use --imagedir',
                     default=None)
-parser.add_argument('--imagedir', help='Name of the folder containing images to perform detection on. Folder must contain only images.',
+parser.add_argument('--imagedir',
+                    help='Name of the folder containing images to perform detection on. Folder must contain only images.',
                     default=None)
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
@@ -52,7 +54,8 @@ IM_DIR = args.imagedir
 
 # If both an image AND a folder are specified, throw an error
 if (IM_NAME and IM_DIR):
-    print('Error! Please only use the --image argument or the --imagedir argument, not both. Issue "python TFLite_detection_image.py -h" for help.')
+    print(
+        'Error! Please only use the --image argument or the --imagedir argument, not both. Issue "python TFLite_detection_image.py -h" for help.')
     sys.exit()
 
 # If neither an image or a folder are specified, default to using 'test1.jpg' for image name
@@ -65,10 +68,12 @@ if (not IM_NAME and not IM_DIR):
 pkg = importlib.util.find_spec('tflite_runtime')
 if pkg:
     from tflite_runtime.interpreter import Interpreter
+
     if use_TPU:
         from tflite_runtime.interpreter import load_delegate
 else:
     from tensorflow.lite.python.interpreter import Interpreter
+
     if use_TPU:
         from tensorflow.lite.python.interpreter import load_delegate
 
@@ -78,24 +83,23 @@ if use_TPU:
     if (GRAPH_NAME == 'detect.tflite'):
         GRAPH_NAME = 'edgetpu.tflite'
 
-
 # Get path to current working directory
 CWD_PATH = os.getcwd()
 
 # Define path to images and grab all image filenames
 if IM_DIR:
-    PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_DIR)
+    PATH_TO_IMAGES = os.path.join(CWD_PATH, IM_DIR)
     images = glob.glob(PATH_TO_IMAGES + '/*')
 
 elif IM_NAME:
-    PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_NAME)
+    PATH_TO_IMAGES = os.path.join(CWD_PATH, IM_NAME)
     images = glob.glob(PATH_TO_IMAGES)
 
 # Path to .tflite file, which contains the model that is used for object detection
-PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, GRAPH_NAME)
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(CWD_PATH,MODEL_NAME,LABELMAP_NAME)
+PATH_TO_LABELS = os.path.join(CWD_PATH, MODEL_NAME, LABELMAP_NAME)
 
 # Load the label map
 with open(PATH_TO_LABELS, 'r') as f:
@@ -105,7 +109,7 @@ with open(PATH_TO_LABELS, 'r') as f:
 # https://www.tensorflow.org/lite/models/object_detection/overview
 # First label is '???', which has to be removed.
 if labels[0] == '???':
-    del(labels[0])
+    del (labels[0])
 
 # Load the Tensorflow Lite model.
 # If using Edge TPU, use special load_delegate argument
@@ -135,7 +139,7 @@ for image_path in images:
     # Load image and resize to expected shape [1xHxWx3]
     image = cv2.imread(image_path)
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    imH, imW, _ = image.shape 
+    imH, imW, _ = image.shape
     image_resized = cv2.resize(image_rgb, (width, height))
     input_data = np.expand_dims(image_resized, axis=0)
 
@@ -144,14 +148,14 @@ for image_path in images:
         input_data = (np.float32(input_data) - input_mean) / input_std
 
     # Perform the actual detection by running the model with the image as input
-    interpreter.set_tensor(input_details[0]['index'],input_data)
+    interpreter.set_tensor(input_details[0]['index'], input_data)
     interpreter.invoke()
 
     # Retrieve detection results
-    boxes = interpreter.get_tensor(output_details[0]['index'])[0] # Bounding box coordinates of detected objects
-    classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
-    scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
-    #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
+    boxes = interpreter.get_tensor(output_details[0]['index'])[0]  # Bounding box coordinates of detected objects
+    classes = interpreter.get_tensor(output_details[1]['index'])[0]  # Class index of detected objects
+    scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence of detected objects
+    # num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores)):
@@ -159,20 +163,38 @@ for image_path in images:
 
             # Get bounding box coordinates and draw box
             # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
-            ymin = int(max(1,(boxes[i][0] * imH)))
-            xmin = int(max(1,(boxes[i][1] * imW)))
-            ymax = int(min(imH,(boxes[i][2] * imH)))
-            xmax = int(min(imW,(boxes[i][3] * imW)))
-            
-            cv2.rectangle(image, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
+            ymin = int(max(1, (boxes[i][0] * imH)))
+            xmin = int(max(1, (boxes[i][1] * imW)))
+            ymax = int(min(imH, (boxes[i][2] * imH)))
+            xmax = int(min(imW, (boxes[i][3] * imW)))
+
+            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
 
             # Draw label
-            object_name = labels[int(classes[i])] # Look up object name from "labels" array using class index
-            label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
-            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
-            label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
-            cv2.rectangle(image, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
-            cv2.putText(image, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+            object_name = labels[int(classes[i])]  # Look up object name from "labels" array using class index
+            label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
+            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
+            label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
+            cv2.rectangle(image, (xmin, label_ymin - labelSize[1] - 10),
+                          (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255),
+                          cv2.FILLED)  # Draw white box to put label text in
+            cv2.putText(image, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
+                        2)  # Draw label text
+
+            name_photo = image_path.split('/')[-1]
+
+            if not os.path.exists('./detection-results'):
+                os.mkdir('./detection-results')
+
+            with open('./detection-results/' + name_photo.split('.')[0] + '.txt', 'a') as file:
+                file.write('{} {} {} {} {} {}\n'.format(
+                    object_name,
+                    scores[i],
+                    xmin,
+                    ymax,
+                    xmax,
+                    ymin
+                ))
 
     # All the results have been drawn on the image, now display the image
     cv2.imshow('Object detector', image)
