@@ -186,7 +186,7 @@ for image_path in images:
             if not os.path.exists('./detection-results'):
                 os.mkdir('./detection-results')
 
-            with open('./detection-results/' + name_photo.split('.')[0] + '.txt', 'a') as file:
+            with open('./input/detection-results/' + name_photo.split('.')[0] + '.txt', 'a') as file:
                 file.write('{} {} {} {} {} {}\n'.format(
                     object_name,
                     scores[i],
