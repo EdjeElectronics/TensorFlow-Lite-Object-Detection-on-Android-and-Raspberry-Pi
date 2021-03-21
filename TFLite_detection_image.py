@@ -20,6 +20,7 @@ import numpy as np
 import sys
 import glob
 import importlib.util
+from tqdm import tqdm
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
@@ -40,6 +41,8 @@ parser.add_argument('--imagedir',
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
 
+parser.add_argument('--show', help='Show images detected', default=False)
+
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
@@ -47,6 +50,7 @@ GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
 min_conf_threshold = float(args.threshold)
 use_TPU = args.edgetpu
+show_images = args.show
 
 # Parse input image name and directory. 
 IM_NAME = args.image
@@ -134,7 +138,7 @@ input_mean = 127.5
 input_std = 127.5
 
 # Loop over every image and perform detection
-for image_path in images:
+for image_path in tqdm(images):
 
     # Load image and resize to expected shape [1xHxWx3]
     image = cv2.imread(image_path)
@@ -157,36 +161,35 @@ for image_path in images:
     scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence of detected objects
     # num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
 
+    if not os.path.exists('./detection-results'):
+        os.mkdir('./detection-results')
     # Loop over all detections and draw detection box if confidence is above minimum threshold
-    for i in range(len(scores)):
-        if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
+    name_photo = image_path.split('/')[-1]
+    
+    with open('./input/detection-results/' + name_photo.split('.')[0] + '.txt', 'a') as file:
+        for i in range(len(scores)):
+            if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
-            # Get bounding box coordinates and draw box
-            # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
-            ymin = int(max(1, (boxes[i][0] * imH)))
-            xmin = int(max(1, (boxes[i][1] * imW)))
-            ymax = int(min(imH, (boxes[i][2] * imH)))
-            xmax = int(min(imW, (boxes[i][3] * imW)))
+                # Get bounding box coordinates and draw box
+                # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
+                ymin = int(max(1, (boxes[i][0] * imH)))
+                xmin = int(max(1, (boxes[i][1] * imW)))
+                ymax = int(min(imH, (boxes[i][2] * imH)))
+                xmax = int(min(imW, (boxes[i][3] * imW)))
 
-            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
+                cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
 
-            # Draw label
-            object_name = labels[int(classes[i])]  # Look up object name from "labels" array using class index
-            label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
-            labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
-            label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
-            cv2.rectangle(image, (xmin, label_ymin - labelSize[1] - 10),
-                          (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255),
-                          cv2.FILLED)  # Draw white box to put label text in
-            cv2.putText(image, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
-                        2)  # Draw label text
+                # Draw label
+                object_name = labels[int(classes[i])]  # Look up object name from "labels" array using class index
+                label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
+                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
+                label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
+                cv2.rectangle(image, (xmin, label_ymin - labelSize[1] - 10),
+                              (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255),
+                              cv2.FILLED)  # Draw white box to put label text in
+                cv2.putText(image, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
+                            2)  # Draw label text
 
-            name_photo = image_path.split('/')[-1]
-
-            if not os.path.exists('./detection-results'):
-                os.mkdir('./detection-results')
-
-            with open('./input/detection-results/' + name_photo.split('.')[0] + '.txt', 'a') as file:
                 file.write('{} {} {} {} {} {}\n'.format(
                     object_name,
                     scores[i],
@@ -194,14 +197,19 @@ for image_path in images:
                     ymax,
                     xmax,
                     ymin
-                ))
+                    ))
+            
+        
 
-    # All the results have been drawn on the image, now display the image
-    cv2.imshow('Object detector', image)
 
-    # Press any key to continue to next image, or press 'q' to quit
-    if cv2.waitKey(0) == ord('q'):
-        break
+    if show_images:
+        # All the results have been drawn on the image, now display the image
+        cv2.imshow('Object detector', image)
+
+        # Press any key to continue to next image, or press 'q' to quit
+        if cv2.waitKey(0) == ord('q'):
+            break
+
 
 # Clean up
 cv2.destroyAllWindows()

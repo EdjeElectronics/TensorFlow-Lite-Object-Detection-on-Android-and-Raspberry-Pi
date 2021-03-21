@@ -361,9 +361,10 @@ ground_truth_files_list.sort()
 gt_counter_per_class = {}
 counter_images_per_class = {}
 
+
 gt_files = []
 for txt_file in ground_truth_files_list:
-    #print(txt_file)
+    # print(txt_file)
     file_id = txt_file.split(".txt", 1)[0]
     file_id = os.path.basename(os.path.normpath(file_id))
     # check if there is a correspondent detection-results file
