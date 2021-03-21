@@ -194,9 +194,9 @@ for image_path in tqdm(images):
                     object_name,
                     scores[i],
                     xmin,
-                    ymax,
+                    ymin,
                     xmax,
-                    ymin
+                    ymax
                     ))
             
         
