@@ -20,12 +20,20 @@ if not os.path.exists("backup"):
 
 # create VOC format files
 xml_list = glob.glob('*.xml')
+
+for file in xml_list:
+    file_new = file.split('.')[0] + '.xml'
+    os.rename(file, file_new)
+    
+xml_list = glob.glob('*.xml')
+
 if len(xml_list) == 0:
   print("Error: no .xml files found in ground-truth")
   sys.exit()
 for tmp_file in xml_list:
   #print(tmp_file)
   # 1. create new file (VOC format)
+  tmp_file = tmp_file.split('.')[0] + '.xml'
   with open(tmp_file.replace(".xml", ".txt"), "a") as new_f:
     root = ET.parse(tmp_file).getroot()
     for obj in root.findall('object'):

@@ -751,6 +751,8 @@ if show_animation:
             if not obj['used']:
                 bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
                 cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
+        print(img_cumulative_path)
+        print(imag)
         cv2.imwrite(img_cumulative_path, img)
 
 # remove the temp_files directory
