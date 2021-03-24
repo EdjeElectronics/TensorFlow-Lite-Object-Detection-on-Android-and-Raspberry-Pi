@@ -746,13 +746,14 @@ if show_animation:
         if img is None:
             img_path = IMG_PATH + '/' + img_id + ".jpg"
             img = cv2.imread(img_path)
+            
+        if img is None:
+            img = pink
         # draw false negatives
         for obj in ground_truth_data:
             if not obj['used']:
                 bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
                 cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
-        print(img_cumulative_path)
-        print(imag)
         cv2.imwrite(img_cumulative_path, img)
 
 # remove the temp_files directory

@@ -8,7 +8,7 @@ bus
 train
 truck
 boat
-traffic light
+traffic_light
 fire_hydrant
 ???
 stop_sign
@@ -82,7 +82,7 @@ toaster
 sink
 refrigerator
 ???
-book
+git_s
 clock
 vase
 scissors
