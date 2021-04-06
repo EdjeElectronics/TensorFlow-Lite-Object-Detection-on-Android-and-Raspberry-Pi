@@ -40,6 +40,8 @@ parser.add_argument('--imagedir',
                     default=None)
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
+parser.add_argument('--evaluate', help='Evaluate detections',
+                    default=False)
 
 parser.add_argument('--show', help='Show images detected', default=False)
 
@@ -51,6 +53,7 @@ LABELMAP_NAME = args.labels
 min_conf_threshold = float(args.threshold)
 use_TPU = args.edgetpu
 show_images = args.show
+evaluate = args.evaluate
 
 # Parse input image name and directory. 
 IM_NAME = args.image
@@ -137,6 +140,8 @@ floating_model = (input_details[0]['dtype'] == np.float32)
 input_mean = 127.5
 input_std = 127.5
 
+print('\nStarting detection...')
+
 # Loop over every image and perform detection
 for image_path in tqdm(images):
 
@@ -213,3 +218,6 @@ for image_path in tqdm(images):
 
 # Clean up
 cv2.destroyAllWindows()
+
+if evaluate:
+    os.system('python3 evaluate.py')
