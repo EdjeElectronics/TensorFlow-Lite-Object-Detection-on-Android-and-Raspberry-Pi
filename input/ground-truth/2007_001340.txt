@@ -1,6 +1,0 @@
-cabinetry 8 7 563 247
-door 571 7 640 172
-chair 393 174 616 456
-diningtable 446 165 635 462
-countertop 1 116 128 479
-bowl 589 153 635 195

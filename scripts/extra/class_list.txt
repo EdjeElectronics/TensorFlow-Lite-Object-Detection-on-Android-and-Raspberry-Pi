@@ -5,6 +5,7 @@ shirt
 lamp
 nightstand
 clock
+cow
 heater
 windowblind
 pillow

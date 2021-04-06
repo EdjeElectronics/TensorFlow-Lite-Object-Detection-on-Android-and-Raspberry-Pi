@@ -1,3 +1,0 @@
-cabinetry 3 1 386 421
-door 376 1 445 259
-cabinetry 480 2 637 228
