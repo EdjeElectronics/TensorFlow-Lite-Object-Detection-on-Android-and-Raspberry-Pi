@@ -1,0 +1,20 @@
+- cd Desktop/TensorFlow-Lite/
+- source TensorFlow-Lite-env/bin/activate
+
+PARA DETECTAR DESDE UNA WEBCAM:
+
+- python3 TFLite_detection_webcam.py --modeldir=TensorFlow-Lite-env
+
+
+PARA DETECTAR UN VÍDEO:
+
+- python3 TFLite_detection_video.py --modeldir=TensorFlow-Lite-env --video=test.mp4
+
+
+PARA DETECTAR UNA FOTO:
+
+- python3 TFLite_detection_image.py --modeldir=models/SSD/ --image=input/images-optional/*
+
+REALIZAR UNA EVALUACION:
+
+-python3 evaluate.py
