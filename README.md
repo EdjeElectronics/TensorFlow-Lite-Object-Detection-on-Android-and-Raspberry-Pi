@@ -6,6 +6,8 @@ To set up the enviroment, run:
 sudo ./install.sh
 ```
 
+To use other models, download them in a folder that ends with `_model`
+
 # TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi GUIDE
 A guide showing how to train TensorFlow Lite object detection models and run them on Android, the Raspberry Pi, and more!
 
