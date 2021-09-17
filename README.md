@@ -1,7 +1,7 @@
 # VMobi Software
 This project is a fork from [this github](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi)
 
-To set up the enviroment, run:
+To set up the enviroment, run this command inside this repository dir:
 ```
 sudo ./install.sh
 ```
