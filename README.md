@@ -1,4 +1,7 @@
-# TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
+# VMobi Software
+This project is a fork from [this github](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi)
+
+# TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi GUIDE
 A guide showing how to train TensorFlow Lite object detection models and run them on Android, the Raspberry Pi, and more!
 
 <p align="center">
