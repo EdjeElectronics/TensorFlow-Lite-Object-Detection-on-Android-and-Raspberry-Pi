@@ -9,7 +9,7 @@ def main():
     # Conect button on GPIO2 and Ground
     but = Button(2)
     while (True):
-        if but.is_pressed():
+        if but.is_pressed:
             # Enter Query Mode
             print("Entering query mode!")
         else:
