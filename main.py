@@ -66,15 +66,30 @@ class VMobi:
         # up_button = Button(3) # GPIO3 -> Up button
         # down_button = Button(4) # GPIO4 -> Down Button
         self.playVoice("Query mode activaded. Which category do you want?")
+        selection = None
+        while True:
+            for cat in self.categories:
+                self.playVoice(cat)
+                if self.query_button.is_pressed:
+                    selection = cat
+                    break
+                time.sleep(0.5)
 
-        for cat in self.categories:
-            self.playVoice(cat)
-            if self.query_button.is_pressed:
-                selection = cat
+            if selection == None:
+                self.playVoice(f"You want to listen again to the categories?")
+                self.query_button.held_time = 3 # Held time set for 3 seconds
+                self.query_button.wait_for_press() # Wait until the query button is pressed
+                if (self.query_button.is_held): # if it is held
+                    print("Held query button, getting back to safari mode")
+                    self.playVoice("Back to safari mode")
+                    break
+                elif (self.query_button.is_pressed): # if it is only pressed
+                    print("Readig list again...")
+                    continue
+            else:
                 break
-            time.sleep(0.5)
-
         self.playVoice(f"Looking for {selection}.")
+        print(f"You selected {selection}")
         # Start looking for a specific selected item
 
     def getAllCategories(self):
