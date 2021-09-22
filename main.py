@@ -1,6 +1,6 @@
 from logging import captureWarnings
 import subprocess, os, signal, time, argparse
-# from gpiozero import Button
+from gpiozero import Button
 from gtts import gTTS
 from playsound import playsound
 
