@@ -27,9 +27,11 @@ class VMobi:
 
     def main(self):
         """Main function that orchestrates the product"""
+        print("On main function!")
 
         # Get a list of the categories as strings
         self.categories = self.getAllCategories()
+        print(f"Got all categories: {self.categories}")
 
         # Running the safari mode to run on the background
         # safari_proccess = self.safari()
@@ -59,14 +61,13 @@ class VMobi:
         # output.decode().split()[0] # This will, be a formatted string of the output
         return p
 
-    def queryMode_type1(self, categories):
+    def queryMode_type1(self):
         """Query mode that functions only with buttons"""
         # up_button = Button(3) # GPIO3 -> Up button
         # down_button = Button(4) # GPIO4 -> Down Button
-
         self.playVoice("Query mode activaded. Which category do you want?")
 
-        for cat in categories:
+        for cat in self.categories:
             self.playVoice(cat)
             if self.query_button.is_pressed:
                 selection = cat
@@ -92,6 +93,7 @@ class VMobi:
 
     def playVoice(self, mText):
         """Function used to play the string 'mText' in audio using tts"""
+        print(f"[playVoice] now playing: '{mText}'")
         myobj = gTTS(text=mText, lang=self.lang, slow=False)
 
         myobj.save("voice.mp3")
