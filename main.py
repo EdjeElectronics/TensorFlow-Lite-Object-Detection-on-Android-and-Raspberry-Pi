@@ -29,7 +29,7 @@ class VMobi:
         """Main function that orchestrates the product"""
 
         # Get a list of the categories as strings
-        self.categories = self.getAllCategories(self.MODEL_DIR)
+        self.categories = self.getAllCategories()
 
         # Running the safari mode to run on the background
         # safari_proccess = self.safari()
