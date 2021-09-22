@@ -13,15 +13,15 @@ class VMobi:
         self.USE_EDGETPU = args.edgetpu # Flag to use the google coral tpu
         self.lang = lang # Language used on tts speech voice
 
-        # self.main()
-        # self.test()
+        self.main() # Runs on the raspberry with buttons on the GPIO
+        # self.test() # Function to test tts on PC
 
     def test(self):
         categories = self.getAllCategories()
         print(categories)
         time.sleep(1)
         print("Now playing the audio")
-        
+        self.playVoice("Query mode activaded. Which category do you want?")
         for cat in categories:
             self.playVoice(cat)
 
@@ -32,7 +32,7 @@ class VMobi:
         self.categories = self.getAllCategories(self.MODEL_DIR)
 
         # Running the safari mode to run on the background
-        safari_proccess = self.safari()
+        # safari_proccess = self.safari()
 
         # Conect button on GPIO2 and Ground
         # Watch out for connenctions in 'pin_layout.svg'
