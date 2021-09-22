@@ -77,7 +77,7 @@ class VMobi:
 
             if selection == None:
                 self.playVoice(f"You want to listen again to the categories?")
-                self.query_button.held_time = 3 # Held time set for 3 seconds
+                # self.query_button.held_time = 3 # Held time set for 3 seconds
                 self.query_button.wait_for_press() # Wait until the query button is pressed
                 if (self.query_button.is_held): # if it is held
                     print("Held query button, getting back to safari mode")
