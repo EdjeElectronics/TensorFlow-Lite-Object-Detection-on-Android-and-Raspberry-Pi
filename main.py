@@ -42,8 +42,8 @@ class VMobi:
         while (True):
             if self.query_button.is_pressed:
                 # Enter Query Mode
-                print("Entering query mode!")
                 self.queryMode_type1()
+                # self.queryMode_type2()
                 # Kills safari mode
                 # os.killpg(os.getpgid(safariProcess.pid), signal.SIGTERM)
     #     time.sleep(1)
@@ -65,6 +65,7 @@ class VMobi:
         """Query mode that functions only with buttons"""
         # up_button = Button(3) # GPIO3 -> Up button
         # down_button = Button(4) # GPIO4 -> Down Button
+        print("Entering query mode only with buttons. (Type 1)")
         self.playVoice("Query mode activaded. Which category do you want?")
         selection = None
         while True:
@@ -91,6 +92,32 @@ class VMobi:
         self.playVoice(f"Looking for {selection}.")
         print(f"You selected {selection}")
         # Start looking for a specific selected item
+
+    def queryMode_type2(self):
+        """Query  mode that uses voice recognition and only the query button"""
+        print("Entering query mode with voice recognition. (Type 2)")
+        self.playVoice("Query mode activaded. Which category do you want?")
+        ###################################################################
+        #                          Pseudo-code                            #
+        # *************************** TODO ****************************** #
+        # Start voice recognition                                         #
+        # while (True):                                                   #
+        #     if user says something:                                     #
+        #         if it is a known category:                              #
+        #             self.playVoice(f"Looking for {selection}")          #
+        #             break                                               #
+        #         elif contains "list":                                   #
+        #             for cat in self.categories:                         #
+        #                 self.playVoice(cat)                             #
+        #                 if self.query_button.is_pressed:                #
+        #                     break                                       #
+        #         else:                                                   #
+        #             self.playVoice(f"Unknown category {selection}.")    #
+        #             self.playVoice(f"Please repeat the category name.") #
+        #             continue                                            #
+        # Start looking for the specific object                           #
+        ###################################################################
+
 
     def getAllCategories(self):
         """Function that get all available categories from model '.name' file"""
