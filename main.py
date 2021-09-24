@@ -1,8 +1,14 @@
 from logging import captureWarnings
 import subprocess, os, signal, time, argparse
+
+# GPIO - Pi Buttons
 from gpiozero import Button
+
+# Audio
 from gtts import gTTS
-from playsound import playsound
+from pydub import AudioSegment
+from pydub.playback import play
+
 
 class VMobi:
     """Class that represents the system as a whole"""
@@ -136,11 +142,11 @@ class VMobi:
     def playVoice(self, mText):
         """Function used to play the string 'mText' in audio using tts"""
         print(f"[playVoice] now playing: '{mText}'")
-        myobj = gTTS(text=mText, lang=self.lang, slow=False)
+        tts_audio = gTTS(text=mText, lang=self.lang, slow=False)
 
-        myobj.save("voice.mp3")
-        playsound("voice.mp3")
-        os.remove("voice.mp3")
+        tts_audio.save("voice.wav")
+        play(AudioSegment.from_file("voice.wav"))
+        os.remove("voice.wav")
         time.sleep(0.5)
 
 if __name__ == '__main__':
