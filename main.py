@@ -73,6 +73,7 @@ class VMobi:
         down_button = Button(23) # GPIO23 -> Down Button
         print("Entering query mode only with buttons. (Type 1)")
         self.playVoice("Query mode activaded. Which category do you want?")
+        self.playVoice("Use up and doown buttons to navigate and query button to select the category you want.")
         selection = None
         ############
         index = 0
