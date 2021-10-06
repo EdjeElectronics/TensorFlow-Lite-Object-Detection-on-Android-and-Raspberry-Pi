@@ -94,6 +94,7 @@ class VMobi:
                 break
         
         self.playVoice(f"You choosed the category: {selection}")
+        return selection
             # if up is pressed:
             #    index += 1
             #    continue
@@ -118,24 +119,24 @@ class VMobi:
         #                 search = False
         #                 break
 
-            if selection == None:
-                self.playVoice(f"You want to listen again to the categories?")
-                # self.query_button.held_time = 3 # Held time set for 3 seconds
-                self.query_button.wait_for_press() # Wait until the query button is pressed
+        #     if selection == None:
+        #         self.playVoice(f"You want to listen again to the categories?")
+        #         # self.query_button.held_time = 3 # Held time set for 3 seconds
+        #         self.query_button.wait_for_press() # Wait until the query button is pressed
                 
-                if (self.query_button.is_held): # if it is held
-                    print("Held query button, getting back to safari mode")
-                    self.playVoice("Back to safari mode")
-                    return
+        #         if (self.query_button.is_held): # if it is held
+        #             print("Held query button, getting back to safari mode")
+        #             self.playVoice("Back to safari mode")
+        #             return
 
-                elif (self.query_button.is_pressed): # if it is only pressed
-                    print("Readig list again...")
-                    break
+        #         elif (self.query_button.is_pressed): # if it is only pressed
+        #             print("Readig list again...")
+        #             break
 
-            else:
-                break
-        self.playVoice(f"Looking for {selection}.")
-        print(f"You selected {selection}")
+        #     else:
+        #         break
+        # self.playVoice(f"Looking for {selection}.")
+        # print(f"You selected {selection}")
         # Start looking for a specific selected item
 
     def queryMode_type2(self):
