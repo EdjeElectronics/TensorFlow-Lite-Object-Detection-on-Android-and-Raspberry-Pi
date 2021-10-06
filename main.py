@@ -77,21 +77,25 @@ class VMobi:
         ############
         index = 0
         while True:
-            self.playVoice(self.categories[index])
-            if up_button.is_pressed:
-                if (index + 1 >= len(self.categories)):
-                    index = 0
-                    continue
-                index += 1
-            elif down_button.is_pressed:
-                if (index - 1 < 0):
-                    index = len(self.categories) - 1
-                    continue
-                index -= 1
-            elif self.query_button.is_pressed:
-                # User choosed the category self.categories[index]
-                selection = self.categories[index]
-                break
+            if (self.query_button.wait_for_press() or up_button.wait_for_press() or down_button.wait_for_press()):
+                if up_button.is_pressed:
+                    if (index + 1 >= len(self.categories)):
+                        index = 0
+                        continue
+                    print("Up Button was pressed!")
+                    index += 1
+                if down_button.is_pressed:
+                    if (index - 1 < 0):
+                        index = len(self.categories) - 1
+                        continue
+                    print("Down Button was pressed!")
+                    index -= 1
+                if self.query_button.is_pressed:
+                    # User choosed the category self.categories[index]
+                    selection = self.categories[index]
+                    print("Query Button was pressed!")
+                    break
+                self.playVoice(self.categories[index])
         
         self.playVoice(f"You choosed the category: {selection}")
         return selection
