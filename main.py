@@ -77,7 +77,7 @@ class VMobi:
         ############
         index = 0
         while True:
-            if (self.query_button.wait_for_press() or up_button.wait_for_press() or down_button.wait_for_press()):
+            if (self.query_button.is_pressed or up_button.is_pressed or down_button.is_pressed):
                 if up_button.is_pressed:
                     if (index + 1 >= len(self.categories)):
                         index = 0
