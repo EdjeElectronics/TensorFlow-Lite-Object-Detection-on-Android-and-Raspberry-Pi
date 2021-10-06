@@ -69,30 +69,69 @@ class VMobi:
 
     def queryMode_type1(self):
         """Query mode that functions only with buttons"""
-        # up_button = Button(3) # GPIO3 -> Up button
-        # down_button = Button(4) # GPIO4 -> Down Button
+        up_button = Button(18) # GPIO18 -> Up button
+        down_button = Button(23) # GPIO23 -> Down Button
         print("Entering query mode only with buttons. (Type 1)")
         self.playVoice("Query mode activaded. Which category do you want?")
         selection = None
+        ############
+        index = 0
         while True:
-            for cat in self.categories:
-                self.playVoice(cat)
-                if self.query_button.is_pressed:
-                    selection = cat
-                    break
-                time.sleep(0.5)
+            self.playVoice(self.categories[index])
+            if up_button.is_pressed:
+                if (index + 1 >= len(self.categories)):
+                    index = 0
+                    continue
+                index += 1
+            elif down_button.is_pressed:
+                if (index - 1 < 0):
+                    index = len(self.categories) - 1
+                    continue
+                index -= 1
+            elif self.query_button.is_pressed:
+                # User choosed the category self.categories[index]
+                selection = self.categories[index]
+                break
+        
+        self.playVoice(f"You choosed the category: {selection}")
+            # if up is pressed:
+            #    index += 1
+            #    continue
+            # if down is pressed:
+            #    index -= 1
+            #    continue
+            # if query is pressed:
+            #    Choose category
+            # 
+            # if query is hold:
+            #    Cancel
+            #    search = False
+            #    break
+        #########
+        # while search:
+        #     for cat in self.categories:
+        #         self.playVoice(cat)
+        #         t0 = time.time()
+        #         while (time.time() - t0 < 0.25):
+        #             if self.query_button.is_pressed:
+        #                 selection = cat
+        #                 search = False
+        #                 break
 
             if selection == None:
                 self.playVoice(f"You want to listen again to the categories?")
                 # self.query_button.held_time = 3 # Held time set for 3 seconds
                 self.query_button.wait_for_press() # Wait until the query button is pressed
+                
                 if (self.query_button.is_held): # if it is held
                     print("Held query button, getting back to safari mode")
                     self.playVoice("Back to safari mode")
-                    break
+                    return
+
                 elif (self.query_button.is_pressed): # if it is only pressed
                     print("Readig list again...")
-                    continue
+                    break
+
             else:
                 break
         self.playVoice(f"Looking for {selection}.")
@@ -147,7 +186,6 @@ class VMobi:
         tts_audio.save("voice.wav")
         play(AudioSegment.from_file("voice.wav"))
         os.remove("voice.wav")
-        time.sleep(0.5)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
