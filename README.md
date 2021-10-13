@@ -3,8 +3,7 @@ This project is a fork from [this github](https://github.com/EdjeElectronics/Ten
 
 To set up the enviroment, run this command inside this repository dir:
 ```
-sudo chmod +x install.sh
-sudo ./install.sh
+sudo sh install.sh
 ```
 
 To use other models, download them in a folder that ends with `_model`
