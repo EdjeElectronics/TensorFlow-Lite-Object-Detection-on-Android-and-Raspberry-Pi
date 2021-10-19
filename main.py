@@ -97,7 +97,7 @@ class VMobi:
                     break
                 self.playVoice(self.categories[index])
         
-        self.playVoice(f"You choosed the category: {selection}")
+        self.playVoice(f"You chose the category: {selection}")
         return selection
             # if up is pressed:
             #    index += 1
