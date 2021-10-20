@@ -77,12 +77,22 @@ Make sure you have Python version >= 3.7:
 
 ```sh
 $ which python3
-$ python3 -v
+$ python3 --version
+```
+
+> Both commands above must return a valid output indicating the python3 version. If it shows an error or nothing, you should install python3
+
+To install python3, in case you don't have it:
+
+```sh
+$ sudo apt update
+$ sudo apt install python3-pip
 ```
 
 Then, run:
 
 ```sh
+$ git clone https://github.com/pfeinsper/VMobi-objetc-detection-raspberry-pi
 $ cd VMobi-objetc-detection-raspberry-pi
 $ sudo chmod +x install.sh
 ```
@@ -90,8 +100,11 @@ $ sudo chmod +x install.sh
 And, without the Google Coral TPU connected to the hardware, run:
 
 ```
-sudo sh install.sh
+$ sudo su
+$ ./install.sh
 ```
+
+> Disclaimer: At the end of the script, your raspberry pi should reboot.
 
 To use other models, download the `.tflite` file and move it to a new folder in the root directory of the project, named `'{Model Name}_model'` (Change `Model Name`).
 

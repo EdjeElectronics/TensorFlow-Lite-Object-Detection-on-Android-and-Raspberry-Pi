@@ -69,6 +69,7 @@ class VMobi:
         selection = None
 
         index = 0
+        play_voice(self.categories[index], self.lang) # To read first category
         while True:
             if (self.query_button.is_pressed or up_button.is_pressed or down_button.is_pressed):
                 if up_button.is_pressed:
