@@ -147,7 +147,7 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
         cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
-        cv2.imshow('Object detector', frame)
+        cv2.imshow('Safari Mode', frame)
 
         # Calculate framerate
         t2 = cv2.getTickCount()
@@ -156,11 +156,10 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
 
         # Press 'q' to quit
         if cv2.waitKey(1) == ord('q') or getattr(t, "do_run", False):
+            # Clean up
+            cv2.destroyAllWindows()
+            videostream.stop()
             break
-
-    # Clean up
-    cv2.destroyAllWindows()
-    videostream.stop()
 
 def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
                input_std, input_details, output_details, min_conf_threshold, labels, query_obj):
@@ -234,7 +233,7 @@ def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean,
         cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
-        cv2.imshow('Object detector', frame)
+        cv2.imshow('Query Mode', frame)
 
         # Calculate framerate
         t2 = cv2.getTickCount()
