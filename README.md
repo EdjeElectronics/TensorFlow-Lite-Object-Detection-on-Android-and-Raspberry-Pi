@@ -90,7 +90,7 @@ $ sudo chmod +x install.sh
 And, without the Google Coral TPU connected to the hardware, run:
 
 ```
-sudo ./install.sh
+sudo sh install.sh
 ```
 
 To use other models, download the `.tflite` file and move it to a new folder in the root directory of the project, named `'{Model Name}_model'` (Change `Model Name`).
