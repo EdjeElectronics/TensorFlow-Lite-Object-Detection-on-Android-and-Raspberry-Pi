@@ -13,7 +13,7 @@ from pydub.playback import play
 import threading
 
 # TFLite detection
-from TFLite_detection_webcam import initialize, safari_mode, query_mode
+from TFLite_detection_webcam import initialize_detector
 
 
 class VMobi:
@@ -49,7 +49,7 @@ class VMobi:
         # Running the safari mode to run on the background
         # safari_proccess = self.safari()
 
-        thread_safari_mode = threading.Thread(initialize, args=(self.args,))
+        thread_safari_mode = threading.Thread(initialize_detector, args=(self.args,))
         thread_safari_mode.start()
 
         # Conect button on GPIO2 and Ground
@@ -60,7 +60,7 @@ class VMobi:
                 # Enter Query Mode
                 thread_safari_mode._running = False # Kill safari mode
                 query_cat = self.query_mode_selection() # Get the category with the GPIO buttons
-                thread_query_mode = threading.Thread(initialize, args=(self.args, query_cat,)) # Threading Query Mode
+                thread_query_mode = threading.Thread(initialize_detector, args=(self.args, query_cat,)) # Threading Query Mode
                 thread_query_mode.start() # Starting query mode
                 thread_query_mode.join()  # Waiting for it to finish
                 

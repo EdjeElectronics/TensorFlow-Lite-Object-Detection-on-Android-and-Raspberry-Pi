@@ -238,7 +238,7 @@ def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean,
     cv2.destroyAllWindows()
     videostream.stop()
 
-def initialize(args, is_safari=True, query_cat=None):
+def initialize_detector(args, is_safari=True, query_cat=None):
     MODEL_NAME = args.modeldir
     GRAPH_NAME = args.graph
     LABELMAP_NAME = args.labels
