@@ -66,6 +66,7 @@ class VMobi:
                 thread_query_mode.join()  # Waiting for it to finish
                 
                 # After query mode is done, getting back to safari
+                thread_safari_mode = threading.Thread(target=initialize_detector, args=(self.args,))
                 thread_safari_mode.start() # Re-starting safari mode
                 continue 
 
