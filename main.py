@@ -132,7 +132,7 @@ class VMobi:
         """Function that get all available categories from model '.name' file"""
         for root, dir, files in os.walk(self.MODEL_DIR):
             for f in files:
-                if ".name" in f:
+                if "labelmap.txt" in f:
                     filename = f
                     break
         cat = []

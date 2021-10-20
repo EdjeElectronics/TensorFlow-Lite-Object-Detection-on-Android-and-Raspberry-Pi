@@ -122,9 +122,9 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
                 cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
 
                 if (scores[i] > 0.9):
-                    if (xmin - imW > 0):
+                    if ((xmin + xmax)/2 > imW/2):
                         play_voice(f"{object_name} at your right")
-                    elif (xmin - imW < 0):
+                    elif ((xmin + xmax)/2 < imW/2):
                         play_voice(f"{object_name} at your left")
                     else:
                         play_voice(f"{object_name} in your way")
@@ -215,7 +215,7 @@ def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean,
                 cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
                 cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
                 if (object_name == query_obj):
-                    if (counter >= 3):
+                    if (counter >= 5):
                         play_voice(f"Found the {query_obj}")
                         break
                     counter += 1
