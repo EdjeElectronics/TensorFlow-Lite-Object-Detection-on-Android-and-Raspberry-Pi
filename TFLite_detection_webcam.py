@@ -314,9 +314,11 @@ def initialize_detector(args, is_safari=True, query_cat=None):
     input_std = 127.5
 
     if (is_safari and query_cat is None):
+        print("Initializing Safari Mode")
         safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
                 input_std, input_details, output_details, min_conf_threshold, labels)
     elif (query_cat is not None and not is_safari):
+        print("Initializing Query Mode")
         query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
                 input_std, input_details, output_details, min_conf_threshold, labels, query_cat)
     else:
