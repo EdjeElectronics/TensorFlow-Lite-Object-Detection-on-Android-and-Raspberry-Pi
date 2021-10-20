@@ -101,7 +101,7 @@ Usage
 The project is built to run as root, so run first:
 
 ```sh
-$ sudo su -
+$ sudo su
 ```
 
 Now that you have a root shell, conect the Google Coral TPU on the USB 3.0 input and then, in the root directory of the project, run:

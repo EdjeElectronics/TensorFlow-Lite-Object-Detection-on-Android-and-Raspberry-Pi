@@ -56,7 +56,7 @@ class VMobi:
         detector_args = initialize_detector(self.args)
             
         while (True):
-            s = safari_mode(detector_args)
+            s = safari_mode(detector_args, self.query_button)
             if s > 0:
                 # Enter Query Mode
                 query_cat = self.query_mode_selection() # Get the category with the GPIO buttons

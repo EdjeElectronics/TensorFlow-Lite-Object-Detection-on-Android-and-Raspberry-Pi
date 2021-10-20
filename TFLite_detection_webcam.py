@@ -74,7 +74,7 @@ class VideoStream:
         print("Stopping videostream")
         self.stopped = True
 
-def safari_mode(args):
+def safari_mode(args, query_button):
     """Runs the Safari Mode; args is a tuple"""
     interpreter, imW, imH, width, height, floating_model, input_mean, input_std, input_details, output_details, min_conf_threshold, labels = args
 
@@ -88,7 +88,6 @@ def safari_mode(args):
     time.sleep(1)
 
     #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-    query_button = Button(2)
     out = 0
     while True:
 
