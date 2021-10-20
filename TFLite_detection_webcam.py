@@ -155,7 +155,7 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
         frame_rate_calc= 1/time1
 
         # Press 'q' to quit
-        if cv2.waitKey(1) == ord('q') or getattr(t, "do_run", True):
+        if cv2.waitKey(1) == ord('q') or getattr(t, "do_run", False):
             break
 
     # Clean up
