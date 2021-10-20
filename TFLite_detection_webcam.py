@@ -297,14 +297,14 @@ def initialize_detector(args, is_safari=True, query_cat=None, first_time=True):
         if labels[0] == '???':
             del(labels[0])
 
-        # Load the Tensorflow Lite model.
-        # If using Edge TPU, use special load_delegate argument
-        if use_TPU:
-            interpreter = Interpreter(model_path=PATH_TO_CKPT,
-                                    experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
-            print(PATH_TO_CKPT)
-        else:
-            interpreter = Interpreter(model_path=PATH_TO_CKPT)
+    # Load the Tensorflow Lite model.
+    # If using Edge TPU, use special load_delegate argument
+    if use_TPU:
+        interpreter = Interpreter(model_path=PATH_TO_CKPT,
+                                experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
+        print(PATH_TO_CKPT)
+    else:
+        interpreter = Interpreter(model_path=PATH_TO_CKPT)
 
     interpreter.allocate_tensors()
 
