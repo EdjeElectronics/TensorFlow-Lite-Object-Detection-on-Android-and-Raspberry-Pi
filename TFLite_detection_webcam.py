@@ -184,6 +184,7 @@ def query_mode(args, query_obj):
 
     #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
     counter = 0
+    breakFlag = False
     while True:
         # Start timer (for calculating frame rate)
         t1 = cv2.getTickCount()
@@ -233,10 +234,12 @@ def query_mode(args, query_obj):
                 if (object_name == query_obj):
                     if (counter >= 5):
                         play_voice(f"Found the {query_obj}")
+                        breakFlag = True
                         break
                     counter += 1
                 else:
                     counter = 0
+        
         # Draw framerate in corner of frame
         cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
 
@@ -249,7 +252,7 @@ def query_mode(args, query_obj):
         frame_rate_calc= 1/time1
 
         # Press 'q' to quit
-        if cv2.waitKey(1) == ord('q'):
+        if cv2.waitKey(1) == ord('q') or breakFlag:
             break
 
     # Clean up
