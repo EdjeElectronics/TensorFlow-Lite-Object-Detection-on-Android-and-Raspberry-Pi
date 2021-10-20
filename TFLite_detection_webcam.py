@@ -164,6 +164,9 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
 
 def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
                input_std, input_details, output_details, min_conf_threshold, labels, query_obj):
+
+    t = threading.currentThread()
+    
     # Initialize frame rate calculation
     frame_rate_calc = 1
     freq = cv2.getTickFrequency()
@@ -245,6 +248,7 @@ def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean,
     # Clean up
     cv2.destroyAllWindows()
     videostream.stop()
+    t.do_run = False
 
 def initialize_detector(args, is_safari=True, query_cat=None):
     MODEL_NAME = args.modeldir

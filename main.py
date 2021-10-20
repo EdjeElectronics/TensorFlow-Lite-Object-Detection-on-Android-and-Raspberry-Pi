@@ -47,8 +47,6 @@ class VMobi:
         print(f"Got all categories: {self.categories}")
 
         # Running the safari mode to run on the background
-        # safari_proccess = self.safari()
-
         thread_safari_mode = threading.Thread(target=initialize_detector, args=(self.args,))
         thread_safari_mode.start()
 
@@ -58,17 +56,18 @@ class VMobi:
         while (True):
             if self.query_button.is_pressed:
                 # Enter Query Mode
-                # thread_safari_mode._running = False # Kill safari mode
                 thread_safari_mode.do_run = False
                 query_cat = self.query_mode_selection() # Get the category with the GPIO buttons
                 thread_query_mode = threading.Thread(target=initialize_detector, args=(self.args, False, query_cat,)) # Threading Query Mode
                 thread_query_mode.start() # Starting query mode
-                thread_query_mode.join()  # Waiting for it to finish
-                
+                while getattr(thread_query_mode, "do_run", True):
+                    continue
+
+                # thread_query_mode.join()  # Waiting for it to finish
+
                 # After query mode is done, getting back to safari
-                thread_safari_mode = threading.Thread(target=initialize_detector, args=(self.args,))
                 thread_safari_mode.start() # Re-starting safari mode
-                continue 
+                continue
 
     def query_mode_selection(self):
         """[Type 1] Query mode that functions only with buttons"""
