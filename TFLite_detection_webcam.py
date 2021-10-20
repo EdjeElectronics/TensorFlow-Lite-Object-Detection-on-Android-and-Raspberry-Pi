@@ -306,18 +306,18 @@ def initialize_detector(args, is_safari=True, query_cat=None, first_time=True):
         else:
             interpreter = Interpreter(model_path=PATH_TO_CKPT)
 
-        interpreter.allocate_tensors()
+    interpreter.allocate_tensors()
 
-        # Get model details
-        input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()
-        height = input_details[0]['shape'][1]
-        width = input_details[0]['shape'][2]
+    # Get model details
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    height = input_details[0]['shape'][1]
+    width = input_details[0]['shape'][2]
 
-        floating_model = (input_details[0]['dtype'] == np.float32)
+    floating_model = (input_details[0]['dtype'] == np.float32)
 
-        input_mean = 127.5
-        input_std = 127.5
+    input_mean = 127.5
+    input_std = 127.5
 
     if (is_safari and query_cat is None):
         print("Initializing Safari Mode")
