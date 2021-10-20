@@ -87,7 +87,7 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
     time.sleep(1)
 
     #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-    while getattr(t, "do_run", True):
+    while (True):
 
         # Start timer (for calculating frame rate)
         t1 = cv2.getTickCount()
@@ -155,7 +155,7 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
         frame_rate_calc= 1/time1
 
         # Press 'q' to quit
-        if cv2.waitKey(1) == ord('q'):
+        if cv2.waitKey(1) == ord('q') or getattr(t, "do_run", True):
             break
 
     # Clean up
