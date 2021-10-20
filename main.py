@@ -13,7 +13,7 @@ from pydub.playback import play
 import threading
 
 # TFLite detection
-from TFLite_detection_webcam import initialize_detector
+from TFLite_detection_webcam import initialize_detector, safari_mode, query_mode
 
 
 class VMobi:
@@ -46,27 +46,21 @@ class VMobi:
         self.categories = self.get_all_categories()
         print(f"Got all categories: {self.categories}")
 
-        # Running the safari mode to run on the background
-        thread_safari_mode = threading.Thread(target=initialize_detector, args=(self.args,))
-        thread_safari_mode.start()
-
         # Conect button on GPIO2 and Ground
         # Watch out for connenctions in 'pin_layout.svg'
         self.query_button = Button(2)
+
+        # Running the safari mode to run on the background
+        # thread_safari_mode = threading.Thread(target=initialize_detector, args=(self.args,))
+        # thread_safari_mode.start()
+        detector_args = initialize_detector(self.args)
+            
         while (True):
-            if self.query_button.is_pressed:
+            s = safari_mode(detector_args)
+            if s > 0:
                 # Enter Query Mode
-                thread_safari_mode.do_run = False
                 query_cat = self.query_mode_selection() # Get the category with the GPIO buttons
-                thread_query_mode = threading.Thread(target=initialize_detector, args=(self.args, False, query_cat,)) # Threading Query Mode
-                thread_query_mode.start() # Starting query mode
-                while getattr(thread_query_mode, "do_run", True):
-                    continue
-
-                # thread_query_mode.join()  # Waiting for it to finish
-
-                # After query mode is done, getting back to safari
-                thread_safari_mode.start() # Re-starting safari mode
+                query_mode(detector_args, query_cat)
                 continue
 
     def query_mode_selection(self):

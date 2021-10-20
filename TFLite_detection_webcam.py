@@ -28,8 +28,8 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 
-# Threads
-import threading
+# GPIO - Pi Buttons
+from gpiozero import Button
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -74,10 +74,11 @@ class VideoStream:
         print("Stopping videostream")
         self.stopped = True
 
-def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
-                input_std, input_details, output_details, min_conf_threshold, labels):
+def safari_mode(args):
+    """Runs the Safari Mode; args is a tuple"""
+    interpreter, imW, imH, width, height, floating_model, input_mean, input_std, input_details, output_details, min_conf_threshold, labels = args
 
-    t = threading.currentThread()
+    # t = threading.currentThread()
     # Initialize frame rate calculation
     frame_rate_calc = 1
     freq = cv2.getTickFrequency()
@@ -87,7 +88,9 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
     time.sleep(1)
 
     #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-    while (True):
+    query_button = Button(2)
+    out = 0
+    while True:
 
         # Start timer (for calculating frame rate)
         t1 = cv2.getTickCount()
@@ -155,16 +158,22 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
         frame_rate_calc= 1/time1
 
         # Press 'q' to quit
-        if cv2.waitKey(1) == ord('q') or getattr(t, "do_run", False):
-            # Clean up
-            cv2.destroyAllWindows()
-            videostream.stop()
+        if cv2.waitKey(1) == ord('q'):
+            break
+        if query_button.is_pressed:
+            out = 1
             break
 
-def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
-               input_std, input_details, output_details, min_conf_threshold, labels, query_obj):
+    # Clean up  
+    cv2.destroyAllWindows()
+    videostream.stop()
+    return out
+    # if t.do_run:
+    #     t.do_run = False
 
-    t = threading.currentThread()
+def query_mode(args, query_obj):
+    """Runs the query mode"""
+    interpreter, imW, imH, width, height, floating_model, input_mean, input_std, input_details, output_details, min_conf_threshold, labels = args
 
     # Initialize frame rate calculation
     frame_rate_calc = 1
@@ -247,9 +256,9 @@ def query_mode(interpreter, imW, imH, width, height, floating_model, input_mean,
     # Clean up
     cv2.destroyAllWindows()
     videostream.stop()
-    t.do_run = False
+    # t.do_run = False
 
-def initialize_detector(args, is_safari=True, query_cat=None):
+def initialize_detector(args):
     MODEL_NAME = args.modeldir
     GRAPH_NAME = args.graph
     LABELMAP_NAME = args.labels
@@ -316,17 +325,18 @@ def initialize_detector(args, is_safari=True, query_cat=None):
 
     input_mean = 127.5
     input_std = 127.5
-
-    if (is_safari and query_cat is None):
-        print("Initializing Safari Mode")
-        safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
-                input_std, input_details, output_details, min_conf_threshold, labels)
-    elif (query_cat is not None and not is_safari):
-        print("Initializing Query Mode")
-        query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
-                input_std, input_details, output_details, min_conf_threshold, labels, query_cat)
-    else:
-        raise KeyError(f"Query category is not none ({query_cat}) and is_safari flag is activated")
+    args = (interpreter, imW, imH, width, height, floating_model, input_mean, input_std, input_details, output_details, min_conf_threshold, labels)
+    return args
+    # if (is_safari and query_cat is None):
+    #     print("Initializing Safari Mode")
+    #     safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
+    #             input_std, input_details, output_details, min_conf_threshold, labels)
+    # elif (query_cat is not None and not is_safari):
+    #     print("Initializing Query Mode")
+    #     query_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
+    #             input_std, input_details, output_details, min_conf_threshold, labels, query_cat)
+    # else:
+    #     raise KeyError(f"Query category is not none ({query_cat}) and is_safari flag is activated")
 
 def play_voice(mText, lang="en"):
     """Function used to play the string 'mText' in audio using tts"""
