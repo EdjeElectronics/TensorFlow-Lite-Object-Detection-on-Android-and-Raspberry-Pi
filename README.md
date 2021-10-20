@@ -87,7 +87,7 @@ $ cd VMobi-objetc-detection-raspberry-pi
 $ sudo chmod +x install.sh
 ```
 
-And finally, run:
+And, without the Google Coral TPU connected to the hardware, run:
 
 ```
 sudo ./install.sh
@@ -104,7 +104,7 @@ The project is built to run as root, so run first:
 $ sudo su -
 ```
 
-Now that you have a root shell, in the root directory of the project, run:
+Now that you have a root shell, conect the Google Coral TPU on the USB 3.0 input and then, in the root directory of the project, run:
 
 ```sh
 $ python3 main.py --modeldir={Name of the Model Directory} --edgetpu
