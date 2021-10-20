@@ -49,7 +49,7 @@ class VideoStream:
         self.stopped = False
 
     def start(self):
-	# Start the thread that reads frames from the video stream
+	    # Start the thread that reads frames from the video stream
         Thread(target=self.update,args=()).start()
         return self
 
@@ -66,11 +66,12 @@ class VideoStream:
             (self.grabbed, self.frame) = self.stream.read()
 
     def read(self):
-	# Return the most recent frame
+	    # Return the most recent frame
         return self.frame
 
     def stop(self):
-	# Indicate that the camera and thread should be stopped
+	    # Indicate that the camera and thread should be stopped
+        print("Stopping videostream")
         self.stopped = True
 
 def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
