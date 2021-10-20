@@ -28,6 +28,9 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 
+# Threads
+import threading
+
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
 class VideoStream:
@@ -72,6 +75,8 @@ class VideoStream:
 
 def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean, 
                 input_std, input_details, output_details, min_conf_threshold, labels):
+
+    t = threading.currentThread()
     # Initialize frame rate calculation
     frame_rate_calc = 1
     freq = cv2.getTickFrequency()
@@ -81,7 +86,7 @@ def safari_mode(interpreter, imW, imH, width, height, floating_model, input_mean
     time.sleep(1)
 
     #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-    while True:
+    while getattr(t, "do_run", True):
 
         # Start timer (for calculating frame rate)
         t1 = cv2.getTickCount()

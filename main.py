@@ -58,7 +58,8 @@ class VMobi:
         while (True):
             if self.query_button.is_pressed:
                 # Enter Query Mode
-                thread_safari_mode._running = False # Kill safari mode
+                # thread_safari_mode._running = False # Kill safari mode
+                thread_safari_mode.do_run = False
                 query_cat = self.query_mode_selection() # Get the category with the GPIO buttons
                 thread_query_mode = threading.Thread(target=initialize_detector, args=(self.args, query_cat,)) # Threading Query Mode
                 thread_query_mode.start() # Starting query mode
