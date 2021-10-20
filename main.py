@@ -1,5 +1,5 @@
 from logging import captureWarnings
-import subprocess, os, signal, time, argparse
+import os, time, argparse
 
 # GPIO - Pi Buttons
 from gpiozero import Button
@@ -8,9 +8,6 @@ from gpiozero import Button
 from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
-
-# Threads
-import threading
 
 # TFLite detection
 from TFLite_detection_webcam import initialize_detector, safari_mode, query_mode
