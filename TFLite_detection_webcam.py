@@ -24,7 +24,9 @@ from threading import Thread
 import importlib.util
 
 # Audio Setup
-from main import play_voice
+from gtts import gTTS
+from pydub import AudioSegment
+from pydub.playback import play
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -314,6 +316,15 @@ def initialize_detector(args, is_safari=True, query_cat=None):
                 input_std, input_details, output_details, min_conf_threshold, labels, query_cat)
     else:
         raise KeyError(f"Query category is not none ({query_cat}) and is_safari flag is activated")
+
+def play_voice(mText, lang="en"):
+    """Function used to play the string 'mText' in audio using tts"""
+    print(f"[play_voice] now playing: '{mText}'")
+    tts_audio = gTTS(text=mText, lang=lang, slow=False)
+
+    tts_audio.save("voice.wav")
+    play(AudioSegment.from_file("voice.wav"))
+    os.remove("voice.wav")
         
 if __name__ == '__main__':
     # Define and parse input arguments
