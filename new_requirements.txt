@@ -1,0 +1,25 @@
+certifi==2021.10.8
+charset-normalizer==2.0.7
+click==8.0.3
+colorzero==2.0
+gpiozero==1.6.2
+gTTS==2.2.3
+idna==3.3
+importlib-metadata==4.8.1
+imutils==0.5.4
+lgpio==0.0.0.2
+numpy==1.21.2
+opencv-python==4.5.3.56
+pigpio==1.78
+Pillow==8.4.0
+pkg_resources==0.0.0
+PyAudio==0.2.11
+pydub==0.25.1
+requests==2.26.0
+RPi.GPIO==0.7.0
+six==1.16.0
+SpeechRecognition==3.8.1
+tflite-runtime @ https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp37-cp37m-linux_aarch64.whl
+typing-extensions==3.10.0.2
+urllib3==1.26.7
+zipp==3.6.0
