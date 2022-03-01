@@ -153,6 +153,15 @@ floating_model = (input_details[0]['dtype'] == np.float32)
 input_mean = 127.5
 input_std = 127.5
 
+# Check output layer name to determine if this model was created with TF2 or TF1,
+# because outputs are ordered differently for TF2 and TF1 models
+outname = output_details[0]['name']
+
+if ('StatefulPartitionedCall' in outname): # This is a TF2 model
+    boxes_idx, classes_idx, scores_idx = 1, 3, 0
+else: # This is a TF1 model
+    boxes_idx, classes_idx, scores_idx = 0, 1, 2
+
 # Initialize frame rate calculation
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
@@ -185,10 +194,9 @@ while True:
     interpreter.invoke()
 
     # Retrieve detection results
-    boxes = interpreter.get_tensor(output_details[0]['index'])[0] # Bounding box coordinates of detected objects
-    classes = interpreter.get_tensor(output_details[1]['index'])[0] # Class index of detected objects
-    scores = interpreter.get_tensor(output_details[2]['index'])[0] # Confidence of detected objects
-    #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
+    boxes = interpreter.get_tensor(output_details[boxes_idx]['index'])[0] # Bounding box coordinates of detected objects
+    classes = interpreter.get_tensor(output_details[classes_idx]['index'])[0] # Class index of detected objects
+    scores = interpreter.get_tensor(output_details[scores_idx]['index'])[0] # Confidence of detected objects
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores)):
