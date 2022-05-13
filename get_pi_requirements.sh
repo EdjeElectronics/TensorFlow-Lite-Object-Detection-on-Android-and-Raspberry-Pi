@@ -17,7 +17,7 @@ pip3 install opencv-python==3.4.11.41
 
 #pip3 install tensorflow
 
-version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
 if [ $version == "3.9" ]; then
 pip3 install https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
