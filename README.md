@@ -5,7 +5,11 @@ A guide showing how to train TensorFlow Lite object detection models and run the
    <img src="doc/BSR_demo.gif">
 </p>
 
-Update (9/2/22): I wrote a Google Colab notebook that can be used to train custom TensorFlow Lite models. It's much easier than trying to install and train everything on your local computer! Check it out: [Train_TFLite2_Object_Detction_Model.ipynb](./Train_TFLite2_Object_Detction_Model.ipynb)
+Update (9/2/22): I wrote a Google Colab notebook that can be used to train custom TensorFlow Lite models. It's much easier than trying to install and train everything on your local computer! 
+
+Check it out here: [Train_TFLite2_Object_Detction_Model.ipynb](./Train_TFLite2_Object_Detction_Model.ipynb)
+
+<a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## Introduction
 TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on Android phones or the Raspberry Pi.
