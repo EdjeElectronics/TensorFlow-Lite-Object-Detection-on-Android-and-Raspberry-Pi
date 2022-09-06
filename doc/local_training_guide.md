@@ -19,9 +19,9 @@ The TensorFlow team is always hard at work releasing updated versions of TensorF
 This guide gives instructions for training and deploying your own custom TensorFlow Lite object detection model on a Windows 10 PC. The guide is based off the [tutorial in the TensorFlow Object Detection repository](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md), but it gives more detailed instructions and is written specifically for Windows. (It will work on Linux too with some minor changes, which I leave as an exercise for the Linux user.)
 
 There are three primary steps to training and deploying a TensorFlow Lite model:
-1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
-2. [Build TensorFlow from source on your PC](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-2-build-tensorflow-from-source)
-3. [Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-3-use-toco-to-create-optimzed-tensorflow-lite-model)
+1. [Train a quantized SSD-MobileNet model using TensorFlow, and export frozen graph for TensorFlow Lite](#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph)
+2. [Build TensorFlow from source on your PC](#step-2-build-tensorflow-from-source)
+3. [Use TensorFlow Lite Optimizing Converter (TOCO) to create optimzed TensorFlow Lite model](#step-3-use-toco-to-create-optimzed-tensorflow-lite-model-create-label-map-run-model)
 
 This portion is a continuation of my previous guide: [How To Train an Object Detection Model Using TensorFlow on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10). I'll assume you have already set up TensorFlow to train a custom object detection model as described in that guide, including:
 * Setting up an Anaconda virtual environment for training
@@ -38,9 +38,9 @@ Parts 2 and 3 of this guide will go on to show how to deploy this newly trained 
 ### Step 1: Train Quantized SSD-MobileNet Model and Export Frozen TensorFlow Lite Graph
 First, we’ll use transfer learning to train a “quantized” SSD-MobileNet model. Quantized models use 8-bit integer values instead of 32-bit floating values within the neural network, allowing them to run much more efficiently on GPUs or specialized TPUs (TensorFlow Processing Units).
 
-You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run quite as fast as the quantized model. Also, you will not be able to run it on the Google Coral TPU Accelerator. If you’re using an SSD-MobileNet model that has already been trained, you can skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite) of this guide.
+You can also use a standard SSD-MobileNet model (V1 or V2), but it will not run quite as fast as the quantized model. Also, you will not be able to run it on the Google Coral TPU Accelerator. If you’re using an SSD-MobileNet model that has already been trained, you can skip to [Step 1d](#step-1d-export-frozen-inference-graph-for-tensorflow-lite) of this guide.
 
-**If you get any errors during this process, please look at the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
+**If you get any errors during this process, please look at the [FAQ section](#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
 
 As I mentioned prevoiusly, this guide assumes you have already followed my [previous TensorFlow tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and set up the Anaconda virtual environment and full directory structure needed for using the TensorFlow Object Detection API. If you've done so, you should have a folder at C:\tensorflow1\models\research\object_detection that has everything needed for training. (If you used a different base folder name than "tensorflow1", that's fine - just make sure you continue to use that name throughout this guide.)
 
@@ -49,7 +49,7 @@ Here's what your \object_detection folder should look like:
    <img src="object_detection_folder.png">
 </p>
 
-If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD model (see next paragraph) and then skip to [Step 1d](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1d-export-frozen-inference-graph-for-tensorflow-lite).
+If you don't have this folder, please go to my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) and work through at least Steps 1 and 2. If you'd like to train your own model to detect custom objects, you'll also need to work through Steps 3, 4, and 5. If you don't want to train your own model but want to practice the process for converting a model to TensorFlow Lite, you can download the quantized MobileNet-SSD model (see next paragraph) and then skip to [Step 1d](#step-1d-export-frozen-inference-graph-for-tensorflow-lite).
 
 #### Step 1a. Download and extract quantized SSD-MobileNet model
 Google provides several quantized object detection models in their [detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md). This tutorial will use the SSD-MobileNet-V2-Quantized-COCO model. Download the model [here](http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v2_quantized_300x300_coco_2019_01_03.tar.gz). **Note: TensorFlow Lite does NOT support RCNN models such as Faster-RCNN! It only supports SSD models.** 
@@ -89,7 +89,7 @@ Make the following changes to the ssd_mobilenet_v2_quantized_300x300_coco.config
 Save and exit the training file after the changes have been made.
   
 #### Step 1c. Run training in Anaconda virtual environment
-All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder. (See the [FAQ](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) for why I am using the legacy train.py script rather than model_main.py for training.)
+All that's left to do is train the model! First, move the “train.py” file from the \object_detection\legacy folder into the main \object_detection folder. (See the [FAQ](#frequently-asked-questions-and-common-errors) for why I am using the legacy train.py script rather than model_main.py for training.)
   
 Then, open a new Anaconda Prompt window by searching for “Anaconda Prompt” in the Start menu and clicking on it. Activate the “tensorflow1” virtual environment (which was set up in my [previous tutorial](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10)) by issuing: 
 
@@ -159,7 +159,7 @@ This guide will show how to build either the CPU-only version of TensorFlow or t
 
 **If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version!** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. If you’d like to build the GPU-enabled version anyway, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
 
-**If you get any errors during this process, please look at the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
+**If you get any errors during this process, please look at the [FAQ section](frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
 
 #### Step 2a. Install MSYS2
 MSYS2 has some binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
@@ -266,7 +266,7 @@ Next, check out the branch for TensorFlow v1.13:
 git checkout r1.13
 ```
 
-The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#how-do-i-check-which-tensorflow-version-i-used-to-train-my-detection-model) for instructions on how to check the TensorFlow version you used for training.
+The version you check out should match the TensorFlow version you used to train your model in [Step 1](#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](#how-do-i-check-which-tensorflow-version-i-used-to-train-my-detection-model) for instructions on how to check the TensorFlow version you used for training.
 
 Next, we’ll configure the TensorFlow build using the configure.py script. From the C:\tensorflow-build\tensorflow directory, issue:
 
@@ -427,7 +427,7 @@ Thus, we need to create a new label map that matches the TensorFlow Lite style. 
 Now we’re ready to run the model!
 
 #### Step 3c. Run the TensorFlow Lite model!
-I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and [TFLite_detection_wecam.py](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
+I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: `TFLite_detection_image.py`, `TFLite_detection_video.py`, and `TFLite_detection_webcam.py`. The scripts are based off the `label_image.py` example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
 We’ll download the Python scripts directly from this repository. First, install wget for Anaconda by issuing:
 
