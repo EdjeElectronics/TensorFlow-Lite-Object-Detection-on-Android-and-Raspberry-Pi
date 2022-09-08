@@ -19,9 +19,28 @@ TensorFlow Lite is an optimized framework for deploying lightweight deep learnin
 This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, or webcam feeds.
 
 
-## Colab Notebook for Training Models
+## Train TensorFlow Lite Models
+### Using Google Colab (recommended)
+The easiest way to train, convert, and export a TensorFlow Lite model is using Google Colab. Colab provides you with a free GPU-enabled virtual machine on Google's servers that comes pre-installed with the libraries and packages needed for training.
 
-## Run TensorFlow Lite models!
+I wrote a [Google Colab notebook](./Train_TFLite2_Object_Detction_Model.ipynb) that can be used to train custom TensorFlow Lite models. It goes through the process of preparing data, configuring a model for training, training the model, running it on test images, and exporting it to a downloadable TFLite format so you can deploy it to your own device. It makes training a custom TFLite model as easy as uploading an image and clicking Play on a few blocks of code!
+
+<a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
+Open the Colab notebook in your browser by clicking the icon above. Work through the instructions in the notebook to start training your own model. Once it's trained and exported, visit the [Setup TFLite Runtime Environment](#setup-tflite-runtime-environment-on-your-device) section to learn how to deploy it on your PC, Raspberry Pi, Android phone, or other edge devices.
+
+### Using a Local PC
+The old version of this guide shows how to set up a TensorFlow training environment locally on your PC. Be warned: it's a lot of work, and the guide is outdated. [Here's a link to the local training guide.](doc/local_training_guide.md)
+
+## Setup TFLite Runtime Environment on Your Device
+### Raspberry Pi
+### Windows
+### macOS
+### Linux
+### Android
+### Embedded Devices
+
+## Run TensorFlow Lite Models!
 I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and [TFLite_detection_wecam.py](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
 We’ll download the Python scripts directly from this repository. First, install wget for Anaconda by issuing:
