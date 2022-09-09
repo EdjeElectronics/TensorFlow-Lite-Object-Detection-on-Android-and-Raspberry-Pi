@@ -22,11 +22,11 @@ This repository also contains Python code for running the newly converted Tensor
 ### Using Google Colab (recommended)
 The easiest way to train, convert, and export a TensorFlow Lite model is using Google Colab. Colab provides you with a free GPU-enabled virtual machine on Google's servers that comes pre-installed with the libraries and packages needed for training.
 
-I wrote a [Google Colab notebook](./Train_TFLite2_Object_Detction_Model.ipynb) that can be used to train custom TensorFlow Lite models. It goes through the process of preparing data, configuring a model for training, training the model, running it on test images, and exporting it to a downloadable TFLite format so you can deploy it to your own device. It makes training a custom TFLite model as easy as uploading an image and clicking Play on a few blocks of code!
+I wrote a [Google Colab notebook](./Train_TFLite2_Object_Detction_Model.ipynb) that can be used to train custom TensorFlow Lite models. It goes through the process of preparing data, configuring a model for training, training the model, running it on test images, and exporting it to a downloadable TFLite format so you can deploy it to your own device. It makes training a custom TFLite model as easy as uploading an image dataset and clicking Play on a few blocks of code!
 
 <a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-Open the Colab notebook in your browser by clicking the icon above. Work through the instructions in the notebook to start training your own model. Once it's trained and exported, visit the [Setup TFLite Runtime Environment](#setup-tflite-runtime-environment-on-your-device) section to learn how to deploy it on your PC, Raspberry Pi, Android phone, or other edge devices.
+Open the Colab notebook in your browser by clicking the icon above. Work through the instructions in the notebook to start training your own model. Once it's trained and exported, visit the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) section to learn how to deploy it on your PC, Raspberry Pi, Android phone, or other edge devices.
 
 ### Using a Local PC
 The old version of this guide shows how to set up a TensorFlow training environment locally on your PC. Be warned: it's a lot of work, and the guide is outdated. [Here's a link to the local training guide.](doc/local_training_guide.md)
@@ -55,7 +55,7 @@ Still to come!
 ## Step 3. Run TensorFlow Lite Models!
 There are four Python scripts to run the TensorFlow Lite object detection model on an image, video, web stream, or webcam feed: [TFLite_detection_image.py](TFLite_detection_image.py), [TFLite_detection_video.py](TFLite_detection_video.py), [TFLite_detection_stream.py](TFLite_detection_stream.py) and [TFLite_detection_wecam.py](TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
-The following instructions show how to run the webcam, video, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
+The following instructions show how to run the webcam, video, web stream, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
 
 If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
@@ -133,6 +133,10 @@ Press any key (other than 'q') to advance to the next image. Do not use both the
    <img src="doc/squirrels!!.png">
 </p>
 
-If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
+If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#FAQs) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
+
+## Examples
+(Still to come!) Please see the [examples](examples) folder for examples of how to use your TFLite model in basic vision applications.
 
 ## FAQs
+(Still to come!)
