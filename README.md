@@ -14,10 +14,9 @@ Check it out here: [Train_TFLite2_Object_Detction_Model.ipynb](./Train_TFLite2_O
 <a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## Introduction
-TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on Android phones or the Raspberry Pi.
+TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power than regular TensorFlow models, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on edge devices like the Raspberry Pi.
 
-This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, or webcam feeds.
-
+This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, web streams, or webcam feeds.
 
 ## Step 1. Train TensorFlow Lite Models
 ### Using Google Colab (recommended)
@@ -33,7 +32,7 @@ Open the Colab notebook in your browser by clicking the icon above. Work through
 The old version of this guide shows how to set up a TensorFlow training environment locally on your PC. Be warned: it's a lot of work, and the guide is outdated. [Here's a link to the local training guide.](doc/local_training_guide.md)
 
 ## Step 2. Setup TFLite Runtime Environment on Your Device
-Once you have a trained model, the next step is to deploy it on a device like a computer, Raspberry Pi, or Android phone. To run the model, you'll need to install the TensorFlow or the TensorFlow Lite Runtime on your device and set up the Python environment and directory structure to run your application in. The [deploy_guides](deploy_guides) folder in this repository has step-by-step guides showing how to set up a TensorFlow environment on several different devices. Links to the guides are given below.
+Once you have a trained `.tflite` model, the next step is to deploy it on a device like a computer, Raspberry Pi, or Android phone. To run the model, you'll need to install the TensorFlow or the TensorFlow Lite Runtime on your device and set up the Python environment and directory structure to run your application in. The [deploy_guides](deploy_guides) folder in this repository has step-by-step guides showing how to set up a TensorFlow environment on several different devices. Links to the guides are given below.
 
 ### Raspberry Pi
 Follow the [Raspberry Pi setup guide](deploy_guides/Raspberry_Pi_Guide.md) to install TFLite Runtime on a Raspberry Pi 3 or 4 and run a TensorFlow Lite model. This guide also shows how to use the Google Coral USB Accelerator to greatly increase the speed of quantized models on the Raspberry Pi.
@@ -54,23 +53,9 @@ Still to come!
 Still to come!
 
 ## Step 3. Run TensorFlow Lite Models!
-I wrote three Python scripts to run the TensorFlow Lite object detection model on an image, video, or webcam feed: TFLite_detection_image.py, TFLite_detection_video.py, and [TFLite_detection_wecam.py](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
+There are four Python scripts to run the TensorFlow Lite object detection model on an image, video, web stream, or webcam feed: [TFLite_detection_image.py](TFLite_detection_image.py), [TFLite_detection_video.py](TFLite_detection_video.py), [TFLite_detection_stream.py](TFLite_detection_stream.py) and [TFLite_detection_wecam.py](TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
-We’ll download the Python scripts directly from this repository. First, install wget for Anaconda by issuing:
-
-```
-conda install -c menpo wget
-```
-
-Once it's installed, download the scripts by issuing:
-
-```
-wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_image.py --no-check-certificate
-wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_video.py --no-check-certificate
-wget https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/TFLite_detection_webcam.py --no-check-certificate
-```
-
-The following instructions show how to run the webcam, video, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in this guide.
+The following instructions show how to run the webcam, video, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
 
 If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
@@ -91,23 +76,6 @@ python TFLite_detection_webcam.py --modeldir=TFLite_model
 
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
 
-##### Video stream
-To run the script to detect images in a video stream (e.g. a remote security camera), issue: 
-
-```
-python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" 
-```
-
-After a few moments of initializing, a window will appear showing the video stream. Detected objects will have bounding boxes and labels displayed on them in real time.
-
-Make sure to update the URL parameter to the one that's being used by your security camera. It has to include authentication information in case the stream is secured.
-
-If the bounding boxes are not matching the detected objects, probably the stream resolution wasn't detected. In this case you can set it explicitly by using the `--resolution` parameter:
-
-```
-python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" --resolution=1920x1080
-```
-
 ##### Video
 To run the video detection script, issue:
 
@@ -122,6 +90,23 @@ python TFLite_detection_image.py --modeldir=TFLite_model --video='birdy.mp4'
 ```
 
 Note: Video detection will run at a slower FPS than realtime webcam detection. This is mainly because loading a frame from a video file requires more processor I/O than receiving a frame from a webcam.
+
+##### Web stream
+To run the script to detect images in a video stream (e.g. a remote security camera), issue: 
+
+```
+python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" 
+```
+
+After a few moments of initializing, a window will appear showing the video stream. Detected objects will have bounding boxes and labels displayed on them in real time.
+
+Make sure to update the URL parameter to the one that is being used by your security camera. It has to include authentication information in case the stream is secured.
+
+If the bounding boxes are not matching the detected objects, probably the stream resolution wasn't detected. In this case you can set it explicitly by using the `--resolution` parameter:
+
+```
+python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" --resolution=1920x1080
+```
 
 ##### Image
 To run the image detection script, issue:
@@ -150,12 +135,4 @@ Press any key (other than 'q') to advance to the next image. Do not use both the
 
 If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
 
-## Next Steps
-This concludes Part 1 of my TensorFlow Lite guide! You now have a trained TensorFlow Lite model and the scripts needed to run it on a PC.
-
-But who cares about running it on a PC? The whole reason we’re using TensorFlow Lite is so we can run our models on lightweight devices that are more portable and less power-hungry than a PC!  The next two parts of my guide show how to run this TFLite model on a Raspberry Pi or an Android Device. 
-
-*Links to be added when these are completed!*
-
-* [Part 2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with optional Coral USB Accelerator)](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md)
-* Part 3. How to Run TensorFlow Lite Object Detection Models on Android Devices 
+## FAQs
