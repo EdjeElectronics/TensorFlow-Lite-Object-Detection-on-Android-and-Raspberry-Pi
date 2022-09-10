@@ -1,8 +1,6 @@
 # How to Run TensorFlow Lite Models on Windows
 This guide shows how to set up a TensorFlow Lite Runtime environment on a Windows PC. We'll use [Anaconda](https://www.anaconda.com/) to create a Python environment to install the TFLite Runtime in. It's easy!
 
-**Important Note: TensorFlow Lite models run slow on PCs, because the TFLite Runtime is optimized lower-power ARM processors.** Running your model on Windows is a good way to test its accuracy, but it will run faster on edge devices like Android phones or the Raspberry Pi. If your end application will run on a PC, I recommend using a regular TensorFlow model (as opposed to a TFLite model). See my [TensorFlow Object Detection guide](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-API-Tutorial-Train-Multiple-Objects-Windows-10) for instructions on how to train and run a regular TensorFlow model! (It's a bit outdated, but I hope to update the guide soon.)
-
 ## Step 1. Download and Install Anaconda
 First, install [Anaconda](https://www.anaconda.com/), which is a Python environment manager that greatly simplifies Python package management and deployment. Anaconda allows you to create Python virtual environments on your PC without interfering with existing installations of Python. Go to the [Anaconda Downloads page](https://www.anaconda.com/products/distribution) and click the Download button.
 
