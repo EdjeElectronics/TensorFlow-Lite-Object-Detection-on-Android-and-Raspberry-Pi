@@ -53,19 +53,23 @@ Still to come!
 Still to come!
 
 ## Step 3. Run TensorFlow Lite Models!
-There are four Python scripts to run the TensorFlow Lite object detection model on an image, video, web stream, or webcam feed: [TFLite_detection_image.py](TFLite_detection_image.py), [TFLite_detection_video.py](TFLite_detection_video.py), [TFLite_detection_stream.py](TFLite_detection_stream.py) and [TFLite_detection_wecam.py](TFLite_detection_webcam.py). The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
+There are four Python scripts to run the TensorFlow Lite object detection model on an image, video, web stream, or webcam feed. The scripts are based off the label_image.py example given in the [TensorFlow Lite examples GitHub repository](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py).
 
-The following instructions show how to run the webcam, video, web stream, and image scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
+* [TFLite_detection_image.py](TFLite_detection_image.py)
+* [TFLite_detection_video.py](TFLite_detection_video.py)
+* [TFLite_detection_stream.py](TFLite_detection_stream.py)
+* [TFLite_detection_webcam.py](TFLite_detection_webcam.py)
+
+The following instructions show how to run the scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
+
+<p align="center">
+   <img width="500" src="doc/squirrels!!.png">
+</p>
 
 If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
-For more information on options that can be used while running the scripts, use the `-h` option when calling the script. For example:
-
-```
-python TFLite_detection_image.py -h
-```
-
-##### Webcam
+<details>
+   <summary>Webcam</summary>
 Make sure you have a USB webcam plugged into your computer. If you’re on a laptop with a built-in camera, you don’t need to plug in a USB webcam. 
 
 From the \object_detection directory, issue: 
@@ -75,8 +79,10 @@ python TFLite_detection_webcam.py --modeldir=TFLite_model
 ```
 
 After a few moments of initializing, a window will appear showing the webcam feed. Detected objects will have bounding boxes and labels displayed on them in real time.
+</details>
 
-##### Video
+<details>
+   <summary>Video</summary>
 To run the video detection script, issue:
 
 ```
@@ -90,8 +96,10 @@ python TFLite_detection_image.py --modeldir=TFLite_model --video='birdy.mp4'
 ```
 
 Note: Video detection will run at a slower FPS than realtime webcam detection. This is mainly because loading a frame from a video file requires more processor I/O than receiving a frame from a webcam.
+</details>
 
-##### Web stream
+<details>
+   <summary>Web stream</summary>
 To run the script to detect images in a video stream (e.g. a remote security camera), issue: 
 
 ```
@@ -107,8 +115,10 @@ If the bounding boxes are not matching the detected objects, probably the stream
 ```
 python TFLite_detection_stream.py --modeldir=TFLite_model --streamurl="http://ipaddress:port/stream/video.mjpeg" --resolution=1920x1080
 ```
+</details>
 
-##### Image
+<details>
+   <summary>Image</summary>
 To run the image detection script, issue:
 
 ```
@@ -128,12 +138,15 @@ python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels
 ```
 
 Press any key (other than 'q') to advance to the next image. Do not use both the --image option and the --imagedir option when running the script, or it will throw an error.
+</details>
 
-<p align="center">
-   <img src="doc/squirrels!!.png">
-</p>
+For more information on options that can be used while running the scripts, use the `-h` option when calling them. For example:
 
-If you encounter errors while running these scripts, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#FAQs) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
+```
+python TFLite_detection_image.py -h
+```
+
+If you encounter errors, please check the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#FAQs) of this guide. It has a list of common errors and their solutions. If you can successfully run the script, but your object isn’t detected, it is most likely because your model isn’t accurate enough. The FAQ has further discussion on how to resolve this.
 
 ## Examples
 (Still to come!) Please see the [examples](examples) folder for examples of how to use your TFLite model in basic vision applications.
