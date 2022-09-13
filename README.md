@@ -152,4 +152,40 @@ If you encounter errors, please check the [FAQ section](https://github.com/EdjeE
 (Still to come!) Please see the [examples](examples) folder for examples of how to use your TFLite model in basic vision applications.
 
 ## FAQs
-(Still to come!)
+<details>
+<summary>What's the difference between the TensorFlow Object Detection API and TFLite Model Maker?</summary>
+
+Google provides a set of Colab notebooks for training TFLite models called [TFLite Model Maker](https://www.tensorflow.org/lite/models/modify/model_maker). While their object detection notebook is straightfoward and easy to follow, using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection) for creating models provides several benefits:
+
+* TFLite Model Maker only supports EfficientDet models, which aren't as fast as SSD-MobileNet models.
+* Training models with the Object Detection API generally results in better model accuracy.
+* The Object Detection API provides significantly more flexibility in model and training configuration (training steps, learning rate, model depth and resolution, etc).
+* Google still [recommends using the Object Detection API](https://www.tensorflow.org/lite/examples/object_detection/overview#fine-tuning_models_on_custom_data) as the formal method for training models with large datasets.
+</details>
+
+<details>
+<summary>Training, transfer learning, and fine-tuning</summary>
+
+Using correct terminology is important in a complicated field like machine learning. In this notebook, I use the word "training" to describe the process of teaching a model to recognize custom objects, but what we're actually doing is "fine-tuning". The Keras documentation gives a [good example notebook](https://keras.io/guides/transfer_learning/) explaining the difference between each term.
+
+Here's my attempt at defining the terms:
+
+* **Training**: The process of taking a full neural network with randomly initialized weights, passing in image data, calculating the resulting loss from its predictions on those images, and using backpropagation to adjust the weights in every node of the network and reduce its loss. In this process, the network learns how to extract features of interest from images and correlate those features to classes. Training a model from scratch typically takes millions of training steps and a large dataset of 100,000+ images (such as ImageNet or COCO). Let's leave actual training to companies like Google and Microsoft!
+* **Transfer learning**: Taking a model that has already been trained, unfreezing the last layer of the model (i.e. making it so only the last layer's weights can be modified), and retraining the last layer with a new dataset so it can learn to identify new classes. Transfer learning takes advantage of the feature extraction capabilities that have already been learned in the deep layers of the trained model. It takes the extracted features and recategorizes them to predict new classes.
+* **Fine-tuning**: Fine-tuning is similar to transfer learning, except more layers are unfrozen and retrained. Instead of just unfreezing the last layer, a significant amount of layers (such as the last 20% to 50% of layers) are unfrozen. This allows the model to modify some of its feature extraction layers so it can extract features that are more relevant to the classes its trying to identify. This notebook (and the TensorFlow Object Detection API) uses fine-tuning.
+
+In general, I like to use the word "training" instead of "fine-tuning", because it's more intuitive and understandable to new users.
+</details>
+
+<details>
+<summary>Should I get a Google Colab Pro subscription?</summary>
+
+If you plan to use Colab frequently for training models, I recommend getting a Colab Pro subscription. It provides several benefits:
+
+* Idle Colab sessions remain connected for longer before timing out and disconnecting
+* Allows for running multiple Colab sessions at once
+* Priority access to TPU and GPU-enabled virtual machines
+* Virtual machines have more RAM
+
+Colab keeps track of how much GPU time you use, and cuts you off from using GPU-enabled instances once you reach a certain use time. If you get the message telling you you're cut off from GPU instances, then that's a good indicator that you use Colab enough to justify paying for a Pro subscription.
+</details>
