@@ -38,7 +38,7 @@ Once you have a trained `.tflite` model, the next step is to deploy it on a devi
 Follow the [Raspberry Pi setup guide](deploy_guides/Raspberry_Pi_Guide.md) to install TFLite Runtime on a Raspberry Pi 3 or 4 and run a TensorFlow Lite model. This guide also shows how to use the Google Coral USB Accelerator to greatly increase the speed of quantized models on the Raspberry Pi.
 
 ### Windows
-Still to come!
+Follow the instructions in the [Windows TFLite guide](deploy_guides/Windows_TFLite_Guide.md) to set up TFLite Runtime on your Windows PC using Anaconda!
 
 ### macOS
 Still to come!
