@@ -164,7 +164,7 @@ Google provides a set of Colab notebooks for training TFLite models called [TFLi
 </details>
 
 <details>
-<summary>Training, transfer learning, and fine-tuning</summary>
+<summary>What's the difference between training, transfer learning, and fine-tuning?</summary>
 
 Using correct terminology is important in a complicated field like machine learning. In this notebook, I use the word "training" to describe the process of teaching a model to recognize custom objects, but what we're actually doing is "fine-tuning". The Keras documentation gives a [good example notebook](https://keras.io/guides/transfer_learning/) explaining the difference between each term.
 
