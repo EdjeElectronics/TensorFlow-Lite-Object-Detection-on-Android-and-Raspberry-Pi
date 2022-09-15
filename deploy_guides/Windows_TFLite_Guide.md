@@ -24,9 +24,7 @@ Enter "y" when it asks if you want to proceed. Activate the environment and inst
 
 ```
 conda activate tflite1-env
-pip install tensorflow
-pip install opencv-python
-pip install protobuf==3.20.*
+pip install tensorflow opencv-python protobuf==3.20.*
 ```
 
 Download the detection scripts from this repository by issuing:
