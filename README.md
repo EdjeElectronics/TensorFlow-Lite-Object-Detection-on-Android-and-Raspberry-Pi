@@ -1,4 +1,4 @@
-# TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi
+# TensorFlow Lite Object Detection on Android and Raspberry Pi
 Train your own TensorFlow Lite object detection models and run them on the Raspberry Pi, Android phones, and other edge devices!
 
 <p align="center">
@@ -60,19 +60,19 @@ There are four Python scripts to run the TensorFlow Lite object detection model 
 * [TFLite_detection_stream.py](TFLite_detection_stream.py)
 * [TFLite_detection_webcam.py](TFLite_detection_webcam.py)
 
-The following instructions show how to run the scripts. These instructions assume your .tflite model file and labelmap.txt file are in the “TFLite_model” folder in your \object_detection directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
+The following instructions show how to run the scripts. These instructions assume your .tflite model file and labelmap.txt file are in the `TFLite_model` folder in your `tflite1` directory as per the instructions given in the [Setup TFLite Runtime Environment](#step-2-setup-tflite-runtime-environment-on-your-device) guide.
 
 <p align="center">
    <img width="500" src="doc/squirrels!!.png">
 </p>
 
-If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip) and unzip it into the \object_detection folder. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
+If you’d like try using the sample TFLite object detection model provided by Google, simply download it [here](https://storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip), unzip it to the `tflite1` folder, and rename it to `TFLite_model`. Then, use `--modeldir=coco_ssd_mobilenet_v1_1.0_quant_2018_06_29` rather than `--modeldir=TFLite_model` when running the script. 
 
 <details>
    <summary>Webcam</summary>
 Make sure you have a USB webcam plugged into your computer. If you’re on a laptop with a built-in camera, you don’t need to plug in a USB webcam. 
 
-From the \object_detection directory, issue: 
+From the `tflite1` directory, issue: 
 
 ```
 python TFLite_detection_webcam.py --modeldir=TFLite_model 
