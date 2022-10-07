@@ -9,13 +9,13 @@ sudo apt-get -y install qt4-dev-tools
 sudo apt-get -y install libatlas-base-dev
 
 # Need to get an older version of OpenCV because version 4 has errors
-pip3 install opencv-python==3.4.11.41
+pip install opencv-python==3.4.18.65
 
 # Get packages required for TensorFlow
 # Using the tflite_runtime packages available at https://www.tensorflow.org/lite/guide/python
 # Will change to just 'pip3 install tensorflow' once newer versions of TF are added to piwheels
 
-#pip3 install tensorflow
+pip3 install tensorflow
 
 version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
