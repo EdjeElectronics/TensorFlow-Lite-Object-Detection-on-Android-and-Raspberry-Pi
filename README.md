@@ -5,18 +5,10 @@ Train your own TensorFlow Lite object detection models and run them on the Raspb
    <img src="doc/BSR_demo.gif">
 </p>
 
-**Update (9/2/22):** I wrote a Google Colab notebook that can be used to train custom TensorFlow Lite models. It allows you to train, convert, and test a TFLite model on a Google Colab server, and then download and deploy it to your own device. It's much easier than trying to install and train everything on your local computer! 
-
-**HELP WANTED:** Please try out this notebook and give me feedback on it! See [Issue #135](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/issues/135).
-
-Check it out here: [Train_TFLite2_Object_Detction_Model.ipynb](./Train_TFLite2_Object_Detction_Model.ipynb)
-
-<a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
 ## Introduction
-TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power than regular TensorFlow models, so they can be used to obtain faster performance in realtime applications. This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on edge devices like the Raspberry Pi.
+TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power than regular TensorFlow models, so they can be used to obtain faster performance in realtime applications. 
 
-This repository also contains Python code for running the newly converted TensorFlow Lite model to perform detection on images, videos, web streams, or webcam feeds.
+This guide provides step-by-step instructions for how train a custom TensorFlow Object Detection model, convert it into an optimized format that can be used by TensorFlow Lite, and run it on edge devices like the Raspberry Pi. It also provides Python code for running TensorFlow Lite models to perform detection on images, videos, web streams, or webcam feeds.
 
 ## Step 1. Train TensorFlow Lite Models
 ### Using Google Colab (recommended)
@@ -154,7 +146,7 @@ If you encounter errors, please check the [FAQ section](https://github.com/EdjeE
 ## FAQs
 <details>
 <summary>What's the difference between the TensorFlow Object Detection API and TFLite Model Maker?</summary>
-
+<br>
 Google provides a set of Colab notebooks for training TFLite models called [TFLite Model Maker](https://www.tensorflow.org/lite/models/modify/model_maker). While their object detection notebook is straightfoward and easy to follow, using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection) for creating models provides several benefits:
 
 * TFLite Model Maker only supports EfficientDet models, which aren't as fast as SSD-MobileNet models.
@@ -165,7 +157,7 @@ Google provides a set of Colab notebooks for training TFLite models called [TFLi
 
 <details>
 <summary>What's the difference between training, transfer learning, and fine-tuning?</summary>
-
+<br>
 Using correct terminology is important in a complicated field like machine learning. In this notebook, I use the word "training" to describe the process of teaching a model to recognize custom objects, but what we're actually doing is "fine-tuning". The Keras documentation gives a [good example notebook](https://keras.io/guides/transfer_learning/) explaining the difference between each term.
 
 Here's my attempt at defining the terms:
@@ -179,7 +171,7 @@ In general, I like to use the word "training" instead of "fine-tuning", because 
 
 <details>
 <summary>Should I get a Google Colab Pro subscription?</summary>
-
+<br>
 If you plan to use Colab frequently for training models, I recommend getting a Colab Pro subscription. It provides several benefits:
 
 * Idle Colab sessions remain connected for longer before timing out and disconnecting
