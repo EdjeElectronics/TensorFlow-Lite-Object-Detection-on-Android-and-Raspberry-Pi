@@ -1,7 +1,7 @@
 ######## Webcam Object Detection Using Tensorflow-trained Classifier #########
 #
 # Author: Evan Juras
-# Date: 9/28/19
+# Date: 11/11/22
 # Description: 
 # This program uses a TensorFlow Lite object detection model to perform object 
 # detection on an image or a folder full of images. It draws boxes and scores 
@@ -21,6 +21,7 @@ import sys
 import glob
 import importlib.util
 
+
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('--modeldir', help='Folder the .tflite file is located in',
@@ -35,18 +36,27 @@ parser.add_argument('--image', help='Name of the single image to perform detecti
                     default=None)
 parser.add_argument('--imagedir', help='Name of the folder containing images to perform detection on. Folder must contain only images.',
                     default=None)
+parser.add_argument('--save_results', help='Save labeled images and annotation data to a results folder',
+                    action='store_true')
+parser.add_argument('--noshow_results', help='Don\'t show result images (only use this if --save_results is enabled)',
+                    action='store_false')
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
 
 args = parser.parse_args()
 
+
+# Parse user inputs
 MODEL_NAME = args.modeldir
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
+
 min_conf_threshold = float(args.threshold)
 use_TPU = args.edgetpu
 
-# Parse input image name and directory. 
+save_results = args.save_results # Defaults to False
+show_results = args.noshow_results # Defaults to True
+
 IM_NAME = args.image
 IM_DIR = args.imagedir
 
@@ -85,11 +95,21 @@ CWD_PATH = os.getcwd()
 # Define path to images and grab all image filenames
 if IM_DIR:
     PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_DIR)
-    images = glob.glob(PATH_TO_IMAGES + '/*')
+    images = glob.glob(PATH_TO_IMAGES + '/*.jpg') + glob.glob(PATH_TO_IMAGES + '/*.JPG') + glob.glob(PATH_TO_IMAGES + '/*.png') + glob.glob(PATH_TO_IMAGES + '/*.bmp')
+    if save_results:
+        RESULTS_DIR = IM_DIR + '_results'
 
 elif IM_NAME:
     PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_NAME)
     images = glob.glob(PATH_TO_IMAGES)
+    if save_results:
+        RESULTS_DIR = 'results'
+
+# Create results directory if user wants to save results
+if save_results:
+    RESULTS_PATH = os.path.join(CWD_PATH,RESULTS_DIR)
+    if not os.path.exists(RESULTS_PATH):
+        os.makedirs(RESULTS_PATH)
 
 # Path to .tflite file, which contains the model that is used for object detection
 PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
@@ -161,6 +181,8 @@ for image_path in images:
     classes = interpreter.get_tensor(output_details[classes_idx]['index'])[0] # Class index of detected objects
     scores = interpreter.get_tensor(output_details[scores_idx]['index'])[0] # Confidence of detected objects
 
+    detections = []
+
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
@@ -182,8 +204,31 @@ for image_path in images:
             cv2.rectangle(image, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
             cv2.putText(image, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
 
+            detections.append([object_name, scores[i], xmin, ymin, xmax, ymax])
+
     # All the results have been drawn on the image, now display the image
-    cv2.imshow('Object detector', image)
+    if show_results:
+        cv2.imshow('Object detector', image)
+
+    # Save the labeled image to results folder if desired
+    if save_results:
+
+        # Get filenames and paths
+        image_fn = os.path.basename(image_path)
+        image_savepath = os.path.join(CWD_PATH,RESULTS_DIR,image_fn)
+        
+        base_fn, ext = os.path.splitext(image_fn)
+        txt_result_fn = base_fn +'.txt'
+        txt_savepath = os.path.join(CWD_PATH,RESULTS_DIR,txt_result_fn)
+
+        # Save image
+        cv2.imwrite(image_savepath, image)
+
+        # Write results to text file
+        # (Using format defined by https://github.com/Cartucho/mAP, which will make it easy to calculate mAP)
+        with open(txt_savepath,'w') as f:
+            for detection in detections:
+                f.write('%s %.4f %d %d %d %d\n' % (detection[0], detection[1], detection[2], detection[3], detection[4], detection[5]))
 
     # Press any key to continue to next image, or press 'q' to quit
     if cv2.waitKey(0) == ord('q'):
