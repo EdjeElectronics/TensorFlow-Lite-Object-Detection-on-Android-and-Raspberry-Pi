@@ -4,11 +4,6 @@ These scripts are used in the [TFLite Training Colab](https://colab.research.goo
 #### Calculate model mAP - (calculate_map_cartucho.py)
 Calculate your TFLite detection model's mAP score! I'll share instructions on how to use this outside the Colab notebook later. 
 
-<p>
-   <img src="https://s3.us-west-1.amazonaws.com/evanjuras.com/img/calculate-mAP-demo1.gif">
-</p>
-
-
 This tool uses the main.py script from [Cartucho's excellent repository](https://github.com/Cartucho/mAP), which takes in ground truth data and detection results to calculate average precision at a certain IoU threshold. The calculate_map_cartucho.py script performs the mAP calculation at multiple IoU thresholds to determine the COCO metric for average mAP @ 0.5:0.95.
 
 #### Split images into train, test, and validation sets - (train_val_test.py)
