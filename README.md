@@ -130,7 +130,17 @@ python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels
 ```
 
 Press any key (other than 'q') to advance to the next image. Do not use both the --image option and the --imagedir option when running the script, or it will throw an error.
+
+To save labeled images and a text file with detection results for each image, use the `--save_results` option. The results will be saved to a folder named `<imagedir>_results`. This works well if you want to check your model's performance on a folder of images and use the results to calculate mAP with the [calculate_map_catchuro.py](./util_scripts) script. For example:
+
+```
+python TFLite_detection_image.py --modeldir=TFLite_model --imagedir=squirrels --save_results
+```
+
+The `--noshow_results` option will stop the program from displaying images.
 </details>
+
+**See all command options**
 
 For more information on options that can be used while running the scripts, use the `-h` option when calling them. For example:
 
