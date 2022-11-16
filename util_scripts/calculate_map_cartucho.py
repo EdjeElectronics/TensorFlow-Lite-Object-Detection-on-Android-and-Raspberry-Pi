@@ -110,7 +110,8 @@ for i, iou_thresh in enumerate(iou_threshes):
                     mAP_results[class_name][i] = class_mAP
 
     # Save mAP results for this IoU value as a different folder name, then delete modified script
-    os.rename('output','outputs/output_iou_%.2f' % iou_thresh)
+    newpath = os.path.join(output_path,'output_iou_%.2f' % iou_thresh)
+    os.rename('output',newpath)
     os.remove('main_modified.py')
 
 # Okay, we found mAP at each IoU value! Now we just need to average the mAPs and display them.
