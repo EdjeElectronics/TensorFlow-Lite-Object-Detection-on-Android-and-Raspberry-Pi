@@ -122,8 +122,8 @@ for classname in classes:
     class_vals = mAP_results[classname]
     class_avg = np.mean(class_vals)
     class_mAP_result.append(class_avg)
-    print('%s\t\t%0.2f' % (classname, class_avg)) # TO DO: Find a better variable name than "classname"
+    print('%s\t\t%0.2f%%' % (classname, class_avg)) # TO DO: Find a better variable name than "classname"
 
 overall_mAP_result = np.mean(class_mAP_result)
-print('\nOverall\t\t%0.2f' % overall_mAP_result)
+print('\nOverall\t\t%0.2f%%' % overall_mAP_result)
         
