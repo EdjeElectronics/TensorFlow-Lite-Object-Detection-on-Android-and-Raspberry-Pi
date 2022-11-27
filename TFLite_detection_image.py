@@ -95,7 +95,7 @@ CWD_PATH = os.getcwd()
 # Define path to images and grab all image filenames
 if IM_DIR:
     PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_DIR)
-    images = glob.glob(PATH_TO_IMAGES + '/*.jpg') + glob.glob(PATH_TO_IMAGES + '/*.JPG') + glob.glob(PATH_TO_IMAGES + '/*.png') + glob.glob(PATH_TO_IMAGES + '/*.bmp')
+    images = glob.glob(PATH_TO_IMAGES + '/*.jpg') + glob.glob(PATH_TO_IMAGES + '/*.png') + glob.glob(PATH_TO_IMAGES + '/*.bmp')
     if save_results:
         RESULTS_DIR = IM_DIR + '_results'
 
@@ -209,6 +209,10 @@ for image_path in images:
     # All the results have been drawn on the image, now display the image
     if show_results:
         cv2.imshow('Object detector', image)
+        
+        # Press any key to continue to next image, or press 'q' to quit
+        if cv2.waitKey(0) == ord('q'):
+            break
 
     # Save the labeled image to results folder if desired
     if save_results:
@@ -229,10 +233,6 @@ for image_path in images:
         with open(txt_savepath,'w') as f:
             for detection in detections:
                 f.write('%s %.4f %d %d %d %d\n' % (detection[0], detection[1], detection[2], detection[3], detection[4], detection[5]))
-
-    # Press any key to continue to next image, or press 'q' to quit
-    if cv2.waitKey(0) == ord('q'):
-        break
 
 # Clean up
 cv2.destroyAllWindows()
