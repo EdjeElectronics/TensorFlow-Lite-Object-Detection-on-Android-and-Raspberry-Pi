@@ -237,7 +237,7 @@ while True:
     if save_results:
 
         # Get filenames and paths
-        fake_file_name = uuid.uuid4()
+        fake_file_name = f'{uuid.uuid4()}'
         image_fn = os.path.basename("./results/"+fake_file_name+".jpg")
         image_savepath = os.path.join(CWD_PATH,"results",image_fn)
         
