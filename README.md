@@ -1,3 +1,7 @@
+### CHANGES of this repo
+This repo contains a modification for the detection_webcam file.
+In essence it let's you run the python script on a headless raspberry, to avoid issues with the desktop libs and dependencies
+
 # TensorFlow Lite Object Detection on Android and Raspberry Pi
 Train your own TensorFlow Lite object detection models and run them on the Raspberry Pi, Android phones, and other edge devices!
 
