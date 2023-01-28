@@ -1,11 +1,13 @@
 # TensorFlow Lite Object Detection on Android and Raspberry Pi
-Train your own TensorFlow Lite object detection models and run them on the Raspberry Pi, Android phones, and other edge devices! Get started with training on Colab by clicking the icon below.
-
-<a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+Train your own TensorFlow Lite object detection models and run them on the Raspberry Pi, Android phones, and other edge devices! 
 
 <p align="center">
    <img src="doc/BSR_demo.gif">
 </p>
+
+Get started with training on Google Colab by clicking the icon below.
+
+<a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## Introduction
 TensorFlow Lite is an optimized framework for deploying lightweight deep learning models on resource-constrained edge devices. TensorFlow Lite models have faster inference time and require less processing power than regular TensorFlow models, so they can be used to obtain faster performance in realtime applications. 
