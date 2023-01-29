@@ -237,24 +237,24 @@ while True:
     
     # Save the labeled image to results folder if desired
     if save_results:
+        if len(detections) > 0:
+            # Get filenames and paths
+            fake_file_name = f'{uuid.uuid4()}'
+            image_fn = os.path.basename("./results/"+fake_file_name+".jpg")
+            image_savepath = os.path.join(CWD_PATH,"results",image_fn)
+            
+            base_fn, ext = os.path.splitext(image_fn)
+            txt_result_fn = base_fn +'.txt'
+            txt_savepath = os.path.join(CWD_PATH,"results",txt_result_fn)
 
-        # Get filenames and paths
-        fake_file_name = f'{uuid.uuid4()}'
-        image_fn = os.path.basename("./results/"+fake_file_name+".jpg")
-        image_savepath = os.path.join(CWD_PATH,"results",image_fn)
-        
-        base_fn, ext = os.path.splitext(image_fn)
-        txt_result_fn = base_fn +'.txt'
-        txt_savepath = os.path.join(CWD_PATH,"results",txt_result_fn)
+            # Save image
+            cv2.imwrite(image_savepath, frame)
 
-        # Save image
-        cv2.imwrite(image_savepath, frame)
-
-        # Write results to text file
-        # (Using format defined by https://github.com/Cartucho/mAP, which will make it easy to calculate mAP)
-        with open(txt_savepath,'w') as f:
-            for detection in detections:
-                f.write('%s %.4f %d %d %d %d\n' % (detection[0], detection[1], detection[2], detection[3], detection[4], detection[5]))
+            # Write results to text file
+            # (Using format defined by https://github.com/Cartucho/mAP, which will make it easy to calculate mAP)
+            with open(txt_savepath,'w') as f:
+                for detection in detections:
+                    f.write('%s %.4f %d %d %d %d\n' % (detection[0], detection[1], detection[2], detection[3], detection[4], detection[5]))
 
     # Calculate framerate
     t2 = cv2.getTickCount()
