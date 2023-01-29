@@ -238,6 +238,9 @@ while True:
     # Save the labeled image to results folder if desired
     if save_results:
         if len(detections) > 0:
+            for detection in detections:
+                if detection[0] == "boat" or detection[0] == "airplane"
+                    break
             # Get filenames and paths
             fake_file_name = f'{uuid.uuid4()}'
             image_fn = os.path.basename("./results/"+fake_file_name+".jpg")
