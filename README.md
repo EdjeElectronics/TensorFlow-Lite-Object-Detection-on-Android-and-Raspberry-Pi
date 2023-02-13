@@ -5,7 +5,7 @@ Train your own TensorFlow Lite object detection models and run them on the Raspb
    <img src="doc/BSR_demo.gif">
 </p>
 
-Get started with training on Google Colab by clicking the icon below.
+Get started with training on Google Colab by clicking the icon below, or [click here to go straight to the YouTube video that provides step-by-step instructions](https://youtu.be/XZ7FYAMCc4M).
 
 <a href="https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
