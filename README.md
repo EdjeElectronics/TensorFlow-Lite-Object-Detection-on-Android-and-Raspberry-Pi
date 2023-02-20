@@ -83,13 +83,13 @@ After a few moments of initializing, a window will appear showing the webcam fee
 To run the video detection script, issue:
 
 ```
-python TFLite_detection_image.py --modeldir=TFLite_model
+python TFLite_detection_video.py --modeldir=TFLite_model
 ```
 
 A window will appear showing consecutive frames from the video, with each object in the frame labeled. Press 'q' to close the window and end the script. By default, the video detection script will open a video named 'test.mp4'. To open a specific video file, use the `--video` option:
 
 ```
-python TFLite_detection_image.py --modeldir=TFLite_model --video='birdy.mp4'
+python TFLite_detection_video.py --modeldir=TFLite_model --video='birdy.mp4'
 ```
 
 Note: Video detection will run at a slower FPS than realtime webcam detection. This is mainly because loading a frame from a video file requires more processor I/O than receiving a frame from a webcam.
