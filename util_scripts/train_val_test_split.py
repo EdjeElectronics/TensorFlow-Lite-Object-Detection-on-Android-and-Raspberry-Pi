@@ -18,8 +18,8 @@ val_path = '/content/images/validation'
 test_path = '/content/images/test'
 
 # Get list of all images
-jpeg_file_list = [path for path in Path(image_path).rglob('*.jpeg)]
-JPEG_file_list = [path for path in Path(image_path).rglob('*.JPEG)]
+jpeg_file_list = [path for path in Path(image_path).rglob('*.jpeg')]
+JPEG_file_list = [path for path in Path(image_path).rglob('*.JPEG')]
 jpg_file_list = [path for path in Path(image_path).rglob('*.jpg')]
 JPG_file_list = [path for path in Path(image_path).rglob('*.JPG')]
 png_file_list = [path for path in Path(image_path).rglob('*.png')]
