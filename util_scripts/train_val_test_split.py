@@ -6,10 +6,10 @@
 # This script is intended to be used in the TFLite Object Detection Colab notebook here:
 # https://colab.research.google.com/github/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Train_TFLite2_Object_Detction_Model.ipynb
 
-import glob
 from pathlib import Path
 import random
 import os
+import sys
 
 # Define paths to image folders
 image_path = '/content/images/all'
@@ -19,13 +19,17 @@ test_path = '/content/images/test'
 
 # Get list of all images
 jpeg_file_list = [path for path in Path(image_path).rglob('*.jpeg')]
-JPEG_file_list = [path for path in Path(image_path).rglob('*.JPEG')]
 jpg_file_list = [path for path in Path(image_path).rglob('*.jpg')]
-JPG_file_list = [path for path in Path(image_path).rglob('*.JPG')]
 png_file_list = [path for path in Path(image_path).rglob('*.png')]
 bmp_file_list = [path for path in Path(image_path).rglob('*.bmp')]
 
-file_list = jpg_file_list + JPG_file_list + png_file_list + bmp_file_list + JPEG_file_list + jpeg_file_list
+if sys.platform == 'linux':
+    JPEG_file_list = [path for path in Path(image_path).rglob('*.JPEG')]
+    JPG_file_list = [path for path in Path(image_path).rglob('*.JPG')]
+    file_list = jpg_file_list + JPG_file_list + png_file_list + bmp_file_list + JPEG_file_list + jpeg_file_list
+else:
+    file_list = jpg_file_list + png_file_list + bmp_file_list + jpeg_file_list
+
 file_num = len(file_list)
 print('Total images: %d' % file_num)
 
