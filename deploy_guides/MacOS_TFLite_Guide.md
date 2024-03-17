@@ -49,7 +49,7 @@ tar -xf custom_model_lite.zip
 At this point, you should have a folder at {username}\tflite1\custom_model_lite which contains at least a `detect.tflite` and `labelmap.txt` file.
 
 ## Step 4. Run TensorFlow Lite Model!
-Now just call one of the detection scripts and point it at your model folder with the `--modeldir` option. For example, to run your `custom_model_lite` model on a webcam, issue:
+Now, just call one of the detection scripts and point it at your model folder with the `--modeldir` option. For example, to run your `custom_model_lite` model on a webcam, issue:
 
 ```
 python TFLite_detection_webcam.py --modeldir=custom_model_lite
