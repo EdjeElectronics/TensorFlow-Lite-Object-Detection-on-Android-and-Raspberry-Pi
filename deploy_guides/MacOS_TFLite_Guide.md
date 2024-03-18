@@ -10,7 +10,7 @@ When the download finishes, open the downloaded .exe file and step through the i
 First open up the terminal by opening a Finder window, and press 'Command + Shift + U', and then select Terminal. We'll create a folder called `tflite1` directly in the Home folder (under your username) - you can use any other folder location you like, just make sure to modify the commands below to use the correct file paths. Create the folder and move into it by issuing the following commands in the terminal:
 
 ```
-mkdir tflite1
+mkdir ~/tflite1
 cd tflite1
 ```
 
