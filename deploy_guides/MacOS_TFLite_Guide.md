@@ -1,4 +1,4 @@
-# How to Run TensorFlow Lite Models on MacOS
+# How to Run TensorFlow Lite Models on macOS
 This guide shows how to set up a TensorFlow Lite Runtime environment on a MacOS device. We'll use [Anaconda](https://www.anaconda.com/) to create a Python environment to install the TFLite Runtime in. It's easy!
 
 ## Step 1. Download and Install Anaconda
