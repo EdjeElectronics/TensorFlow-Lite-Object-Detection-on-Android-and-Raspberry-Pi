@@ -40,7 +40,7 @@ curl https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-De
 ```
 
 ## Step 3. Move TFLite Model into Directory
-Next, take the custom TFLite model that was trained and downloaded from the Colab notebook and move it into the {username}\tflite1 directory (replacing {username} with your home directory name). If you downloaded it from Colab, it should be in a file called `custom_model_lite.zip`. (If you haven't trained a model yet and just want to test one out, download my "bird, squirrel, raccoon" model by clicking this Dropbox link.) Move that file to the {username}\tflite1 directory. Once it's moved, unzip it using:
+Next, take the custom TFLite model that was trained and downloaded from the Colab notebook and move it into the {username}\tflite1 directory (replacing {username} with your home directory name). If you downloaded it from Colab, it should be in a file called `custom_model_lite.zip`. (If you haven't trained a model yet and just want to test one out, download my "change counter" model by clicking this [Dropbox link](https://www.dropbox.com/scl/fi/4fk8ls8s03c94g6sb3ngo/custom_model_lite.zip?rlkey=zqda21sowk0hrw6i3f2dgbsyy&dl=0).) Move that file to the {username}\tflite1 directory. Once it's moved, unzip it using:
 
 ```
 tar -xf custom_model_lite.zip
