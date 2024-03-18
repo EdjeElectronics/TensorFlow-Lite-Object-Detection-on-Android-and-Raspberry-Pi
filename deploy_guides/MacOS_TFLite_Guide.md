@@ -11,7 +11,7 @@ First open up the terminal by opening a Finder window, and press 'Command + Shif
 
 ```
 mkdir ~/tflite1
-cd tflite1
+cd ~/tflite1
 ```
 
 Next, create a Python 3.9 virtual environment by issuing:
