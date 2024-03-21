@@ -17,6 +17,8 @@ androidxCamera = "1.3.0-alpha07"
 tfliteTaskvision = "0.4.2"
 tfliteGpu = "16.0.0"
 
+lifecycle = "2.6.1"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -41,6 +43,10 @@ androidx-camera-view = { group = "androidx.camera", name = "camera-view", versio
 
 tflite-task-vision = { group = "org.tensorflow", name = "tensorflow-lite-task-vision-play-services", version.ref = "tfliteTaskvision"}
 tflite-gpu = { group = "com.google.android.gms", name = "play-services-tflite-gpu", version.ref = "tfliteGpu"}
+
+android-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle"}
+android-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle"}
+android-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

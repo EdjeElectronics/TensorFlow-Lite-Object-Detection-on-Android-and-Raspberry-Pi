@@ -66,8 +66,13 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
 
+    implementation(libs.android.lifecycle.viewmodel.ktx)
+    implementation(libs.android.lifecycle.runtime.ktx)
+    implementation(libs.android.lifecycle.runtime.compose)
+
     implementation(libs.tflite.task.vision)
     implementation(libs.tflite.gpu)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
