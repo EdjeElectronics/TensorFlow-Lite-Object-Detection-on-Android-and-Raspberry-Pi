@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
 
     implementation(libs.androidx.camera)
     implementation(libs.androidx.camera.lifecycle)
@@ -69,10 +70,13 @@ dependencies {
     implementation(libs.android.lifecycle.viewmodel.ktx)
     implementation(libs.android.lifecycle.runtime.ktx)
     implementation(libs.android.lifecycle.runtime.compose)
+    implementation(libs.android.lifecycle.lifecycle.viewmodel.compose)
+
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.android)
 
     implementation(libs.tflite.task.vision)
     implementation(libs.tflite.gpu)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
