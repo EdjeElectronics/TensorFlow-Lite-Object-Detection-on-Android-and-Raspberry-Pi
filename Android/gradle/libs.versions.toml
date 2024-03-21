@@ -14,6 +14,9 @@ hiltAndroid = "2.44.2"
 
 androidxCamera = "1.3.0-alpha07"
 
+tfliteTaskvision = "0.4.2"
+tfliteGpu = "16.0.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -36,9 +39,10 @@ androidx-camera = { group = "androidx.camera", name = "camera-camera2", version.
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "androidxCamera"}
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "androidxCamera"}
 
+tflite-task-vision = { group = "org.tensorflow", name = "tensorflow-lite-task-vision-play-services", version.ref = "tfliteTaskvision"}
+tflite-gpu = { group = "com.google.android.gms", name = "play-services-tflite-gpu", version.ref = "tfliteGpu"}
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-
-
