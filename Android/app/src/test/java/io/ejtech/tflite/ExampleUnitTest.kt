@@ -1,4 +1,4 @@
-package com.example.myapplication
+package io.ejtech.tflite
 
 import org.junit.Test
 

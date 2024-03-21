@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.theme
+package io.ejtech.tflite.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
