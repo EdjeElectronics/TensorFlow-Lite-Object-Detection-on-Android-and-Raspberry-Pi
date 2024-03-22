@@ -1,4 +1,4 @@
-package io.ejtech
+package io.ejtech.tflite
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
