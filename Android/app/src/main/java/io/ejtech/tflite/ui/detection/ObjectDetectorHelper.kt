@@ -34,7 +34,7 @@ class ObjectDetectorHelper(
   var threshold: Float = 0.8f,
   var numThreads: Int = 4,
   var maxResults: Int = 10,
-  var modelName: String = "",
+  var modelName: String = "detect_coin.tflite",
   val context: Context
 ) {
     private var _detectorState = mutableStateOf(DetectionState())
