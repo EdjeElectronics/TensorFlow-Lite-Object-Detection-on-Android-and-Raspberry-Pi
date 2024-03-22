@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -62,6 +64,13 @@ dependencies {
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+
+    ksp(libs.dagger.compiler)
+    ksp(libs.hilt.android.compiler)
+    //ksp(libs.android.hilt.compiler)
+    //ksp("com.google.dagger:dagger-compiler:2.48.1")
+    //ksp("com.google.dagger:hilt-android-compiler:2.48.1")
+
 
     implementation(libs.androidx.camera)
     implementation(libs.androidx.camera.lifecycle)
