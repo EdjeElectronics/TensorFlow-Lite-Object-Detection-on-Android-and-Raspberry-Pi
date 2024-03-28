@@ -45,7 +45,7 @@ Connect a USB cable between your computer and device
 Click Open -> Search for your cloned repository -> Select Android directory.
 
 <p align="center">
-   <img src="../doc/AndroidStudio_OpenProject.png" width="400">
+   <img src="../doc/AndroidStudio_OpenProject.png" width="800">
 </p>
 
 ## Step 5. Add your TFlite Model to the Project
@@ -57,13 +57,13 @@ Reveal the Android project directory
 
 Right click Assets -> Open in -> Explorer. Move your Tflite file to this directory
 <p align="center">
-   <img src="../doc/AndroidStudio_ImportModelAsset.png" width="400">
-   <img src="../doc/AndroidStudio_ImportModelAsset_2.png" width="400">
+   <img src="../doc/AndroidStudio_ImportModelAsset.png" width="800">
+   <img src="../doc/AndroidStudio_ImportModelAsset_2.png" width="800">
 </p>
 
 Open the ObjectDetectorHelper file. Rename modelName value to the name of the file you added to the Assets directory
 <p align="center">
-   <img src="../doc/AndroidStudio_ObjectDetectorHelper.png" width="400">
+   <img src="../doc/AndroidStudio_ObjectDetectorHelper.png" width="800">
 </p>
 
 Connect your device by USB and you should see the name of your phone appear at the top. Once connected, press the green arrow button to launch the app.
