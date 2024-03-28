@@ -42,11 +42,27 @@ Connect a USB cable between your computer and device
 
 ## Step 4. Open Android Studio and the Project
 
-<video width="320" height="240" controls>
-  <source src="../doc/Android_OpenProject.mp4" type="video/mp4">
-</video>
+<p align="center">
+   <img src="../doc/AndroidStudio_OpenProject.jpg" width="200">
+</p>
 
 ## Step 5. Add your TFlite Model to the Project
 
-## Step 4. Clone repository
+<p align="center">
+   <img src="../doc/AndroidStudio_RevealProject.jpg" width="200">
+</p>
+
+<p align="center">
+   <img src="../doc/AndroidStudio_ObjectDetectorHelper.jpg" width="200">
+</p>
+
+<p align="center">
+   <img src="../doc/AndroidStudio_ConnectDeviceAndLaunch.jpg" width="200">
+</p>
+
+<p align="center">
+   <img src="../doc/AndroidStudio_ImportModelAsset.jpg" width="200">
+   <img src="../doc/AndroidStudio_ImportModelAsset_2.jpg" width="200">
+</p>
+
 
