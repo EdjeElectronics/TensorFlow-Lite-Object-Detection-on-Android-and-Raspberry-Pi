@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,6 +24,10 @@ class DetectionViewModel @Inject constructor(
     private var _detectionState = mutableStateOf(DetectionState())
     val detectionState: State<DetectionState> = _detectionState
 
+    //One time event to notify the user if initialization was successful or not
+    private val _tensorflowInitializationEvent = Channel<Resource<String>>()
+    val tensorflowInitializationEvent = _tensorflowInitializationEvent.receiveAsFlow()
+
     // On Screen creation, the ViewModel will attempt to initialize the Tflite model
     init {
         if(!detectionState.value.tensorflowEnabled){
@@ -34,6 +40,7 @@ class DetectionViewModel @Inject constructor(
                                     _detectionState.value = _detectionState.value.copy(
                                         tensorflowEnabled = it.tensorflowEnabled
                                     )
+                                    _tensorflowInitializationEvent.send(Resource.Success("Tensorflow successfully initialized"))
                                 }
                             }
                         }
@@ -44,6 +51,7 @@ class DetectionViewModel @Inject constructor(
                                     _detectionState.value = _detectionState.value.copy(
                                         tensorflowEnabled = it.tensorflowEnabled
                                     )
+                                    _tensorflowInitializationEvent.send(Resource.Error("Tensorflow failed to initialize. Error: " + detectionData.message))
                                 }
                             }
                         }
@@ -73,5 +81,9 @@ class DetectionViewModel @Inject constructor(
                 tensorflowImageWidth = resultState.tensorflowImageWidth
             )
         }
+    }
+
+    fun destroy(){
+        objectDetectorHelper.destroy()
     }
 }

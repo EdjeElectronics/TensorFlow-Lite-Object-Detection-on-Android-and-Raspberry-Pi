@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.Paint
 import android.graphics.RectF
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.AspectRatio
@@ -41,6 +42,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.toRect
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavGraph
+import com.google.android.gms.tflite.gpu.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.max
@@ -70,6 +75,7 @@ fun DetectionScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_DESTROY) {
                 cameraExecutor.shutdown()
+                detectionViewModel.destroy()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -97,6 +103,27 @@ fun DetectionScreen(
         )
     }
 
+    //Listed for a one-time initialization event of Tensorflow
+    LaunchedEffect(key1 = context) {
+        detectionViewModel.tensorflowInitializationEvent.collect { event ->
+            when (event) {
+                is Resource.Success -> {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, event.data, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
     //Used to size the text label on detections
     val textMeasurer = rememberTextMeasurer()
     // Stores the image for each camera frame
@@ -111,10 +138,13 @@ fun DetectionScreen(
             factory = { context ->
                 //PreviewView is the camera preview
                 PreviewView(context).also{
+                    //Fill the camera view to the entire screen
                     it.scaleType = PreviewView.ScaleType.FILL_START
+                    //Ratio that best matches our model image format
                     val preview = Preview.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                         .build()
+                    //Use the rear camera
                     val selector = CameraSelector.Builder()
                         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                         .build()
@@ -162,12 +192,12 @@ fun DetectionScreen(
                     .fillMaxSize()
             ) {
                 //Images are resized before being passed to the ObjectDetector
-                //Once returned, the bounding boxes and coordinates need to be scaled back up to
-                //be correctly displayed on screen
                 val scaleFactor = max(size.width / detectionState.tensorflowImageWidth, size.height / detectionState.tensorflowImageHeight)
                 for (detection in detectionState.tensorflowDetections) {
                     val boundingBox = detection.boundingBox
 
+                    //Once returned, the bounding boxes and coordinates need to be scaled back up to
+                    //be correctly displayed on screen
                     val top = boundingBox.top * scaleFactor
                     val left = boundingBox.left * scaleFactor
                     val bottom = boundingBox.bottom * scaleFactor

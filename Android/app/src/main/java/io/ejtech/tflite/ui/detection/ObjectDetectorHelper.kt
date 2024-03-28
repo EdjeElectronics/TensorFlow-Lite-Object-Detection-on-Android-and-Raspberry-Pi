@@ -38,7 +38,7 @@ import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
  * @param maxResults
  *      Maximum results to detect at a time
  * @param modelName
- *      Tflite file 
+ *      Tflite file
  * @param context
  *      Used for initialization
  */
@@ -77,13 +77,13 @@ class ObjectDetectorHelper(
                  } catch (e: Exception) {
                      _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
                      launch{
-                         send(Resource.Success(_detectorState.value))
+                         send(Resource.Error(e.message!!, _detectorState.value))
                      }
                  }
              }.addOnFailureListener{
                  _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
                  launch{
-                     send(Resource.Success(_detectorState.value))
+                     send(Resource.Error(it.message!!, _detectorState.value))
                  }
              }
          }
