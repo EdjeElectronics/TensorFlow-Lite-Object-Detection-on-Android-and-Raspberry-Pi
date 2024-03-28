@@ -49,20 +49,20 @@ Connect a USB cable between your computer and device
 ## Step 5. Add your TFlite Model to the Project
 
 <p align="center">
-   <img src="../doc/AndroidStudio_RevealProject.jpg" width="200">
+   <img src="../doc/AndroidStudio_RevealProject.png" width="200">
 </p>
 
 <p align="center">
-   <img src="../doc/AndroidStudio_ObjectDetectorHelper.jpg" width="200">
+   <img src="../doc/AndroidStudio_ObjectDetectorHelper.png" width="200">
 </p>
 
 <p align="center">
-   <img src="../doc/AndroidStudio_ConnectDeviceAndLaunch.jpg" width="200">
+   <img src="../doc/AndroidStudio_ConnectDeviceAndLaunch.png" width="200">
 </p>
 
 <p align="center">
-   <img src="../doc/AndroidStudio_ImportModelAsset.jpg" width="200">
-   <img src="../doc/AndroidStudio_ImportModelAsset_2.jpg" width="200">
+   <img src="../doc/AndroidStudio_ImportModelAsset.png" width="200">
+   <img src="../doc/AndroidStudio_ImportModelAsset_2.png" width="200">
 </p>
 
 
