@@ -48,14 +48,14 @@ Click Open -> Search for your cloned repository -> Select Android directory.
    <img src="../doc/AndroidStudio_OpenProject.png" width="800">
 </p>
 
-## Step 5. Add your TFlite Model to the Project
+## Step 5. Add your TFLite Model to the Project
 
 Reveal the Android project directory
 <p align="center">
    <img src="../doc/AndroidStudio_RevealProject.png" width="400">
 </p>
 
-Right click Assets -> Open in -> Explorer. Move your Tflite file to this directory
+Right click Assets -> Open in -> Explorer. Move your TFLite file to this directory
 <p align="center">
    <img src="../doc/AndroidStudio_ImportModelAsset.png" width="800">
    <img src="../doc/AndroidStudio_ImportModelAsset_2.png" width="800">
