@@ -30,16 +30,32 @@ import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.gms.vision.TfLiteVision
 import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
 
+/**
+ * @param threshold
+ *      Minimum confidence value for results
+ * @param numThreads
+ *      Thread value for your device
+ * @param maxResults
+ *      Maximum results to detect at a time
+ * @param modelName
+ *      Tflite file 
+ * @param context
+ *      Used for initialization
+ */
 class ObjectDetectorHelper(
+    //Modify the following 4 parameters as you wish
   var threshold: Float = 0.8f,
   var numThreads: Int = 4,
   var maxResults: Int = 10,
   var modelName: String = "detect_coin.tflite",
   val context: Context
 ) {
+    //Single source of truth for our State
     private var _detectorState = mutableStateOf(DetectionState())
     private var objectDetectorHelper: ObjectDetector? = null
 
+
+    //Called by DetectionViewModel on app startup to initialize the model
      fun initialize() = callbackFlow<Resource<DetectionState>> {
          if(objectDetectorHelper == null){
              TfLiteGpu.isGpuDelegateAvailable(context).onSuccessTask { gpuAvailable: Boolean ->
@@ -80,6 +96,7 @@ class ObjectDetectorHelper(
          awaitClose {  }
     }
 
+    //Called for every camera frame
     fun detect(image: Bitmap, imageRotation: Int): DetectionState {
         val imageProcessor = ImageProcessor.Builder().add(Rot90Op(-imageRotation / 90)).build()
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(image))
