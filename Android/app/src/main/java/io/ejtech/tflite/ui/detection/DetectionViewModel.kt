@@ -18,9 +18,11 @@ class DetectionViewModel @Inject constructor(
     private val objectDetectorHelper: ObjectDetectorHelper
 ): ViewModel() {
 
+    // State of our screen
     private var _detectionState = mutableStateOf(DetectionState())
     val detectionState: State<DetectionState> = _detectionState
 
+    // On Screen creation, the ViewModel will attempt to initialize the Tflite model
     init {
         if(!detectionState.value.tensorflowEnabled){
             viewModelScope.launch(Dispatchers.IO) {
@@ -51,12 +53,19 @@ class DetectionViewModel @Inject constructor(
         }
     }
 
+    /**
+     * @param image
+     *      Frame from the camera
+     * @param bitmapBuffer
+     *      Bitmap to be passed to the ObjectDetector
+     */
     fun detectObjects(image: ImageProxy, bitmapBuffer: Bitmap) {
         image.use { bitmapBuffer.copyPixelsFromBuffer(image.planes[0].buffer) }
 
         val imageRotation = image.imageInfo.rotationDegrees
+        //Passes the bitmapBuffer with the current device rotation
         val resultState = objectDetectorHelper.detect(bitmapBuffer, imageRotation)
-
+        //Updates the state with any new detections to be used by DeviceScreen
         viewModelScope.launch(Dispatchers.Main){
             _detectionState.value = _detectionState.value.copy(
                 tensorflowDetections = resultState.tensorflowDetections,
