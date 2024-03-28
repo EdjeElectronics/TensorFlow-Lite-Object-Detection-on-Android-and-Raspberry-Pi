@@ -21,11 +21,11 @@ Make sure to follow Step 8.2.4. for deploying on Android. It's required to initi
 [Run apps on a hardware device](https://developer.android.com/studio/run/device)
 
 <p align="center">
-   <img src="../doc/Device_Setup_Step1.jpg">
-   <img src="../doc/Device_Setup_Step2.jpg">
-   <img src="../doc/Device_Setup_Step3.jpg">
-   <img src="../doc/Device_Setup_Step4.jpg">
-   <img src="../doc/Device_Setup_Step5.jpg">
+   <img src="../doc/Device_Setup_Step1.jpg" width="400">
+   <img src="../doc/Device_Setup_Step2.jpg" width="400">
+   <img src="../doc/Device_Setup_Step3.jpg" width="400">
+   <img src="../doc/Device_Setup_Step4.jpg" width="400">
+   <img src="../doc/Device_Setup_Step5.jpg" width="400">
 </p>
 
 
