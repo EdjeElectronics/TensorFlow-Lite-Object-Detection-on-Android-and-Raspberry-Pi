@@ -37,6 +37,16 @@ Connect a USB cable between your computer and device
    <img src="../doc/Device_Setup_Step5.jpg" width="200">
 </p>
 
+## Step 3. Download and Install Android Studio
+[Download Android Studio](https://developer.android.com/studio)
+
+## Step 4. Open Android Studio and the Project
+
+<video width="320" height="240" controls>
+  <source src="../doc/Android_OpenProject.mp4" type="video/mp4">
+</video>
+
+## Step 5. Add your TFlite Model to the Project
 
 ## Step 4. Clone repository
 
