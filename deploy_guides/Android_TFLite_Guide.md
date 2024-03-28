@@ -14,29 +14,27 @@ A phone is highly recommended. Tablets don't have the same performance or camera
 
 Make sure to follow Step 8.2.4. for deploying on Android. It's required to initialize your model on the device.
 
-## Step 2. Download and Install Android Studio
-[Download Android Studio](https://developer.android.com/studio)
-
-## Step 3. Setup your device for use with Android Studio
+## Step 2. Setup your device for use with Android Studio
 [Run apps on a hardware device](https://developer.android.com/studio/run/device)
+By default, Android devices can't launch apps from Android Studio.
 The link above covers all examples for different phones, but the following should look similar for most devices.
 
 Go to Settings -> About Phone -> Software Information
 <p align="center">
-   <img src="../doc/Device_Setup_Step1.jpg" width="400">
-   <img src="../doc/Device_Setup_Step2.jpg" width="400">
+   <img src="../doc/Device_Setup_Step1.jpg" width="200">
+   <img src="../doc/Device_Setup_Step2.jpg" width="200">
 </p>
 
 Tap Build Number 7 times -> Return to Settings, Developer Options will be revealed under About Phone 
 <p align="center">
-   <img src="../doc/Device_Setup_Step3.jpg" width="400">
-   <img src="../doc/Device_Setup_Step4.jpg" width="400">
+   <img src="../doc/Device_Setup_Step3.jpg" width="200">
+   <img src="../doc/Device_Setup_Step4.jpg" width="200">
 </p>
 
 Enter Developer Options and Enable it -> Select USB Debugging
 Connect a USB cable between your computer and device
 <p align="center">
-   <img src="../doc/Device_Setup_Step5.jpg" width="400">
+   <img src="../doc/Device_Setup_Step5.jpg" width="200">
 </p>
 
 
