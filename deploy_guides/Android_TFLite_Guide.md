@@ -31,7 +31,6 @@ Tap Build Number 7 times -> Return to Settings, Developer Options will be reveal
 <p align="center">
    <img src="../doc/Device_Setup_Step3.jpg" width="400">
    <img src="../doc/Device_Setup_Step4.jpg" width="400">
-   <img src="../doc/Device_Setup_Step5.jpg" width="400">
 </p>
 
 Enter Developer Options and Enable it -> Select USB Debugging
