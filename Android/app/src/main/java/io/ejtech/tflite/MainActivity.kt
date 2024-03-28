@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
         keepScreenOn()
         setContent {
             MyApplicationTheme {
+                //How DetectionScreen is displayed
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
