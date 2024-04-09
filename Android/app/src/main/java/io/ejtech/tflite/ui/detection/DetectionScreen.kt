@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -19,16 +20,22 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
@@ -38,7 +45,9 @@ import androidx.compose.ui.text.rememberTextMeasurer
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.toRect
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -124,6 +133,7 @@ fun DetectionScreen(
         }
     }
 
+    var boxsize by remember { mutableStateOf(Size.Zero)}
     //Used to size the text label on detections
     val textMeasurer = rememberTextMeasurer()
     // Stores the image for each camera frame
@@ -131,6 +141,9 @@ fun DetectionScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .onGloballyPositioned { coordinates ->
+                boxsize = coordinates.size.toSize()
+            }
     ){
         AndroidView(
             modifier = Modifier
@@ -165,7 +178,7 @@ fun DetectionScreen(
                                         Bitmap.Config.ARGB_8888
                                     )
                                 }
-                                detectionViewModel.detectObjects(image, imageBitmap!!)
+                                detectionViewModel.detectObjects(image, imageBitmap!!, boxsize)
                             }
                         }
 
@@ -184,6 +197,7 @@ fun DetectionScreen(
                 }
             }
         )
+        Text(text = detectionState.inferenceTime.toString(), modifier = Modifier.align(Alignment.BottomCenter))
 
         //Where detections are drawn on screen if the model successfully load and the screen has detections
         if(detectionState.tensorflowEnabled && detectionState.tensorflowDetections.isNotEmpty()) {
@@ -192,56 +206,41 @@ fun DetectionScreen(
                     .fillMaxSize()
             ) {
                 //Images are resized before being passed to the ObjectDetector
-                val scaleFactor = max(size.width / detectionState.tensorflowImageWidth, size.height / detectionState.tensorflowImageHeight)
                 for (detection in detectionState.tensorflowDetections) {
                     val boundingBox = detection.boundingBox
-
-                    //Once returned, the bounding boxes and coordinates need to be scaled back up to
-                    //be correctly displayed on screen
-                    val top = boundingBox.top * scaleFactor
-                    val left = boundingBox.left * scaleFactor
-                    val bottom = boundingBox.bottom * scaleFactor
-                    val right = boundingBox.right * scaleFactor
-                    val scaledRect = RectF(left, top, right, bottom)
-
-                    var label = detection.categories[0].label
+                    val label = detection.category.label
 
                     //Draws the bounding box
                     drawRect(
-                        topLeft = Offset(left, top),
+                        topLeft = Offset(boundingBox.left, boundingBox.top),
                         color = Color.Green,
                         style = Stroke(width = 3.dp.toPx()),
-                        size = Size(scaledRect.width(), scaledRect.height())
+                        size = Size(boundingBox.width(), boundingBox.height())
                     )
 
-                    val textBackgroundPaint = Paint()
-                    textBackgroundPaint.textSize = 14.sp.toPx()
-                    textBackgroundPaint.getTextBounds(label, 0, label.length, scaledRect.toRect())
-                    val textWidth = scaledRect.width()
-                    val textHeight = scaledRect.height()
+                    val textBounds = Rect()
+                    val textPaint = Paint().apply {
+                        textSize = 14.sp.toPx()
+                        color = ContextCompat.getColor(context, com.example.myapplication.R.color.white)
+                    }
+                    textPaint.getTextBounds(label, 0, label.length, textBounds)
 
-                    //Draws the text and a background for better visibility
+                    val backgroundRect = androidx.compose.ui.geometry.Rect(
+                        0f,
+                        0f,
+                        textBounds.width().toFloat(),
+                        textBounds.height().toFloat()
+                    )
                     drawRect(
-                        topLeft = Offset(x = left, y = top - 60),
                         color = Color.Black,
-                        size = Size(
-                            width = textWidth,
-                            height = 50F
-                        ),
+                        topLeft = Offset(x = boundingBox.left, y = boundingBox.top - 50),
+                        size = backgroundRect.size
                     )
-                    drawText(
-                        textMeasurer = textMeasurer,
-                        text = label,
-                        topLeft = Offset(x = left, y = top - 75),
-                        style = TextStyle(
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold
-                        ),
-                        size = Size(
-                            width = textWidth + 30f,
-                            height = textHeight + 30f
-                        )
+                    drawContext.canvas.nativeCanvas.drawText(
+                        label,
+                        boundingBox.left,
+                        boundingBox.top - 60 + textBounds.height(),
+                        textPaint
                     )
                 }
             }

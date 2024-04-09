@@ -44,11 +44,11 @@ import org.tensorflow.lite.task.gms.vision.detector.ObjectDetector
  */
 class ObjectDetectorHelper(
     //Modify the following 4 parameters as you wish
-  var threshold: Float = 0.8f,  //Between 0 and 1
-  var numThreads: Int = 4,  //Between 1 and 4
-  var maxResults: Int = 10, //1+, though you may notice frame rate drops with too many detections at once
-  var modelName: String = "detect_coin.tflite",  //Update with your filename in assets folder
-  val context: Context
+    var threshold: Float = 0.8f,  //Between 0 and 1
+    var numThreads: Int = 4,  //Between 1 and 4
+    var maxResults: Int = 10, //1+, though you may notice frame rate drops with too many detections at once
+    var modelName: String = "detectsedsuvrun3.tflite",  //Update with your filename in assets folder
+    val context: Context
 ) {
     //Single source of truth for our State
     private var _detectorState = mutableStateOf(DetectionState())
@@ -56,44 +56,44 @@ class ObjectDetectorHelper(
 
 
     //Called by DetectionViewModel on app startup to initialize the model
-     fun initialize() = callbackFlow<Resource<DetectionState>> {
-         if(objectDetectorHelper == null){
-             TfLiteGpu.isGpuDelegateAvailable(context).onSuccessTask { gpuAvailable: Boolean ->
-                 val optionsBuilder = TfLiteInitializationOptions.builder()
-                 TfLiteVision.initialize(context, optionsBuilder.build())
-             }.addOnSuccessListener {
-                 val optionsBuilder = ObjectDetector.ObjectDetectorOptions.builder()
-                     .setScoreThreshold(threshold)
-                     .setMaxResults(maxResults)
-                 val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
-                 optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
+    fun initialize() = callbackFlow<Resource<DetectionState>> {
+        if(objectDetectorHelper == null){
+            TfLiteGpu.isGpuDelegateAvailable(context).onSuccessTask { gpuAvailable: Boolean ->
+                val optionsBuilder = TfLiteInitializationOptions.builder()
+                TfLiteVision.initialize(context, optionsBuilder.build())
+            }.addOnSuccessListener {
+                val optionsBuilder = ObjectDetector.ObjectDetectorOptions.builder()
+                    .setScoreThreshold(threshold)
+                    .setMaxResults(maxResults)
+                val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
+                optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
-                 try {
-                     objectDetectorHelper = ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())
-                     _detectorState.value = _detectorState.value.copy(tensorflowEnabled = true)
-                     launch{
-                         send(Resource.Success(_detectorState.value))
-                     }
-                 } catch (e: Exception) {
-                     _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
-                     launch{
-                         send(Resource.Error(e.message!!, _detectorState.value))
-                     }
-                 }
-             }.addOnFailureListener{
-                 _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
-                 launch{
-                     send(Resource.Error(it.message!!, _detectorState.value))
-                 }
-             }
-         }
-         else{
-             _detectorState.value = _detectorState.value.copy(tensorflowEnabled = true)
-             launch{
-                 send(Resource.Success(_detectorState.value))
-             }
-         }
-         awaitClose {  }
+                try {
+                    objectDetectorHelper = ObjectDetector.createFromFileAndOptions(context, modelName, optionsBuilder.build())
+                    _detectorState.value = _detectorState.value.copy(tensorflowEnabled = true)
+                    launch{
+                        send(Resource.Success(_detectorState.value))
+                    }
+                } catch (e: Exception) {
+                    _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
+                    launch{
+                        send(Resource.Error(e.message!!, _detectorState.value))
+                    }
+                }
+            }.addOnFailureListener{
+                _detectorState.value = _detectorState.value.copy(tensorflowEnabled = false)
+                launch{
+                    send(Resource.Error(it.message!!, _detectorState.value))
+                }
+            }
+        }
+        else{
+            _detectorState.value = _detectorState.value.copy(tensorflowEnabled = true)
+            launch{
+                send(Resource.Success(_detectorState.value))
+            }
+        }
+        awaitClose {  }
     }
 
     //Called for every camera frame
@@ -102,9 +102,14 @@ class ObjectDetectorHelper(
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(image))
         val results = objectDetectorHelper?.detect(tensorImage)
 
+        var detections = mutableListOf<DetectionMut>()
+        results?.forEach {
+            detections.add(DetectionMut(it.boundingBox, CategoryMut(it.categories[0].label, it.categories[0].score)))
+        }
+
         results?.let{
             _detectorState.value = _detectorState.value.copy(
-                tensorflowDetections = results,
+                tensorflowDetections = detections,
                 tensorflowImageHeight = tensorImage.height,
                 tensorflowImageWidth = tensorImage.width
             )
