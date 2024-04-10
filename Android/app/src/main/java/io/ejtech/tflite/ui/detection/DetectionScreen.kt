@@ -197,7 +197,7 @@ fun DetectionScreen(
                 }
             }
         )
-        Text(text = detectionState.inferenceTime.toString(), modifier = Modifier.align(Alignment.BottomCenter))
+        Text(text = detectionState.inferenceTimeCurr.toString() + "    " + detectionState.inferenceTimeAvg.toString().toFloat(), modifier = Modifier.align(Alignment.BottomCenter))
 
         //Where detections are drawn on screen if the model successfully load and the screen has detections
         if(detectionState.tensorflowEnabled && detectionState.tensorflowDetections.isNotEmpty()) {

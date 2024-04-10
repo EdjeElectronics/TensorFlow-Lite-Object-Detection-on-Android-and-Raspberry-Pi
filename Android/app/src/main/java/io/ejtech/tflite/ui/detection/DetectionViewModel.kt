@@ -32,6 +32,8 @@ class DetectionViewModel @Inject constructor(
     private val _tensorflowInitializationEvent = Channel<Resource<String>>()
     val tensorflowInitializationEvent = _tensorflowInitializationEvent.receiveAsFlow()
 
+    private var avgInference: MutableList<Long> = mutableListOf()
+
     // On Screen creation, the ViewModel will attempt to initialize the Tflite model
     init {
         if(!detectionState.value.tensorflowEnabled){
@@ -168,9 +170,15 @@ class DetectionViewModel @Inject constructor(
         }
 
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+        avgInference.add(inferenceTime)
+        val avg = avgInference.average()
+        if(avgInference.size > 500) {
+            avgInference.clear()
+        }
         viewModelScope.launch(Dispatchers.Main){
             _detectionState.value = _detectionState.value.copy(
-                inferenceTime = inferenceTime,
+                inferenceTimeCurr = inferenceTime,
+                inferenceTimeAvg = avg,
                 tensorflowDetections = resultState.tensorflowDetections,
                 tensorflowImageHeight = resultState.tensorflowImageHeight,
                 tensorflowImageWidth = resultState.tensorflowImageWidth

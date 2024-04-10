@@ -10,5 +10,6 @@ data class DetectionState(
     var tensorflowDetections: MutableList<DetectionMut> = mutableListOf(),
     var tensorflowImageHeight: Int = 0,
     var tensorflowImageWidth: Int = 0,
-    var inferenceTime: Long = 0
+    var inferenceTimeAvg: Double = 0.0,
+    var inferenceTimeCurr: Long = 0L
 )
