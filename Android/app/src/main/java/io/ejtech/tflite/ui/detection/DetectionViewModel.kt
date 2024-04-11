@@ -145,7 +145,7 @@ class DetectionViewModel @Inject constructor(
         resultState.tensorflowDetections = resultState.tensorflowDetections.groupBy{
             it.category.label
         }.mapValues { (_, sameNameDetections) ->
-            sameNameDetections.maxBy {it.category.score}
+            sameNameDetections.maxBy {it.category.confidence_score}
         }.values.toMutableList()
 
         val scaleFactor = max(boxsize.width / resultState.tensorflowImageWidth, boxsize.height / resultState.tensorflowImageHeight)
