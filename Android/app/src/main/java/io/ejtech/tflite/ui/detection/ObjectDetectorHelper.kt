@@ -47,7 +47,7 @@ class ObjectDetectorHelper(
     var threshold: Float = 0.8f,  //Between 0 and 1
     var numThreads: Int = 4,  //Between 1 and 4
     var maxResults: Int = 10, //1+, though you may notice frame rate drops with too many detections at once
-    var modelName: String = "detectsedsuvrun3.tflite",  //Update with your filename in assets folder
+    var modelName: String = "detect_coin.tflite",  //Update with your filename in assets folder
     val context: Context
 ) {
     //Single source of truth for our State
