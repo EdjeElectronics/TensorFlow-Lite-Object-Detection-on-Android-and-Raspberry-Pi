@@ -50,6 +50,10 @@ When it reaches the Welcome to Android Studio screen, click Open, navigate to th
    <img src="../doc/AndroidStudio_OpenProject.png" width="800">
 </p>
 
+<p align="center">
+   <img src="../doc/AndroidStudio_ProjectDescription.png" width="800">
+</p>
+
 ## Step 5. Add Your TFLite Model to the Project
 
 Click the Project dropdown in the upper left corner and select Android. Click the `app` folder, then expand every subfolder by clicking the Expand All button (or pressing Ctrl + NumPad+ on the keyboard).
