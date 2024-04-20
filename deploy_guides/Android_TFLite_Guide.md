@@ -76,6 +76,12 @@ If your model name is different than `android_model.tflite`, change the `modelNa
 
 ## Step 6. Launch App on Your Device!
 
+Download a few tools from Android Studio to complete device setup. Open the Settings window (Ctrl+Alt+S or Command+comma) and select Languages & Frameworks. From there you can choose Android SDK. SDK Platforms will be selected by default, but click on SDK Tools to find the software you need. Scroll down and select Android Emulator, Android SDK Platform-Tools, and Google USB Driver. Click Apply. Android Studio will begin downloading and installing these tools and notify you when finished. Close the Settings window when ready.
+<p align="center">
+   <img src="../doc/AndroidStudio_SDKTools.png" width="800">
+</p>
+
+
 Connect your Android device to the PC using a USB cable. You should see the name of your phone appear at the top of Android Studio. Once connected, press the green arrow button to build and launch the app on your phone. Depending on the speed of your computer and the amount of dependencies that need to be downloaded on the first launch, it may take 3 to 5 minutes.
 Connect your device by USB and you should see the name of your phone appear at the top. Once connected, press the green arrow button to launch the app.
 Depending on the speed of your computer and any dependencies that need to be downloaded on the first launch, it may take a little bit of time
