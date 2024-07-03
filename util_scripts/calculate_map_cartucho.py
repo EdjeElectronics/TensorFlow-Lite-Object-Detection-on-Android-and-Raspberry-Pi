@@ -12,6 +12,7 @@ import os
 import sys
 import argparse
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Define and parse input arguments
 parser = argparse.ArgumentParser()
@@ -30,6 +31,16 @@ outputs_dir = args.outdir
 metric = args.metric
 show_imgs = args.show_images
 show_plots = args.show_plots
+
+def plot_precision_recall(precision, recall, class_name, output_path):
+    plt.figure()
+    plt.plot(recall, precision, marker='.')
+    plt.title(f'Precision-Recall curve: {class_name}')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.savefig(f'{output_path}/{class_name}_pr_curve.png')
+    plt.close()
+
 
 # Define which metric to use (i.e. which set of IoU thresholds to calculate mAP for)
 if metric=='coco':
@@ -59,6 +70,10 @@ else: show_img_arg = ' -na' # "-na" argument tells main.py NOT to show images
 if show_plots: show_plot_arg = ''
 else: show_plot_arg = ' -np' # "-np" argument tells main.py NOT to show plots
 
+
+if show_plots:
+    for class_name in class_names:
+        plot_precision_recall(precision[class_name], recall[class_name], class_name, output_path)
 
 # Load the label map
 with open(labelmap_path, 'r') as f:
