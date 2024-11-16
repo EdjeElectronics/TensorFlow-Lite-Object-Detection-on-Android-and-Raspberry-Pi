@@ -15,6 +15,7 @@
 
 # Import packages
 import os
+import uuid
 import argparse
 import cv2
 import numpy as np
@@ -79,10 +80,16 @@ parser.add_argument('--resolution', help='Desired webcam resolution in WxH. If t
                     default='1280x720')
 parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed up detection',
                     action='store_true')
+parser.add_argument('--noshow_results', help='Don\'t show result images (only use this if --save_results is enabled)',
+                    action='store_false') 
+parser.add_argument('--save_results', help='Save labeled images and annotation data to a results folder',
+                    action='store_true')                   
 
 args = parser.parse_args()
 
 MODEL_NAME = args.modeldir
+show_results = args.noshow_results # Defaults to True
+save_results = args.save_results # Defaults to False
 GRAPH_NAME = args.graph
 LABELMAP_NAME = args.labels
 min_conf_threshold = float(args.threshold)
@@ -196,6 +203,7 @@ while True:
     scores = interpreter.get_tensor(output_details[scores_idx]['index'])[0] # Confidence of detected objects
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
+    detections = []
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
@@ -215,21 +223,45 @@ while True:
             label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
             cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
             cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+            detections.append([object_name, scores[i], xmin, ymin, xmax, ymax])
 
     # Draw framerate in corner of frame
     cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
 
     # All the results have been drawn on the frame, so it's time to display it.
-    cv2.imshow('Object detector', frame)
+    if show_results:
+        cv2.imshow('Object detector', frame)
+        # Press 'q' to quit
+        if cv2.waitKey(1) == ord('q'):
+            break
+    
+    # Save the labeled image to results folder if desired
+    if save_results:
+        if len(detections) > 0:
+            for detection in detections:
+                if detection[0] == 'bird':
+                    # Get filenames and paths
+                    fake_file_name = f'{uuid.uuid4()}'
+                    image_fn = os.path.basename("./results/"+fake_file_name+".jpg")
+                    image_savepath = os.path.join(CWD_PATH,"results",image_fn)
+                    
+                    base_fn, ext = os.path.splitext(image_fn)
+                    txt_result_fn = base_fn +'.txt'
+                    txt_savepath = os.path.join(CWD_PATH,"results",txt_result_fn)
+
+                    # Save image
+                    cv2.imwrite(image_savepath, frame)
+
+                    # Write results to text file
+                    # (Using format defined by https://github.com/Cartucho/mAP, which will make it easy to calculate mAP)
+                    with open(txt_savepath,'w') as f:
+                        for detection in detections:
+                            f.write('%s %.4f %d %d %d %d\n' % (detection[0], detection[1], detection[2], detection[3], detection[4], detection[5]))
 
     # Calculate framerate
     t2 = cv2.getTickCount()
     time1 = (t2-t1)/freq
     frame_rate_calc= 1/time1
-
-    # Press 'q' to quit
-    if cv2.waitKey(1) == ord('q'):
-        break
 
 # Clean up
 cv2.destroyAllWindows()
